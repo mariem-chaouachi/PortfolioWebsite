@@ -135,50 +135,49 @@ h1.ht em{font-style:italic;color:var(--mauve-deep);}
 }
 
 /* Mobile responsive override */
-@media (max-width: 1024px) {
-  /* ... your other mobile styles ... */
-
-  /* 1. Keeps your name prominently large */
-  .hero-title, 
-  .hero-section h1 { 
-    font-size: clamp(2.8rem, 9vw, 4.5rem) !important;
-    line-height: 1.1 !important;
-    letter-spacing: -0.03em !important;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 1.5rem !important;
+@media screen and (max-width: 1024px) {
+  /* 1. Forces the stacked layout to look incredibly large and striking on mobile */
+  h1.ht {
+    /* Significantly increased minimum floor and scaling factors */
+    font-size: clamp(5.5rem, 14vw, 6.5rem) !important; 
+    line-height: 0.98 !important; /* Slightly tightened tracking to match the massive scale */
+    letter-spacing: -0.02em !important;
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 1.8rem !important;
+    padding: 0 4vw !important; /* Slightly optimized horizontal padding for maximum text width */
   }
 
-  /* 2. Button container configuration */
-  .hero-buttons,
-  .hero-btn-container {
+  /* 2. Keeps "Mariem" stacked cleanly on top of "Chaouachi" */
+  h1.ht br {
+    display: block !important;
+  }
+
+  /* 3. Button row container layout alignment logic */
+  .hero-cta {
     display: flex !important;
-    flex-direction: row !important; /* Forces them to stay side-by-side */
-    flex-wrap: wrap !important;     /* Safely wraps to a new line if the screen is too narrow */
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 0.6rem !important;         /* Tight spacing between compact buttons */
+    gap: 0.6rem !important;
     width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
+    margin-top: 1.5rem !important;
   }
 
-  /* 3. Forces buttons to shrink-wrap tightly around their content */
-  .hero-buttons a,
-  .hero-btn,
-  .cta-button {
-    font-family: 'Lato', sans-serif !important;
-    font-size: 0.8rem !important;       /* Made the text slightly smaller */
-    font-weight: 500 !important;
-    padding: 0.5rem 1rem !important;    /* Sleek, small inner padding */
-    border-radius: 6px !important;
-    letter-spacing: 0.02em !important;
+  /* 4. Keeps buttons small, non-stretching, and respects your original border-radius */
+  .hero-cta .btn-p,
+  .hero-cta .btn-o {
+    font-size: 0.8rem !important;
+    padding: 0.5rem 1rem !important;
     text-align: center !important;
     
-    /* THE FIX: Prevents stretching completely */
-    flex: 0 0 auto !important;          /* Tells the button NOT to grow or stretch */
-    width: max-content !important;      /* Forces width to lock exactly onto the text length */
-    min-width: 0 !important;            /* Removes any hard desktop minimum width limits */
+    /* Strict dimensions to wrap text flawlessly */
+    flex: 0 0 auto !important;
+    width: max-content !important;
+    min-width: 0 !important;
+    margin: 0 !important;
   }
 }
 

@@ -285,21 +285,169 @@ section{padding:5.5rem 10vw;}
 #about .s-label,#about .s-title,#about .s-sub{text-align:left;}
 
 /* ── ABOUT ── */
-#about {background: var(--parchment);position: relative !important;overflow: hidden !important;padding: 5rem 2rem !important;display: flex !important;flex-direction: column !important;align-items: center !important; justify-content: center !important;width: 100vw !important;max-width: 100% !important;left: 0 !important;}
-.about-header {text-align: center !important;margin-bottom: 0rem !important;width: 100% !important;display: block !important;}
-.about-header .s-label, 
-.about-header .s-title, 
-.about-header .s-sub {text-align: center !important;margin-left: auto !important;margin-right: auto !important;}
-.about-grid {display: flex !important;flex-direction: row !important;gap: 4rem !important; margin-left: auto !important;margin-right: auto !important;justify-content: center !important;align-items: center !important;max-width: 1000px !important;width: 100% !important;}
-.about-image {display: flex !important;justify-content: center !important;align-items: center !important;flex: 0 0 auto !important; /* Prevents the image column from shrinking */}
-.about-image img {display: block !important;width: auto !important;height: 460px !important; object-fit: contain !important;filter: drop-shadow(0px 12px 24px rgba(0, 0, 0, 0.15)) !important;-webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%) !important;mask-image: linear-gradient(to bottom, black 75%, transparent 100%) !important;}
-.about-text {height: 460px !important; max-width: 460px !important; display: flex !important;flex-direction: column !important;justify-content: center !important; text-align: left !important;flex: 1 1 auto !important;}
-.about-text p {font-size: 0.98rem !important;line-height: 1.8 !important;color: var(--charcoal) !important;margin-bottom: 1rem !important;}
-.about-text p:last-child {margin-bottom: 0 !important;}
+#about {
+  background: var(--parchment);
+  padding: 5rem max(3rem, 8vw); 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-@media (max-width: 768px) {
-  .about-grid {flex-direction: column !important;gap: 2.5rem !important;}
-  .about-text, .about-image img {height: auto !important;max-width: 100% !important;}
+/* Header centered rules at the top */
+.about-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem; 
+  width: 100%;
+}
+
+.about-header .s-sub {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Two-column grid layout configuration */
+.about-split-content {
+  display: grid;
+  /* Shifted layout weight slightly to give the left column more real estate */
+  grid-template-columns: 1.2fr 2.3fr; 
+  gap: 4rem;
+  max-width: 1400px;
+  width: 100%;
+  align-items: start;
+}
+
+/* Left Column formatting (Sticky fading image) */
+.about-left-side {
+  position: sticky;
+  top: 6rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.image-mask-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 370px; /* Scaled up from 320px to make your PNG larger */
+  display: inline-block;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
+}
+
+.about-pic {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Right Column formatting (Text + Calendar Stack) */
+.about-right-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem; 
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: var(--charcoal);
+}
+
+/* Internal Activity adjustments */
+#github-activity {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the title and the calendar container horizontally */
+  gap: 1.2rem;
+}
+
+/* Title for the Calendar widget */
+/* Title for the Calendar widget */
+.calendar-title {
+  font-family: 'Cormorant Garamond', 'EB Garamond', serif; /* Uses your premium serif font family */
+  font-size: 2.2rem; /* Slightly larger scale to match the natural breathing room of Garamond */
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--charcoal);
+  text-align: center;
+  margin: 0 0 0.5rem 0;
+  width: 100%;
+}
+
+.calendar-title em {
+  font-family: 'Cormorant Garamond', 'EB Garamond', serif;
+  font-style: italic; /* Forces that elegant, cursive-like Garamond italic angle */
+  font-weight: 400;
+  color: var(--mauve); /* Accent color matching your sage green contribution blocks */
+}
+
+.calendar-wrapper {
+  background: transparent;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+.github-chart-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.calendar-details {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--charcoal);
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+.legend-colors {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-colors span {
+  font-size: 0.8rem;
+}
+
+/* Mobile responsive layout overrides */
+@media (max-width: 1024px) {
+  .about-split-content {
+    grid-template-columns: 1fr; 
+    gap: 2.5rem;
+  }
+  
+  .about-left-side {
+    position: static;
+    order: -1; 
+  }
+
+  .about-pic {
+    max-width: 290px; /* Adjusted mobile view layout size up slightly as well */
+  }
+
+  .github-chart-img, .calendar-details {
+    min-width: 750px; 
+  }
 }
 
 /* ── SKILLS ── */
@@ -475,85 +623,6 @@ footer p{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:v
   .q-row{grid-template-columns:1fr;gap:0.2rem;}
 }
 
-
-#github-activity {
-  background: var(--ink);
-  padding: 5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-#github-activity .reveal {
-  text-align: center;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
-.calendar-wrapper {
-  background: var(--ink); 
-  padding: 0.1rem;
-  max-width: 1055px;
-  width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  display: flex;
-  flex-direction: column; /* Stack image graph on top of metadata layout */
-  justify-content: center;
-  align-items: center;
-  overflow-x: auto; /* Adds a clean swipe scrollbar on phones if grid overflows */
-}
-
-/* Configures the calendar layout to render cleanly */
-.github-chart-img {
-  width: 100%;
-  height: auto;
-  max-width: 950px;
-  display: block;
-  object-fit: contain;
-  margin-bottom: 1rem; /* Creates breathing space above metrics */
-}
-
-/* Updated selector name for the details container layer */
-.calendar-details {
-  width: 100%;
-  max-width: 950px;
-  display: flex;
-  justify-content: space-between; /* Spreads counter to the left, legend blocks to the right */
-  align-items: center;
-  font-family: inherit;
-  font-size: 0.85rem;
-  color: var(--parchment); /* Light ivory contrast over dark background */
-  opacity: 1;
-  margin-top: 0.5rem;
-}
-
-.legend-colors {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.legend-colors span {
-  font-size: 0.8rem;
-}
-
-/* Mobile Viewport Responsiveness */
-@media (max-width: 768px) {
-  .calendar-wrapper {
-    padding: 0.1rem;
-    align-items: flex-start; /* Ensures crisp left-alignment for touch tracking swipe on phones */
-  }
-  .github-chart-img {
-    width: auto;
-    min-width: 800px; /* Keeps your squares distinct and sharp on mobile displays */
-  }
-  .calendar-details {
-    min-width: 800px; /* Keeps layout metrics from compressing on thin screen layers */
-  }
-}
-
 </style>
 </head>
 <body>
@@ -590,12 +659,12 @@ footer p{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:v
   
   <div class="skills-bubble-container">
     <div class="bubble b-left-1">Robotics</div>
-    <div class="bubble b-left-2">Signal Processing</div>
+    <div class="bubble b-left-2">Python</div>
     <div class="bubble b-left-3">Healthcare Tech</div>
     
     <div class="bubble b-right-1">Biomedical Eng</div>
     <div class="bubble b-right-2">Medical Imaging</div>
-    <div class="bubble b-right-3">R&D</div>
+    <div class="bubble b-right-3">Web/App Dev</div>
   </div>
 
   <div class="hero-left">
@@ -618,26 +687,51 @@ footer p{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:v
 
 <!-- ── ABOUT ── -->
 <section id="about">
+  
   <div class="about-header reveal">
     <div class="s-label">Who I Am</div>
     <h2 class="s-title">About <em>Me</em></h2>
     <p class="s-sub">Rooted in Tunisia, growing in every direction.</p>
   </div>
-  
-  <div class="about-grid">
-    <div class="about-image reveal">
-      <img src="AboutPic.png" alt="Biomedical Engineering Student Profile">
-    </div>
 
-    <div class="about-text reveal">
-      <p>I am a <strong>2nd-year preparatory cycle student in Biomedical Engineering</strong> at ISTMT, with a deep focus on <em>medical devices, robotics, and healthcare technology</em>.</p>
-      <p>My academic path began with a <strong>Baccalauréat in Experimental Sciences with Honours</strong>. I have since built a solid foundation in both engineering principles and clinical environments — including a hands-on internship in radiology and medical imaging at Clinique Zaghouan.</p>
-      <p>Alongside my studies, I serve as <strong>Head of External Relations</strong> for Club Biomed Innov, where I lead partnerships, sponsorships, and student events — combining technical ambition with communication and leadership.</p>
-    </div>
-  </div>
-</section>
+  <div class="about-split-content">
+    
+    <div class="about-left-side">
+      <div class="image-mask-wrapper">
+        <img src="AboutPic.png" alt="Mariem Chaouachi" class="about-pic" />
+      </div>
+    </div> <div class="about-right-side">
+      <div class="about-text reveal">
+        <p>I am a <strong>second-year Biomedical Engineering student</strong> in the Preparatory Cycle at ISTMT, driven by a strong interest in medical devices, robotics, and innovative healthcare technologies.</p>
+        <p>My academic journey began with an <strong>Honours Baccalauréat in Experimental Sciences</strong>, providing me with a solid scientific foundation that I continue to build upon through rigorous engineering studies.</p>
+        <p>Beyond the classroom, I have gained practical exposure to clinical environments through a hands-on <strong>internship in radiology and medical imaging</strong> at Clinique Zaghouan, where I developed valuable insights into the intersection of technology and patient care.</p>
+        <p>In parallel, <strong>I serve as Head of External Relations</strong> at Club Biomed Innov, leading partnerships, sponsorship initiatives, and student-focused events. These experiences have strengthened my leadership, communication, and project management skills.</p>
+      </div>
 
-<!-- Wave Separator -->
+      <div id="github-activity">
+        <h3 class="calendar-title">Days I <em>Code</em></h3>
+        
+        <div class="calendar-wrapper">
+          <img src="https://ghchart.rshah.org/6e8771/mariem-chaouachi" alt="Mariem Chaouachi's GitHub Contributions Chart" class="github-chart-img" />
+          
+          <div class="calendar-details">
+            <div class="contrib-count">
+              Contributions over the past year
+            </div>
+            
+            <div class="legend-colors">
+              <span>Less</span>
+              <svg width="15" height="15"><rect width="15" height="15" fill="#ebedf0" rx="2" ry="2"></rect></svg>
+              <svg width="15" height="15"><rect width="15" height="15" fill="#c3cfc4" rx="2" ry="2"></rect></svg>
+              <svg width="15" height="15"><rect width="15" height="15" fill="#9cb39d" rx="2" ry="2"></rect></svg>
+              <svg width="15" height="15"><rect width="15" height="15" fill="#759777" rx="2" ry="2"></rect></svg>
+              <svg width="15" height="15"><rect width="15" height="15" fill="#6e8771" rx="2" ry="2"></rect></svg>
+              <span>More</span>
+            </div>
+          </div>
+        </div>
+      </div> </div> </div> </section>
+
 <div class="wave" style="background:#E6DFD0">
   <svg viewBox="0 0 1440 44" preserveAspectRatio="none" height="44">
     <path d="M0,22 C360,0 720,44 1080,22 C1260,11 1360,28 1440,22 L1440,44 L0,44 Z" fill="#F2EDE3"/>
@@ -808,36 +902,6 @@ footer p{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:v
 
 <!-- ── CONTACT ── -->
 <section id="contact">
-
-  
-<section id="github-activity">
-  <div class="reveal">
-    <h2 class="s-title">Days I <em>Code</em></h2>
-  </div>
-  <div class="calendar-wrapper">
-    <img src="https://ghchart.rshah.org/6e8771/mariem-chaouachi" alt="Mariem Chaouachi's GitHub Contributions Chart" class="github-chart-img" />
-    
-    <!-- Changed from footer to a structured metadata block div -->
-    <div class="calendar-details">
-      <div class="contrib-count">
-        Contributions over the past year
-      </div>
-      
-      <div class="legend-colors">
-        <span>Less</span>
-        <svg width="15" height="15"><rect width="15" height="15" fill="#ebedf0" rx="2" ry="2"></rect></svg>
-        <svg width="15" height="15"><rect width="15" height="15" fill="#c3cfc4" rx="2" ry="2"></rect></svg>
-        <svg width="15" height="15"><rect width="15" height="15" fill="#9cb39d" rx="2" ry="2"></rect></svg>
-        <svg width="15" height="15"><rect width="15" height="15" fill="#759777" rx="2" ry="2"></rect></svg>
-        <svg width="15" height="15"><rect width="15" height="15" fill="#6e8771" rx="2" ry="2"></rect></svg>
-        <span>More</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
   <div class="reveal">
     <div class="s-label">Connect</div>
     <h2 class="s-title">Get in <em>Touch</em></h2>

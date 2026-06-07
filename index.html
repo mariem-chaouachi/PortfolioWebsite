@@ -135,16 +135,53 @@ h1.ht em{font-style:italic;color:var(--mauve-deep);}
 }
 
 /* Mobile responsive override */
-@media (max-width: 768px) {
-  .hero-role {
-    /* Prevents the phrases from breaking into separate lines on small screens */
-    white-space: nowrap; 
+@media (max-width: 1024px) {
+  /* ... your other mobile styles ... */
+
+  /* 1. Keeps your name prominently large */
+  .hero-title, 
+  .hero-section h1 { 
+    font-size: clamp(2.8rem, 9vw, 4.5rem) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.03em !important;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* 2. Button container configuration */
+  .hero-buttons,
+  .hero-btn-container {
+    display: flex !important;
+    flex-direction: row !important; /* Forces them to stay side-by-side */
+    flex-wrap: wrap !important;     /* Safely wraps to a new line if the screen is too narrow */
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.6rem !important;         /* Tight spacing between compact buttons */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* 3. Forces buttons to shrink-wrap tightly around their content */
+  .hero-buttons a,
+  .hero-btn,
+  .cta-button {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 0.8rem !important;       /* Made the text slightly smaller */
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;    /* Sleek, small inner padding */
+    border-radius: 6px !important;
+    letter-spacing: 0.02em !important;
+    text-align: center !important;
     
-    /* Optional: If the screen is exceptionally small (like an older iPhone), 
-       this allows the browser to scale down just slightly more if needed */
-    font-size: clamp(0.7rem, 3.2vw, 1rem); 
+    /* THE FIX: Prevents stretching completely */
+    flex: 0 0 auto !important;          /* Tells the button NOT to grow or stretch */
+    width: max-content !important;      /* Forces width to lock exactly onto the text length */
+    min-width: 0 !important;            /* Removes any hard desktop minimum width limits */
   }
 }
+
 .chip{background:var(--parchment);border:none;border-right:1px solid rgba(90,128,64,0.25);padding:0.5rem 0;font-size:0.72rem;letter-spacing:0.06em;color:var(--charcoal);font-weight:400;white-space:nowrap;flex:1;text-align:center;}
 .chip:first-child{border-left:none;}
 .chip:last-child{border-right:none;}

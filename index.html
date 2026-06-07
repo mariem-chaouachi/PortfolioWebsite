@@ -301,7 +301,7 @@ section{padding:5.5rem 10vw;}
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem; 
+  margin-bottom: 0rem; 
   width: 100%;
 }
 
@@ -430,23 +430,95 @@ section{padding:5.5rem 10vw;}
 }
 
 /* Mobile responsive layout overrides */
+/* Mobile Responsive Layout Overrides */
 @media (max-width: 1024px) {
+  /* 1. Stack columns vertically */
   .about-split-content {
-    grid-template-columns: 1fr; 
-    gap: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 1.5rem;
+    width: 100% !important;
   }
   
+  /* 2. Position image section on top */
   .about-left-side {
-    position: static;
+    position: static !important;
     order: -1; 
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
-  .about-pic {
-    max-width: 290px; /* Adjusted mobile view layout size up slightly as well */
+  /* 3. Center and size down the image wrapper */
+  .image-mask-wrapper {
+    max-width: 220px; 
+    margin: 0 auto;
   }
 
-  .github-chart-img, .calendar-details {
-    min-width: 750px; 
+  /* 4. Reset right side to take full block width */
+  .about-right-side {
+    width: 100%;
+    display: block; /* Switched from flex to block to prevent inner clipping issues */
+  }
+
+  /* 5. Handle text styling and layout wrap */
+  .about-text {
+    width: 100%;
+  }
+
+  .about-text p {
+    font-size: 0.95rem; 
+    line-height: 1.6;
+    text-align: left; 
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 1rem;
+  }
+
+  /* 6. Isolate and safely center the title */
+  #github-activity {
+    width: 100%;
+    margin-top: 1.5rem;
+    display: block; /* Uses standard block container behavior */
+  }
+
+  .calendar-title {
+    font-size: 1.8rem; 
+    text-align: center !important; /* Force centers just the text line */
+    margin: 0 auto 1rem auto;
+    display: block;
+    width: 100%;
+  }
+
+  /* 7. The Bulletproof Scroll Container Fix */
+  .calendar-wrapper {
+    width: 100% !important;
+    max-width: 100%;
+    display: block; /* Standard block wrapper */
+    overflow-x: auto !important; /* Forces responsive horizontal scrolling */
+    white-space: nowrap; /* Prevents internal chart layout distortion */
+    padding-bottom: 0.8rem;
+    -webkit-overflow-scrolling: touch; /* Butter-smooth iOS momentum scrolling */
+  }
+
+  /* 8. Ensures the chart components render at a crisp structural scale */
+  .github-chart-img {
+    min-width: 650px; 
+    width: 650px;
+    height: auto;
+    display: block;
+    margin: 0; /* Ensures it starts flush against the 0px left container line */
+  }
+
+  .calendar-details {
+    min-width: 650px;
+    width: 650px;
+    display: flex !important;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
   }
 }
 

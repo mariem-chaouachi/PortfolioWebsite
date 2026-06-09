@@ -58,6 +58,12 @@ body {
   font-weight: 300;
   overflow-x: hidden;
   line-height: 1.75;
+
+  /* ── Add HeroPic to the body baseline ── */
+  background-image: url('Assets/Images/Pics/HeroPic.png');
+  background-size: 100% auto;       /* Covers the screen full-width horizontally */
+  background-position: center top;  /* Starts exactly from the top edge */
+  background-repeat: no-repeat;
 }
 /* paper grain texture overlay */
 body::after {
@@ -106,6 +112,89 @@ html, body, a, button { cursor: none !important; }
 @media (max-width: 992px) {
   .custom-cursor, .custom-cursor-dot { display: none !important; }
   html, body, a, button { cursor: auto !important; }
+}
+
+/* ════════════════════════════════════════
+   ELEGANT LOADER
+════════════════════════════════════════ */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
+  
+  /* Safety Fallback: Automatically clears the loader after 1.5 seconds if JS stalls */
+  animation: dynamicDismiss 0.6s cubic-bezier(0.25, 1, 0.5, 1) 1.5s forwards;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.loader-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.5rem;
+  color: var(--mauve-deep);
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: loaderFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.loader-line {
+  width: 0;
+  height: 1px;
+  background: var(--stone);
+  opacity: 0.4;
+  /* Runs the initial entry growth, then loops the breathing/stretching animation infinitely */
+  animation: loaderLineGrow 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+             loaderPulse 1.8s ease-in-out 0.8s infinite;
+}
+
+/* Loader animations */
+@keyframes loaderFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loaderLineGrow {
+  to { width: 40px; }
+}
+
+/* Continuous elegant stretching and compressing action */
+@keyframes loaderPulse {
+  0% {
+    width: 40px;
+    transform: scaleX(1);
+  }
+  50% {
+    width: 80px;        /* Stretches wide */
+    transform: scaleX(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    width: 40px;        /* Compresses back down */
+    transform: scaleX(1);
+    opacity: 0.4;
+  }
+}
+
+@keyframes dynamicDismiss {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+/* Smooth page reveal constraint */
+body.loading {
+  overflow: hidden !important;
 }
 
 /* ════════════════════════════════════════
@@ -215,14 +304,11 @@ nav {
   justify-content: center;
   padding: 80px 0 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;               /* Set this to visible so everything trails down organically */
   text-align: center;
   
-  /* --- Background Image Rules --- */
-  background-image: url('Assets/Images/Pics/HeroPic.png');
-  background-size: 100% auto; 
-  background-position: center top; 
-  background-repeat: no-repeat;
+  /* ── Cleaned up background rules ── */
+  background: transparent;          /* Removed background image from here */
   z-index: 1; 
 }
 
@@ -252,6 +338,7 @@ nav {
   text-transform: uppercase;
   color: var(--mauve);
   margin-bottom: 1.8rem;
+  margin-top: 5rem;
   padding: 0 10vw;
   animation: fadeUp 0.7s ease both;
   text-shadow: 0 0 4px #E6DFD0, 0 0 12px rgba(230, 223, 208, 0.9), 0 0 25px rgba(230, 223, 208, 0.6);
@@ -284,14 +371,22 @@ h1.ht em { font-style: italic; color: var(--mauve-deep); }
 }
 .hero-role strong { font-style: normal; color: var(--mauve); font-weight: 500; }
 
+/* ── HERO CTA: Get in Touch on top, View Projects + View CV below ── */
 .hero-cta {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
   padding: 0 10vw;
   animation: fadeUp 1.2s 0.34s ease both;
 }
+.hero-cta-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .btn-p {
   background: var(--mauve-deep);
   color: var(--cream);
@@ -308,7 +403,7 @@ h1.ht em { font-style: italic; color: var(--mauve-deep); }
 }
 .btn-p:hover { background: var(--mauve); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(42, 78, 24, 0.3); }
 .btn-o {
-  background: transparent;
+  background: var(--cream);
   color: var(--mauve-deep); 
   padding: 0.9rem 2.2rem;
   border: 2px solid var(--mauve-deep);
@@ -390,7 +485,7 @@ h1.ht em { font-style: italic; color: var(--mauve-deep); }
 /* ════════════════════════════════════════
    WAVE DIVIDERS
 ════════════════════════════════════════ */
-.wave { width: 100%; overflow: hidden; line-height: 0; display: block; }
+.wave { width: 100%; overflow: hidden; line-height: 0; display: block; z-index: 0;}
 .wave svg { display: block; width: 100%; }
 
 /* ════════════════════════════════════════
@@ -940,6 +1035,7 @@ footer p { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
   .s-title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
 }
 
+
 </style>
 </head>
 <body>
@@ -960,6 +1056,14 @@ footer p { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
     <span></span><span></span><span></span>
   </button>
 </nav>
+
+<!-- ── ELEGANT LOADER SCREEN ── -->
+<div id="loader">
+  <div class="loader-content">
+    <span class="loader-logo">MC</span>
+    <div class="loader-line"></div>
+  </div>
+</div>
 
 <!-- ── MOBILE MENU ── -->
 <div class="mobile-menu" id="mobileMenu">
@@ -987,16 +1091,19 @@ footer p { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
   </div>
 
   <div class="hero-left">
-    <div class="hero-eyebrow">Biomedical</div>
+    <div class="hero-eyebrow">Biomedical - Tunisia</div>
     <h1 class="ht">Mariem<br><em>Chaouachi</em></h1>
     <p class="hero-role">
       <strong>Student Engineer</strong> at ISTMT · Medical Devices and Robotics.<br>
       Where science meets technology, and precision meets purpose.
     </p>
     <div class="hero-cta">
-      <a href="#contact"    class="btn-p">Get in Touch</a>
-      <a href="#projects"   class="btn-o">View Projects</a>
-      <a href="#cv-preview" class="btn-o">View CV</a>
+      <!-- Row 1: Get in Touch -->
+      <a href="#contact" class="btn-p">Get in Touch</a>
+      <!-- Row 2: View Projects + View CV -->
+      <div class="hero-cta-row">
+        <a href="#projects"   class="btn-o">View Projects</a>
+        <a href="#cv-preview" class="btn-o">View CV</a>
     </div>
   </div>
 </section>
@@ -1030,7 +1137,6 @@ footer p { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
 
       <div class="about-text reveal">
         <p>I am a <strong>second-year Biomedical Engineering student</strong> in the Preparatory Cycle at ISTMT, driven by a strong interest in medical devices, robotics, and innovative healthcare technologies.</p>
-        <p>My academic journey began with an <strong>Honours Baccalauréat in Experimental Sciences</strong>, providing me with a solid scientific foundation that I continue to build upon through rigorous engineering studies.</p>
         <p>Beyond the classroom, I have gained practical exposure to clinical environments through a hands-on <strong>internship in radiology and medical imaging</strong> at Clinique Zaghouan, where I developed valuable insights into the intersection of technology and patient care.</p>
         <p>In parallel, <strong>I serve as Head of External Relations</strong> at Club Biomed Innov, leading partnerships, sponsorship initiatives, and student-focused events. These experiences have strengthened my leadership, communication, and project management skills.</p>
       </div>
@@ -1697,6 +1803,36 @@ document.addEventListener('mousemove', (e) => {
 document.querySelectorAll('a, button, .btn-p, .btn-o').forEach(el => {
   el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
   el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+});
+
+
+
+
+// Add loading class to freeze scrolling during loading state
+document.body.classList.add('loading');
+
+function dismissLoader() {
+  const loader = document.getElementById('loader');
+  if (loader && loader.style.opacity !== '0') {
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+    document.body.classList.remove('loading');
+  }
+}
+
+// 1. Dismiss exactly 1.5 seconds after DOM structures are built
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(dismissLoader, 1500); 
+});
+
+// 2. Backup trigger if the DOM event already swept past
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(dismissLoader, 1500);
+}
+
+// 3. Absolute catch-all safety parameter
+window.addEventListener('load', () => {
+  setTimeout(dismissLoader, 1500);
 });
 
 </script>

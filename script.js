@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector('.skills-bubble-container');
   let bubbles = Array.from(document.querySelectorAll('.bubble'));

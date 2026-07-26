@@ -765,7 +765,18 @@ section { overflow: visible; }
 #projects .s-label::after { background: var(--grad-cool); }
 #projects .s-title em { color: var(--sea); }
 
-.p-filters { display: flex; justify-content: center; gap: 0.8rem; margin-bottom: 3rem; flex-wrap: wrap; }
+.p-filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 3rem;
+}
+.p-filters-row {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
 .p-filter-btn {
   background: transparent;
   border: 1.5px solid rgba(102,152,204,0.35);
@@ -864,13 +875,19 @@ section { overflow: visible; }
 .certc-top-butter { background: var(--grad-warm); }
 
 .cert-img-holder {
-  width: 100%; aspect-ratio: 16/9;
+  width: 100%;
+  aspect-ratio: 4/3;
   background: var(--light);
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
-.cert-img-holder img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-.certc:hover .cert-img-holder img { transform: scale(1.04); }
+.cert-img-holder img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s;
+  padding: 0.3rem;
+}
+.certc:hover .cert-img-holder img { transform: scale(1.03); }
 
 .cert-meta {
   display: flex; align-items: center; gap: 0.8rem;

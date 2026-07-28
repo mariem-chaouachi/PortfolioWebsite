@@ -1198,7 +1198,7 @@ footer p {
   .sg { grid-template-columns: 1fr; }
   .certg { grid-template-columns: 1fr 1fr; }
   h1.ht {
-    font-size: clamp(10rem, 20vw, 5rem) !important;
+    font-size: clamp(5rem, 20vw, 5rem) !important;
     padding: 0 2vw !important;
   }
   .s-title { font-size: clamp(1.9rem, 6vw, 2.6rem); }

@@ -224,14 +224,6 @@ nav {
   background: linear-gradient(160deg, #FFF8F0 0%, #FFF0F5 40%, #EEF5FF 70%, #F0FFF4 100%);
 }
 /* Offset nav height so visual center accounts for the fixed nav */
-.hero-left {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  max-width: 100%;
-  margin-top: 66px;
-}
-
 /* Animated gradient mesh blobs */
 .hero-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .blob {
@@ -278,7 +270,7 @@ nav {
   pointer-events: none;
 }
 
-.hero-left { position: relative; z-index: 3; width: 100%; max-width: 100%; }
+.hero-left { position: relative; z-index: 5; width: 100%; max-width: 100%; margin-top: 66px; }
 
 .hero-eyebrow {
   display: inline-flex;
@@ -481,20 +473,22 @@ section { padding: 5.5rem 10vw; }
 /* ── Section bottom squiggle — seamless transition to next section ── */
 .section-bottom {
   position: absolute;
-  bottom: -1px; left: 0; right: 0;
+  bottom: -2px; left: 0; right: 0;
   line-height: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 10;
 }
-.section-bottom svg { display: block; width: 100%; }
+.section-bottom svg { display: block; width: 100%; height: 80px; }
 
 /* All sections need relative + padding-bottom room for the squiggle */
 #hero, #about, #skills, #experience, #projects,
 #certifications, #cv-preview, #contact {
   position: relative;
   overflow: visible;
+  padding-bottom: 90px;
 }
 section { overflow: visible; }
+#hero { padding-bottom: 20px; }
 /* ════════════════════════════════════════
    ABOUT
 ════════════════════════════════════════ */
@@ -1036,8 +1030,8 @@ section { overflow: visible; }
    FOOTER
 ════════════════════════════════════════ */
 footer {
-  background: var(--butter-bg);
-  border-top: 1.5px solid rgba(240,140,33,0.12);
+  background: var(--white);
+  border-top: none;
   padding: 2.5rem 10vw;
   display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem;
 }
@@ -1174,7 +1168,7 @@ footer p {
   }
 
   /* ── Certs — 2 column, square ratio so image fills nicely ── */
-  .certg { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .certg { grid-template-columns: 1fr; gap: 1rem; }
   .cert-name { font-size: 0.9rem; }
   .cert-src  { font-size: 0.58rem; }
   .cert-meta { padding: 0.7rem 0.9rem; gap: 0.6rem; }
@@ -1198,7 +1192,7 @@ footer p {
   .sg { grid-template-columns: 1fr; }
   .certg { grid-template-columns: 1fr 1fr; }
   h1.ht {
-    font-size: clamp(4rem, 20vw, 5rem) !important;
+    font-size: clamp(3.4rem, 14vw, 5rem) !important;
     padding: 0 2vw !important;
   }
   .s-title { font-size: clamp(1.9rem, 6vw, 2.6rem); }

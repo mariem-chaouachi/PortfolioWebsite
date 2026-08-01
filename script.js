@@ -79,64 +79,77 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 4. Live update tracking calculations loop
+  // 4. Physics loop
   function updatePhysics() {
-    // Dynamic fallback checking handles live browser windows resizing gracefully
-    const currentW = container.clientWidth || window.innerWidth;
-    const currentH = container.clientHeight || window.innerHeight;
+    const currentW   = container.clientWidth  || window.innerWidth;
+    const currentH   = container.clientHeight || window.innerHeight;
     const currentTop = navbar && navbar.offsetHeight > 0 ? navbar.offsetHeight : 80;
+
+    // Fixed invisible rectangle: 1/3 of width centered, 2/3 of height centered
+    const boxW = currentW / 3;
+    const boxH = (currentH - currentTop) * (2 / 3);
+    const textRect = {
+      left:   (currentW - boxW) / 2,
+      right:  (currentW + boxW) / 2,
+      top:    currentTop + (currentH - currentTop) / 6,
+      bottom: currentTop + (currentH - currentTop) / 6 + boxH,
+    };
 
     bubbleData.forEach((b) => {
       b.x += b.vx;
       b.y += b.vy;
 
-      // Outer boundary limit checks
-      if (b.x <= 0) { b.x = 0; b.vx *= -1; }
-      else if (b.x + b.width >= currentW) { b.x = currentW - b.width; b.vx *= -1; }
+      // Wall bounces
+      if (b.x <= 0)                       { b.x = 0;                  b.vx =  Math.abs(b.vx); }
+      else if (b.x + b.width >= currentW)  { b.x = currentW - b.width; b.vx = -Math.abs(b.vx); }
+      if (b.y <= currentTop)               { b.y = currentTop;          b.vy =  Math.abs(b.vy); }
+      else if (b.y + b.height >= currentH) { b.y = currentH - b.height; b.vy = -Math.abs(b.vy); }
 
-      if (b.y <= currentTop) { b.y = currentTop; b.vy *= -1; }
-      else if (b.y + b.height >= currentH) { b.y = currentH - b.height; b.vy *= -1; }
+      // Text box collision
+      const bRight  = b.x + b.width;
+      const bBottom = b.y + b.height;
+      const inside  =
+        b.x     < textRect.right  &&
+        bRight  > textRect.left   &&
+        b.y     < textRect.bottom &&
+        bBottom > textRect.top;
+
+      if (inside) {
+        const overlapL = bRight  - textRect.left;
+        const overlapR = textRect.right  - b.x;
+        const overlapT = bBottom - textRect.top;
+        const overlapB = textRect.bottom - b.y;
+        const minO = Math.min(overlapL, overlapR, overlapT, overlapB);
+        if      (minO === overlapL) { b.x = textRect.left   - b.width; b.vx = -Math.abs(b.vx); }
+        else if (minO === overlapR) { b.x = textRect.right;             b.vx =  Math.abs(b.vx); }
+        else if (minO === overlapT) { b.y = textRect.top    - b.height; b.vy = -Math.abs(b.vy); }
+        else                        { b.y = textRect.bottom;             b.vy =  Math.abs(b.vy); }
+      }
     });
 
-    // Handle interconnected ball impacts
+    // Bubble-to-bubble — only collide when edges actually touch
     for (let i = 0; i < bubbleData.length; i++) {
       for (let j = i + 1; j < bubbleData.length; j++) {
         const b1 = bubbleData[i];
         const b2 = bubbleData[j];
-
-        const cx1 = b1.x + b1.radius;
-        const cy1 = b1.y + b1.radius;
-        const cx2 = b2.x + b2.radius;
-        const cy2 = b2.y + b2.radius;
-
-        const dx = cx2 - cx1;
-        const dy = cy2 - cy1;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const minDist = b1.radius + b2.radius;
-
-        if (distance < minDist) {
-          const overlap = minDist - distance;
-          const nx = dx / distance;
-          const ny = dy / distance;
-
-          b1.x -= nx * (overlap / 2);
-          b1.y -= ny * (overlap / 2);
-          b2.x += nx * (overlap / 2);
-          b2.y += ny * (overlap / 2);
-
-          const kx = b1.vx - b2.vx;
-          const ky = b1.vy - b2.vy;
-          const p = 2 * (nx * kx + ny * ky) / 2;
-
-          b1.vx -= p * nx;
-          b1.vy -= p * ny;
-          b2.vx += p * nx;
-          b2.vy += p * ny;
+        const cx1 = b1.x + b1.width / 2, cy1 = b1.y + b1.height / 2;
+        const cx2 = b2.x + b2.width / 2, cy2 = b2.y + b2.height / 2;
+        const dx = cx2 - cx1, dy = cy2 - cy1;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const minDist = b1.width / 2 + b2.width / 2;
+        if (dist < minDist && dist > 0) {
+          const overlap = minDist - dist;
+          const nx = dx / dist, ny = dy / dist;
+          b1.x -= nx * (overlap / 2); b1.y -= ny * (overlap / 2);
+          b2.x += nx * (overlap / 2); b2.y += ny * (overlap / 2);
+          const dvx = b1.vx - b2.vx, dvy = b1.vy - b2.vy;
+          const dot = dvx * nx + dvy * ny;
+          b1.vx -= dot * nx; b1.vy -= dot * ny;
+          b2.vx += dot * nx; b2.vy += dot * ny;
         }
       }
     }
 
-    // Apply translations directly via accelerated translate3d matrices
     bubbleData.forEach((b) => {
       b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, 0)`;
     });
@@ -144,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(updatePhysics);
   }
 
-  // Instantly execute loop without using timers or window delays
   requestAnimationFrame(updatePhysics);
 });
 

@@ -13,18 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
   container.style.visibility = 'visible';
 
   const screenWidth = window.innerWidth;
+  const isMobile = screenWidth <= 768;
 
-  // 2. Responsive quantity filter purely in JavaScript
-  if (screenWidth <= 768) {
-    bubbles.forEach((el, index) => {
-      if (index >= 3) el.style.setProperty('display', 'none', 'important');
-      else el.style.setProperty('display', 'flex', 'important');
-    });
-    bubbles = bubbles.slice(0, 3);
-  } else if (screenWidth > 768 && screenWidth <= 1024) {
+  // Responsive bubble count
+  if (isMobile) {
+    // Show 4 bubbles on mobile
     bubbles.forEach((el, index) => {
       if (index >= 4) el.style.setProperty('display', 'none', 'important');
-      else el.style.setProperty('display', 'flex', 'important');
+      else            el.style.setProperty('display', 'flex', 'important');
+    });
+    bubbles = bubbles.slice(0, 4);
+  } else if (screenWidth <= 1024) {
+    bubbles.forEach((el, index) => {
+      if (index >= 4) el.style.setProperty('display', 'none', 'important');
+      else            el.style.setProperty('display', 'flex', 'important');
     });
     bubbles = bubbles.slice(0, 4);
   } else {
@@ -33,50 +35,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const bubbleData = [];
   const navbar = document.querySelector('nav') || document.querySelector('header');
-  
-  // Use guaranteed viewport math instead of unstable getBoundingClientRect bounds
   const viewW = window.innerWidth;
   const viewH = window.innerHeight;
   const topBarrier = navbar && navbar.offsetHeight > 0 ? navbar.offsetHeight : 80;
 
-  // 3. Setup static fallback dimensions so initialization never relies on browser loading speed
   bubbles.forEach((el, index) => {
-    el.style.animation = 'none';
-    el.style.transition = 'none';
-    el.style.position = 'absolute';
-    el.style.opacity = '1';
-    el.style.visibility = 'visible';
+    el.style.animation   = 'none';
+    el.style.transition  = 'none';
+    el.style.position    = 'absolute';
+    el.style.opacity     = '1';
+    el.style.visibility  = 'visible';
 
-    // Gentle, low-angle vectors
     const vx = (Math.random() > 0.5 ? 1 : -1) * (0.4 + Math.random() * 0.3);
     const vy = (Math.random() > 0.5 ? 1 : -1) * (0.1 + Math.random() * 0.15);
 
-    // Hardcoded safety approximations for bubble boundaries (avoids reading 0px)
-    const estimatedWidth = el.textContent.length * 8 + 40; 
-    const bWidth = Math.min(Math.max(estimatedWidth, 90), 160);
+    const estimatedWidth = el.textContent.length * 8 + 40;
+    const bWidth  = Math.min(Math.max(estimatedWidth, 90), 160);
     const bHeight = 38;
 
-    // Direct geometric positioning map
-    let x;
-    if (index % 2 === 0) {
-      x = 20 + Math.random() * (viewW * 0.18);
+    let x, y;
+    const usable = viewH - topBarrier;
+
+    if (isMobile) {
+      // 2 bubbles top zone, 2 bubbles bottom zone
+      // Spread horizontally across full width
+      const isTop = index < 2;
+      x = index % 2 === 0
+        ? viewW * 0.05
+        : viewW * 0.55 + Math.random() * (viewW * 0.35 - bWidth);
+      y = isTop
+        ? topBarrier + 10 + Math.random() * (usable * 0.15)
+        : topBarrier + usable * 0.78 + Math.random() * (usable * 0.15);
     } else {
-      x = (viewW * 0.78) + Math.random() * (viewW * 0.18 - bWidth);
+      // Desktop: left/right sides spread
+      x = index % 2 === 0
+        ? 20 + Math.random() * (viewW * 0.18)
+        : (viewW * 0.78) + Math.random() * (viewW * 0.18 - bWidth);
+      y = topBarrier + 20 + ((index / bubbles.length) * (usable - bHeight - 40));
     }
 
-    const usableHeight = viewH - topBarrier - bHeight - 40;
-    const y = topBarrier + 20 + ((index / bubbles.length) * usableHeight);
-
-    bubbleData.push({
-      el: el,
-      x: x,
-      y: y,
-      vx: vx,
-      vy: vy,
-      radius: bWidth / 2,
-      width: bWidth,
-      height: bHeight
-    });
+    bubbleData.push({ el, x, y, vx, vy, radius: bWidth / 2, width: bWidth, height: bHeight });
   });
 
   // 4. Physics loop
@@ -85,15 +83,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentH   = container.clientHeight || window.innerHeight;
     const currentTop = navbar && navbar.offsetHeight > 0 ? navbar.offsetHeight : 80;
 
-    // Fixed invisible rectangle: 1/3 of width centered, 2/3 of height centered
-    const boxW = currentW / 3;
-    const boxH = (currentH - currentTop) * (2 / 3);
-    const textRect = {
-      left:   (currentW - boxW) / 2,
-      right:  (currentW + boxW) / 2,
-      top:    currentTop + (currentH - currentTop) / 6,
-      bottom: currentTop + (currentH - currentTop) / 6 + boxH,
-    };
+    // Invisible rectangle — adapts to screen size
+    const isMobileNow = currentW <= 768;
+    let boxW, boxH, boxLeft, boxTop;
+    if (isMobileNow) {
+      // Mobile: 2/3 width × 1/3 height, centered
+      boxW    = currentW * (2 / 3);
+      boxH    = (currentH - currentTop) * (1 / 3);
+      boxLeft = (currentW - boxW) / 2;
+      boxTop  = currentTop + (currentH - currentTop) / 3;
+    } else {
+      // Desktop: 1/3 width × 2/3 height, centered
+      boxW    = currentW / 3;
+      boxH    = (currentH - currentTop) * (2 / 3);
+      boxLeft = (currentW - boxW) / 2;
+      boxTop  = currentTop + (currentH - currentTop) / 6;
+    }
+    const textRect = { left: boxLeft, right: boxLeft + boxW, top: boxTop, bottom: boxTop + boxH };
 
     bubbleData.forEach((b) => {
       b.x += b.vx;

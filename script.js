@@ -87,11 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const isMobileNow = currentW <= 768;
     let boxW, boxH, boxLeft, boxTop;
     if (isMobileNow) {
-      // Mobile: 2/3 width × 1/3 height, centered
+      // Mobile: 2/3 width × 2/3 height, centered
       boxW    = currentW * (2 / 3);
-      boxH    = (currentH - currentTop) * (1 / 3);
+      boxH    = (currentH - currentTop) * (2 / 3);
       boxLeft = (currentW - boxW) / 2;
-      boxTop  = currentTop + (currentH - currentTop) / 3;
+      boxTop  = currentTop + (currentH - currentTop) / 6;
     } else {
       // Desktop: 1/3 width × 2/3 height, centered
       boxW    = currentW / 3;

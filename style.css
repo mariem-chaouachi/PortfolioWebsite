@@ -364,39 +364,90 @@ h1.ht em {
 }
 .btn-o:hover { background: var(--tangerine); color: var(--white); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(240,140,33,0.35); }
 
-/* Bubbles — colorful on light bg */
+/* Bubbles — colorful on light bg, more noticeable */
 .bubble {
   position: absolute; top: 0; left: 0;
   background: var(--white);
-  border: 1.5px solid rgba(240,140,33,0.3);
+  border: 2px solid var(--tangerine);
   color: var(--tangerine-deep);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-  padding: 0.55rem 1.1rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  padding: 0.6rem 1.3rem;
   border-radius: 50px;
-  box-shadow: 0 4px 20px rgba(240,140,33,0.15);
+  box-shadow: 0 4px 18px rgba(240,140,33,0.25), 0 1px 4px rgba(0,0,0,0.08);
   white-space: normal;
   text-align: center;
-  max-width: 160px;
+  max-width: 170px;
   min-width: 80px;
-  min-height: 30px;
+  min-height: 34px;
   width: max-content;
   display: flex;
   align-items: center;
   justify-content: center;
   will-change: transform;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.bubble:hover, .bubble.active {
+  background: var(--tangerine);
+  color: var(--white);
+  border-color: var(--tangerine-deep);
+  box-shadow: 0 6px 28px rgba(240,140,33,0.5);
+  transform: scale(1.08);
 }
 .b-left-1, .b-left-2, .b-left-3,
 .b-right-1, .b-right-2, .b-right-3 { animation: none !important; }
+
 /* Alternate bubble accent colors */
-.b-left-1 { border-color: rgba(240,140,33,0.4); color: #C96E0E; }
-.b-left-2 { border-color: rgba(102,152,204,0.4); color: #4478AA; }
-.b-left-3 { border-color: rgba(138,154,48,0.4); color: #6A7820; }
-.b-right-1 { border-color: rgba(227,104,136,0.4); color: #C04868; }
-.b-right-2 { border-color: rgba(242,216,143,0.5); color: #8A6010; }
-.b-right-3 { border-color: rgba(102,152,204,0.4); color: #4478AA; }
+.b-left-1  { border-color: var(--tangerine); color: var(--tangerine-deep); }
+.b-left-2  { border-color: var(--sea); color: var(--sea-deep); }
+.b-left-2:hover, .b-left-2.active  { background: var(--sea); border-color: var(--sea-deep); color: var(--white); box-shadow: 0 6px 28px rgba(102,152,204,0.5); }
+.b-left-3  { border-color: var(--matcha); color: var(--matcha-deep); }
+.b-left-3:hover, .b-left-3.active  { background: var(--matcha); border-color: var(--matcha-deep); color: var(--white); box-shadow: 0 6px 28px rgba(138,154,48,0.5); }
+.b-right-1 { border-color: var(--blush); color: var(--blush-deep); }
+.b-right-1:hover, .b-right-1.active { background: var(--blush); border-color: var(--blush-deep); color: var(--white); box-shadow: 0 6px 28px rgba(227,104,136,0.5); }
+.b-right-2 { border-color: var(--sea); color: var(--sea-deep); }
+.b-right-2:hover, .b-right-2.active { background: var(--sea); border-color: var(--sea-deep); color: var(--white); box-shadow: 0 6px 28px rgba(102,152,204,0.5); }
+.b-right-3 { border-color: var(--blush); color: var(--blush-deep); }
+.b-right-3:hover, .b-right-3.active { background: var(--blush); border-color: var(--blush-deep); color: var(--white); box-shadow: 0 6px 28px rgba(227,104,136,0.5); }
+
+/* Skill tooltip */
+.bubble-tooltip {
+  position: fixed;
+  background: var(--white);
+  border: 2px solid var(--tangerine);
+  border-radius: 16px;
+  padding: 1rem 1.3rem;
+  max-width: 240px;
+  min-width: 180px;
+  box-shadow: 0 8px 32px rgba(240,140,33,0.25);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  transition: opacity 0.2s, transform 0.2s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.bubble-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.bt-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--tangerine-deep);
+  margin-bottom: 0.35rem;
+}
+.bt-desc {
+  font-size: 0.78rem;
+  color: var(--stone);
+  line-height: 1.6;
+  font-weight: 300;
+}
 
 /* ════════════════════════════════════════
    BACK TO TOP

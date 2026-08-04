@@ -172,6 +172,53 @@ document.addEventListener("DOMContentLoaded", () => {
   requestAnimationFrame(updatePhysics);
 });
 
+/* ── Bubble skill tooltips ── */
+const tooltip = document.getElementById('bubbleTooltip');
+const btTitle = tooltip ? tooltip.querySelector('.bt-title') : null;
+const btDesc  = tooltip ? tooltip.querySelector('.bt-desc')  : null;
+let activeB = null;
+
+function showTooltip(el, e) {
+  if (!tooltip || !el.dataset.skill) return;
+  btTitle.textContent = el.dataset.skill;
+  btDesc.textContent  = el.dataset.desc;
+  tooltip.classList.add('visible');
+  positionTooltip(e);
+}
+function hideTooltip() {
+  if (!tooltip) return;
+  tooltip.classList.remove('visible');
+}
+function positionTooltip(e) {
+  if (!tooltip) return;
+  const tw = tooltip.offsetWidth  || 220;
+  const th = tooltip.offsetHeight || 90;
+  let x = e.clientX + 16;
+  let y = e.clientY + 16;
+  if (x + tw > window.innerWidth  - 10) x = e.clientX - tw - 16;
+  if (y + th > window.innerHeight - 10) y = e.clientY - th - 16;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+document.querySelectorAll('.bubble[data-skill]').forEach(b => {
+  b.addEventListener('mouseenter', (e) => showTooltip(b, e));
+  b.addEventListener('mousemove',  (e) => positionTooltip(e));
+  b.addEventListener('mouseleave', () => { if (activeB !== b) hideTooltip(); });
+  b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (activeB === b) {
+      b.classList.remove('active'); hideTooltip(); activeB = null;
+    } else {
+      if (activeB) activeB.classList.remove('active');
+      b.classList.add('active'); activeB = b; showTooltip(b, e);
+    }
+  });
+});
+document.addEventListener('click', () => {
+  if (activeB) { activeB.classList.remove('active'); activeB = null; }
+  hideTooltip();
+});
 
 // ── Hamburger menu ──
 const hamburger  = document.getElementById('hamburger');

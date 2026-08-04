@@ -92,6 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
       boxH    = (currentH - currentTop) * (2 / 3);
       boxLeft = (currentW - boxW) / 2;
       boxTop  = currentTop + (currentH - currentTop) / 6;
+    } else if (currentW <= 1024) {
+      // Tablet/iPad: 2/3 width × 2/3 height, centered
+      boxW    = currentW * (2 / 3);
+      boxH    = (currentH - currentTop) * (2 / 3);
+      boxLeft = (currentW - boxW) / 2;
+      boxTop  = currentTop + (currentH - currentTop) / 6;
     } else {
       // Desktop: 1/3 width × 2/3 height, centered
       boxW    = currentW / 3;
@@ -180,8 +186,18 @@ document.addEventListener('click', (e) => {
     mobileMenu.classList.remove('open');
   }
 });
+// ── Smooth scroll with nav offset for mobile menu links ──
 document.querySelectorAll('.mob-link').forEach(link => {
-  link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove('open');
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      const navHeight = document.querySelector('nav').offsetHeight;
+      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
 });
 
 // ── Scroll reveal ──

@@ -30,7 +30,6 @@
   <a href="#hero" class="nav-logo">Mariem Chaouachi</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#certifications">Certificates</a></li>
@@ -45,7 +44,6 @@
 <!-- ── MOBILE MENU ── -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about"          class="mob-link">About</a>
-  <a href="#skills"         class="mob-link">Skills</a>
   <a href="#experience"     class="mob-link">Experience</a>
   <a href="#projects"       class="mob-link">Projects</a>
   <a href="#certifications" class="mob-link">Certificates</a>
@@ -64,13 +62,18 @@
     <div class="blob blob-4"></div>
   </div>
 
-  <div class="skills-bubble-container" aria-hidden="true">
-    <div class="bubble b-left-1">Robotics</div>
-    <div class="bubble b-left-2">Python</div>
-    <div class="bubble b-left-3">Healthcare Tech</div>
-    <div class="bubble b-right-1">Biomedical Eng</div>
-    <div class="bubble b-right-2">Medical Imaging</div>
-    <div class="bubble b-right-3">Web / App Dev</div>
+  <div class="skills-bubble-container" aria-hidden="false">
+    <div class="bubble b-left-1" data-skill="Biomedical Engineering" data-desc="Medical devices, radiology & CT scanning, clinical environments and healthcare systems.">Biomedical Eng</div>
+    <div class="bubble b-left-2" data-skill="Software & Dev" data-desc="Python, web development, mobile apps, SQL and Unity game engine.">Software & Dev</div>
+    <div class="bubble b-left-3" data-skill="Healthcare Tech" data-desc="Applying engineering solutions to real clinical workflows and patient care environments.">Healthcare Tech</div>
+    <div class="bubble b-right-1" data-skill="Hardware & Embedded" data-desc="Arduino, ESP32, embedded systems design and biomedical signal processing.">Hardware & Embedded</div>
+    <div class="bubble b-right-2" data-skill="Medical Imaging" data-desc="Hands-on experience with CT-scan and radiology equipment from internship at Clinique Zaghouan.">Medical Imaging</div>
+    <div class="bubble b-right-3" data-skill="Leadership" data-desc="Head of External Relations at Club Biomed Innov — partnerships, sponsorships, events.">Leadership</div>
+  </div>
+  <!-- Skill tooltip -->
+  <div class="bubble-tooltip" id="bubbleTooltip">
+    <div class="bt-title"></div>
+    <div class="bt-desc"></div>
   </div>
 
   <div class="hero-left">
@@ -135,90 +138,11 @@
     </div>
   </div>
 
-  <div class="section-bottom" aria-hidden="true"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" height="80" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,8 360,72 540,40 C720,8 900,72 1080,40 C1260,8 1380,60 1440,40 L1440,80 L0,80 Z" fill="#FFF3E0"/></svg></div>
+  <div class="section-bottom" aria-hidden="true"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" height="80" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,8 360,72 540,40 C720,8 900,72 1080,40 C1260,8 1380,60 1440,40 L1440,80 L0,80 Z" fill="#EEF4FB"/></svg></div>
 </section>
 
 
 
-<!-- ── SKILLS ── -->
-<section id="skills">
-  
-  <div class="reveal">
-    <div class="s-label">Capabilities</div>
-    <h2 class="s-title">Skills &amp; <em>Expertise</em></h2>
-    <p class="s-sub">Technical foundations with a curious, precise edge.</p>
-  </div>
-  <div class="sg">
-
-    <div class="sc reveal">
-      <div class="sc-icon-wrap sc-orange">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
-      </div>
-      <h3>Biomedical Knowledge</h3>
-      <div class="tags">
-        <span class="tag">Medical Devices</span>
-        <span class="tag">Radiology &amp; CT</span>
-        <span class="tag">Clinical Environments</span>
-        <span class="tag">Healthcare Systems</span>
-      </div>
-    </div>
-
-    <div class="sc reveal">
-      <div class="sc-icon-wrap sc-sea">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      </div>
-      <h3>Software &amp; Development</h3>
-      <div class="tags">
-        <span class="tag">Python</span>
-        <span class="tag">Web Development</span>
-        <span class="tag">Mobile Apps</span>
-        <span class="tag">SQL</span>
-        <span class="tag">Unity</span>
-      </div>
-    </div>
-
-    <div class="sc reveal">
-      <div class="sc-icon-wrap sc-matcha">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-      </div>
-      <h3>Hardware &amp; Embedded</h3>
-      <div class="tags">
-        <span class="tag">Arduino</span>
-        <span class="tag">ESP32</span>
-        <span class="tag">Embedded Systems</span>
-        <span class="tag">Signal Processing</span>
-      </div>
-    </div>
-
-    <div class="sc reveal">
-      <div class="sc-icon-wrap sc-blush">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <h3>Leadership &amp; Relations</h3>
-      <div class="tags">
-        <span class="tag">External Relations</span>
-        <span class="tag">Partnership Dev.</span>
-        <span class="tag">Event Organisation</span>
-        <span class="tag">Sponsorship</span>
-      </div>
-    </div>
-
-    <div class="sc reveal">
-      <div class="sc-icon-wrap sc-butter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      </div>
-      <h3>Languages</h3>
-      <div class="tags">
-        <span class="tag">Arabic — Native</span>
-        <span class="tag">French — Very Good</span>
-        <span class="tag">English — Very Good</span>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="section-bottom" aria-hidden="true"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" height="80" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,72 360,8 540,40 C720,72 900,8 1080,40 C1260,72 1380,20 1440,40 L1440,80 L0,80 Z" fill="#EEF4FB"/></svg></div>
-</section>
 
 
 

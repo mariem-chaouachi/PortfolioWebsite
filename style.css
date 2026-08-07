@@ -441,9 +441,6 @@ h1.ht em {
 .b-left-1, .b-left-2, .b-left-3,
 .b-right-1, .b-right-2, .b-right-3 { animation: none !important; }
 
-/* Remove old tooltip */
-.bubble-tooltip { display: none !important; }
-
 /* ════════════════════════════════════════
    BACK TO TOP
 ════════════════════════════════════════ */
@@ -574,10 +571,6 @@ section { overflow: visible; scroll-margin-top: 78px; }
   object-fit: cover;
   border-radius: 16px;
   display: block;
-  border: 3px solid transparent;
-  background: linear-gradient(var(--white), var(--white)) padding-box,
-              var(--grad-primary) border-box;
-  box-shadow: 0 8px 32px rgba(240,140,33,0.18);
 }
 .about-right-side { display: flex; flex-direction: column; gap: 2.2rem; }
 .about-text p {

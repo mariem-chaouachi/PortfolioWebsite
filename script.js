@@ -172,11 +172,37 @@ document.addEventListener("DOMContentLoaded", () => {
   requestAnimationFrame(updatePhysics);
 });
 
+/* ── Bubble skill expand on hover/click ── */
+let activeB = null;
+
+document.querySelectorAll('.bubble').forEach(b => {
+  // Desktop: hover expands
+  b.addEventListener('mouseenter', () => b.classList.add('active'));
+  b.addEventListener('mouseleave', () => {
+    if (activeB !== b) b.classList.remove('active');
+  });
+  // Mobile/click: tap to toggle
+  b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (activeB === b) {
+      b.classList.remove('active');
+      activeB = null;
+    } else {
+      if (activeB) activeB.classList.remove('active');
+      b.classList.add('active');
+      activeB = b;
+    }
+  });
+});
+// Click outside closes active bubble
+document.addEventListener('click', () => {
+  if (activeB) { activeB.classList.remove('active'); activeB = null; }
+});
+
 /* ── Bubble skill tooltips ── */
 const tooltip = document.getElementById('bubbleTooltip');
 const btTitle = tooltip ? tooltip.querySelector('.bt-title') : null;
 const btDesc  = tooltip ? tooltip.querySelector('.bt-desc')  : null;
-let activeB = null;
 
 function showTooltip(el, e) {
   if (!tooltip || !el.dataset.skill) return;

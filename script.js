@@ -1,381 +1,306 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const container = document.querySelector('.skills-bubble-container');
-  let bubbles = Array.from(document.querySelectorAll('.bubble'));
-  
-  if (bubbles.length === 0) {
-    bubbles = Array.from(document.querySelectorAll('[class*="b-left-"], [class*="b-right-"]'));
-  }
-  if (!container || bubbles.length === 0) return;
+  // Bind Mouse Glow for all Liquid Glass Containers
+  const glassElements = document.querySelectorAll('.liquid-glass-container');
 
-  // 1. Force container visibility settings immediately
-  container.style.display = 'block';
-  container.style.opacity = '1';
-  container.style.visibility = 'visible';
-
-  const screenWidth = window.innerWidth;
-  const isMobile = screenWidth <= 768;
-
-  // Responsive bubble count
-  if (isMobile) {
-    // Show 4 bubbles on mobile
-    bubbles.forEach((el, index) => {
-      if (index >= 4) el.style.setProperty('display', 'none', 'important');
-      else            el.style.setProperty('display', 'flex', 'important');
+  glassElements.forEach(element => {
+    element.addEventListener('mousemove', (e) => {
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      element.style.setProperty('--x', `${x}px`);
+      element.style.setProperty('--y', `${y}px`);
     });
-    bubbles = bubbles.slice(0, 4);
-  } else if (screenWidth <= 1024) {
-    bubbles.forEach((el, index) => {
-      if (index >= 4) el.style.setProperty('display', 'none', 'important');
-      else            el.style.setProperty('display', 'flex', 'important');
-    });
-    bubbles = bubbles.slice(0, 4);
-  } else {
-    bubbles.forEach(el => el.style.setProperty('display', 'flex', 'important'));
-  }
-
-  const bubbleData = [];
-  const navbar = document.querySelector('nav') || document.querySelector('header');
-  const viewW = window.innerWidth;
-  const viewH = window.innerHeight;
-  const topBarrier = navbar && navbar.offsetHeight > 0 ? navbar.offsetHeight : 80;
-
-  bubbles.forEach((el, index) => {
-    el.style.animation   = 'none';
-    el.style.transition  = 'none';
-    el.style.position    = 'absolute';
-    el.style.opacity     = '1';
-    el.style.visibility  = 'visible';
-
-    const vx = (Math.random() > 0.5 ? 1 : -1) * (0.4 + Math.random() * 0.3);
-    const vy = (Math.random() > 0.5 ? 1 : -1) * (0.1 + Math.random() * 0.15);
-
-    const estimatedWidth = el.textContent.length * 8 + 40;
-    const bWidth  = Math.min(Math.max(estimatedWidth, 90), 160);
-    const bHeight = 38;
-
-    let x, y;
-    const usable = viewH - topBarrier;
-
-    if (isMobile) {
-      // 2 bubbles top zone, 2 bubbles bottom zone
-      // Spread horizontally across full width
-      const isTop = index < 2;
-      x = index % 2 === 0
-        ? viewW * 0.05
-        : viewW * 0.55 + Math.random() * (viewW * 0.35 - bWidth);
-      y = isTop
-        ? topBarrier + 10 + Math.random() * (usable * 0.15)
-        : topBarrier + usable * 0.78 + Math.random() * (usable * 0.15);
-    } else {
-      // Desktop: left/right sides spread
-      x = index % 2 === 0
-        ? 20 + Math.random() * (viewW * 0.18)
-        : (viewW * 0.78) + Math.random() * (viewW * 0.18 - bWidth);
-      y = topBarrier + 20 + ((index / bubbles.length) * (usable - bHeight - 40));
-    }
-
-    bubbleData.push({ el, x, y, vx, vy, radius: bWidth / 2, width: bWidth, height: bHeight });
   });
 
-  // 4. Physics loop
-  function updatePhysics() {
-    const currentW   = container.clientWidth  || window.innerWidth;
-    const currentH   = container.clientHeight || window.innerHeight;
-    const currentTop = navbar && navbar.offsetHeight > 0 ? navbar.offsetHeight : 80;
+  // Scroll Handler for AI Buddy Docking
+  const aiBuddyContainer = document.getElementById('aiBuddyContainer');
 
-    // Invisible rectangle — adapts to screen size
-    const isMobileNow = currentW <= 768;
-    let boxW, boxH, boxLeft, boxTop;
-    if (isMobileNow) {
-      // Mobile: 2/3 width × 2/3 height, centered
-      boxW    = currentW * (2 / 3);
-      boxH    = (currentH - currentTop) * (2 / 3);
-      boxLeft = (currentW - boxW) / 2;
-      boxTop  = currentTop + (currentH - currentTop) / 6;
-    } else if (currentW <= 1024) {
-      // Tablet/iPad: 2/3 width × 2/3 height, centered
-      boxW    = currentW * (2 / 3);
-      boxH    = (currentH - currentTop) * (2 / 3);
-      boxLeft = (currentW - boxW) / 2;
-      boxTop  = currentTop + (currentH - currentTop) / 6;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      aiBuddyContainer.classList.add('docked-bottom-right');
     } else {
-      // Desktop: 1/3 width × 2/3 height, centered
-      boxW    = currentW / 3;
-      boxH    = (currentH - currentTop) * (2 / 3);
-      boxLeft = (currentW - boxW) / 2;
-      boxTop  = currentTop + (currentH - currentTop) / 6;
+      aiBuddyContainer.classList.remove('docked-bottom-right');
     }
-    const textRect = { left: boxLeft, right: boxLeft + boxW, top: boxTop, bottom: boxTop + boxH };
+  });
 
-    bubbleData.forEach((b) => {
-      b.x += b.vx;
-      b.y += b.vy;
+  // 3D Flip Book Handler
+  const book = document.getElementById('flipBook');
+  const pages = [
+    document.getElementById('page0'),
+    document.getElementById('page1'),
+    document.getElementById('page2')
+  ];
+  let currentPageIndex = 0;
+  const totalPagePairs = pages.length;
 
-      // Wall bounces
-      if (b.x <= 0)                       { b.x = 0;                  b.vx =  Math.abs(b.vx); }
-      else if (b.x + b.width >= currentW)  { b.x = currentW - b.width; b.vx = -Math.abs(b.vx); }
-      if (b.y <= currentTop)               { b.y = currentTop;          b.vy =  Math.abs(b.vy); }
-      else if (b.y + b.height >= currentH) { b.y = currentH - b.height; b.vy = -Math.abs(b.vy); }
+  const prevBtn = document.getElementById('prevPageBtn');
+  const nextBtn = document.getElementById('nextPageBtn');
+  const pageIndicator = document.getElementById('pageIndicator');
 
-      // Text box collision
-      const bRight  = b.x + b.width;
-      const bBottom = b.y + b.height;
-      const inside  =
-        b.x     < textRect.right  &&
-        bRight  > textRect.left   &&
-        b.y     < textRect.bottom &&
-        bBottom > textRect.top;
+  function updateBookPosition() {
+    book.classList.remove('closed-front', 'open', 'closed-back');
 
-      if (inside) {
-        const overlapL = bRight  - textRect.left;
-        const overlapR = textRect.right  - b.x;
-        const overlapT = bBottom - textRect.top;
-        const overlapB = textRect.bottom - b.y;
-        const minO = Math.min(overlapL, overlapR, overlapT, overlapB);
-        if      (minO === overlapL) { b.x = textRect.left   - b.width; b.vx = -Math.abs(b.vx); }
-        else if (minO === overlapR) { b.x = textRect.right;             b.vx =  Math.abs(b.vx); }
-        else if (minO === overlapT) { b.y = textRect.top    - b.height; b.vy = -Math.abs(b.vy); }
-        else                        { b.y = textRect.bottom;             b.vy =  Math.abs(b.vy); }
+    if (currentPageIndex === 0) {
+      book.classList.add('closed-front');
+    } else if (currentPageIndex === totalPagePairs) {
+      book.classList.add('closed-back');
+    } else {
+      book.classList.add('open');
+    }
+  }
+
+  function updateBook() {
+    pages.forEach((page, index) => {
+      if (index < currentPageIndex) {
+        page.classList.add('flipped');
+        page.style.zIndex = index + 1;
+      } else {
+        page.classList.remove('flipped');
+        page.style.zIndex = totalPagePairs - index;
       }
     });
 
-    // Bubble-to-bubble — only collide when edges actually touch
-    for (let i = 0; i < bubbleData.length; i++) {
-      for (let j = i + 1; j < bubbleData.length; j++) {
-        const b1 = bubbleData[i];
-        const b2 = bubbleData[j];
-        const cx1 = b1.x + b1.width / 2, cy1 = b1.y + b1.height / 2;
-        const cx2 = b2.x + b2.width / 2, cy2 = b2.y + b2.height / 2;
-        const dx = cx2 - cx1, dy = cy2 - cy1;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const minDist = b1.width / 2 + b2.width / 2;
-        if (dist < minDist && dist > 0) {
-          const overlap = minDist - dist;
-          const nx = dx / dist, ny = dy / dist;
-          b1.x -= nx * (overlap / 2); b1.y -= ny * (overlap / 2);
-          b2.x += nx * (overlap / 2); b2.y += ny * (overlap / 2);
-          const dvx = b1.vx - b2.vx, dvy = b1.vy - b2.vy;
-          const dot = dvx * nx + dvy * ny;
-          b1.vx -= dot * nx; b1.vy -= dot * ny;
-          b2.vx += dot * nx; b2.vy += dot * ny;
+    updateBookPosition();
+
+    if (currentPageIndex === 0) {
+      pageIndicator.textContent = "Cover";
+    } else if (currentPageIndex === totalPagePairs) {
+      pageIndicator.textContent = "Back Cover";
+    } else {
+      pageIndicator.textContent = `Page ${currentPageIndex * 2 - 1} - ${currentPageIndex * 2}`;
+    }
+
+    prevBtn.disabled = currentPageIndex === 0;
+    nextBtn.disabled = currentPageIndex === totalPagePairs;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (currentPageIndex < totalPagePairs) {
+      currentPageIndex++;
+      updateBook();
+    }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (currentPageIndex > 0) {
+      currentPageIndex--;
+      updateBook();
+    }
+  });
+
+  pages.forEach((page, idx) => {
+    page.addEventListener('click', () => {
+      if (idx === currentPageIndex) {
+        currentPageIndex++;
+        updateBook();
+      } else if (idx === currentPageIndex - 1) {
+        currentPageIndex--;
+        updateBook();
+      }
+    });
+  });
+
+  updateBook();
+
+  // Terminal Deck Scroll & Dock Animation
+  const stage = document.querySelector(".terminal-scroll-stage");
+  const stickyContainer = document.querySelector(".terminal-sticky");
+  const cards = Array.from(document.querySelectorAll(".terminal-card"));
+
+  if (!stage || !cards.length || !stickyContainer) return;
+
+  const total = cards.length;
+
+  const dock = document.createElement("div");
+  dock.className = "terminal-dock";
+
+  cards.forEach((card, index) => {
+    const icon = document.createElement("div");
+    icon.className = "terminal-dock-item";
+    icon.textContent = `>_${index + 1}`;
+    dock.appendChild(icon);
+  });
+
+  document.body.appendChild(dock);
+  const dockItems = Array.from(dock.querySelectorAll(".terminal-dock-item"));
+
+  cards.forEach((card, index) => {
+    card.style.zIndex = String(100 - index);
+  });
+
+  function getProgress() {
+    const rect = stage.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const scrollDistance = stage.offsetHeight - viewportHeight;
+
+    const inSection = rect.top <= 0 && rect.bottom >= viewportHeight;
+    const scrollPosition = Math.min(Math.max(-rect.top, 0), scrollDistance);
+
+    if (scrollDistance <= 0) return { progress: 0, inSection: false };
+
+    const buffer = 0.35;
+    const adjustedProgress = Math.max(0, (scrollPosition / scrollDistance) * (total + buffer) - buffer);
+
+    return { progress: adjustedProgress, inSection };
+  }
+
+  function updateTerminals() {
+    const { progress, inSection } = getProgress();
+
+    if (inSection) {
+      dock.classList.add("is-visible");
+    } else {
+      dock.classList.remove("is-visible");
+    }
+
+    cards.forEach((card, index) => {
+      const windowEl = card.querySelector(".terminal-window");
+      const dockItem = dockItems[index];
+
+      windowEl.style.transformOrigin = "bottom center";
+
+      const initialWidth = windowEl.offsetWidth || 795;
+      const minScale = 1 / initialWidth;
+
+      const initialDeckOffsetY = (cards.length - 1 - index) * 10;
+
+      const currentTransform = windowEl.style.transform;
+      windowEl.style.transform = "none";
+      const baseRect = windowEl.getBoundingClientRect();
+      windowEl.style.transform = currentTransform;
+
+      const baseBottomY = baseRect.bottom;
+      const baseCenterX = baseRect.left + baseRect.width / 2;
+
+      const targetBottomY = window.innerHeight - 50;
+      const dockRect = dockItem.getBoundingClientRect();
+      const targetCenterX = dockRect.left + dockRect.width / 2;
+
+      const deltaX = targetCenterX - baseCenterX;
+      const deltaY = targetBottomY - baseBottomY;
+
+      if (progress <= index) {
+        windowEl.style.transform = `translate(0px, ${initialDeckOffsetY}px) scale(1)`;
+        windowEl.style.opacity = "1";
+        card.style.pointerEvents = index === 0 ? "auto" : "none";
+        dockItem.classList.remove("minimized");
+      } else if (progress > index && progress < index + 1) {
+        const p = progress - index;
+        const currentX = deltaX * p;
+        const currentY = initialDeckOffsetY + (deltaY - initialDeckOffsetY) * p;
+        const currentScale = 1 - p * (1 - minScale);
+
+        windowEl.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
+        card.style.pointerEvents = "none";
+
+        if (p > 0.50) {
+          const fadeP = Math.min(1, (p - 0.50) / 0.20);
+          windowEl.style.opacity = String(Math.max(0, 1 - fadeP));
+        } else {
+          windowEl.style.opacity = "1";
         }
+
+        if (p > 0.4) {
+          dockItem.classList.add("minimized");
+        } else {
+          dockItem.classList.remove("minimized");
+        }
+      } else {
+        windowEl.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${minScale})`;
+        windowEl.style.opacity = "0";
+        card.style.pointerEvents = "none";
+        dockItem.classList.add("minimized");
+      }
+    });
+
+    const activeIndex = Math.min(total - 1, Math.max(0, Math.floor(progress)));
+    dockItems.forEach((icon, index) => {
+      icon.classList.toggle("active", index === activeIndex);
+    });
+  }
+
+  // Pinned Horizontal Experience Gallery Scroll Handler
+  const expSection = document.querySelector(".experience-section");
+  const expTrack = document.querySelector(".experience-gallery-track");
+  const expCards = document.querySelectorAll(".experience-card");
+
+  function updateExperienceScroll() {
+    if (!expSection || !expTrack || !expCards.length) return;
+
+    const rect = expSection.getBoundingClientRect();
+    const sectionHeight = expSection.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    const totalScrollable = sectionHeight - viewportHeight;
+    const currentScroll = -rect.top;
+
+    const screenWidth = window.innerWidth;
+    const firstCard = expCards[0];
+    const lastCard = expCards[expCards.length - 1];
+
+    const cardWidth = firstCard.offsetWidth || 700;
+    
+    // Calculates exact offset to center the 1st card horizontally
+    const initialCenterX = (screenWidth / 2) - (cardWidth / 2) - firstCard.offsetLeft;
+
+    // Freeze ratio before horizontal sliding starts
+    const freezeRatio = 0.15;
+
+    if (currentScroll <= 0) {
+      expTrack.style.transform = `translateX(${initialCenterX}px)`;
+    } else if (currentScroll >= totalScrollable) {
+      const lastCardOffsetLeft = lastCard.offsetLeft;
+      const finalTranslateX = (screenWidth / 2) - (cardWidth / 2) - lastCardOffsetLeft;
+      expTrack.style.transform = `translateX(${finalTranslateX}px)`;
+    } else {
+      const rawProgress = currentScroll / totalScrollable;
+
+      if (rawProgress < freezeRatio) {
+        expTrack.style.transform = `translateX(${initialCenterX}px)`;
+      } else {
+        const activeProgress = (rawProgress - freezeRatio) / (1 - freezeRatio);
+        const lastCardOffsetLeft = lastCard.offsetLeft - firstCard.offsetLeft;
+
+        const currentTranslateX = initialCenterX - (activeProgress * lastCardOffsetLeft);
+        expTrack.style.transform = `translateX(${currentTranslateX}px)`;
       }
     }
-
-    bubbleData.forEach((b) => {
-      b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, 0)`;
-    });
-
-    requestAnimationFrame(updatePhysics);
   }
 
-  requestAnimationFrame(updatePhysics);
-});
-
-/* ── Bubble skill expand on hover/click ── */
-let activeB = null;
-
-document.querySelectorAll('.bubble').forEach(b => {
-  // Desktop: hover expands
-  b.addEventListener('mouseenter', () => b.classList.add('active'));
-  b.addEventListener('mouseleave', () => {
-    if (activeB !== b) b.classList.remove('active');
-  });
-  // Mobile/click: tap to toggle
-  b.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (activeB === b) {
-      b.classList.remove('active');
-      activeB = null;
-    } else {
-      if (activeB) activeB.classList.remove('active');
-      b.classList.add('active');
-      activeB = b;
-    }
-  });
-});
-// Click outside closes active bubble
-document.addEventListener('click', () => {
-  if (activeB) { activeB.classList.remove('active'); activeB = null; }
-});
-
-/* ── Bubble skill tooltips ── */
-const tooltip = document.getElementById('bubbleTooltip');
-const btTitle = tooltip ? tooltip.querySelector('.bt-title') : null;
-const btDesc  = tooltip ? tooltip.querySelector('.bt-desc')  : null;
-
-function showTooltip(el, e) {
-  if (!tooltip || !el.dataset.skill) return;
-  btTitle.textContent = el.dataset.skill;
-  btDesc.textContent  = el.dataset.desc;
-  tooltip.classList.add('visible');
-  positionTooltip(e);
-}
-function hideTooltip() {
-  if (!tooltip) return;
-  tooltip.classList.remove('visible');
-}
-function positionTooltip(e) {
-  if (!tooltip) return;
-  const tw = tooltip.offsetWidth  || 220;
-  const th = tooltip.offsetHeight || 90;
-  let x = e.clientX + 16;
-  let y = e.clientY + 16;
-  if (x + tw > window.innerWidth  - 10) x = e.clientX - tw - 16;
-  if (y + th > window.innerHeight - 10) y = e.clientY - th - 16;
-  tooltip.style.left = x + 'px';
-  tooltip.style.top  = y + 'px';
-}
-
-document.querySelectorAll('.bubble[data-skill]').forEach(b => {
-  b.addEventListener('mouseenter', (e) => showTooltip(b, e));
-  b.addEventListener('mousemove',  (e) => positionTooltip(e));
-  b.addEventListener('mouseleave', () => { if (activeB !== b) hideTooltip(); });
-  b.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (activeB === b) {
-      b.classList.remove('active'); hideTooltip(); activeB = null;
-    } else {
-      if (activeB) activeB.classList.remove('active');
-      b.classList.add('active'); activeB = b; showTooltip(b, e);
-    }
-  });
-});
-document.addEventListener('click', () => {
-  if (activeB) { activeB.classList.remove('active'); activeB = null; }
-  hideTooltip();
-});
-
-// ── Hamburger menu ──
-const hamburger  = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-
-hamburger.addEventListener('click', (e) => {
-  e.stopPropagation();
-  mobileMenu.classList.toggle('open');
-});
-document.addEventListener('click', (e) => {
-  if (mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && e.target !== hamburger) {
-    mobileMenu.classList.remove('open');
-  }
-});
-// ── Smooth scroll with nav offset for mobile menu links ──
-document.querySelectorAll('.mob-link').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    mobileMenu.classList.remove('open');
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) {
-      const navHeight = document.querySelector('nav').offsetHeight;
-      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  });
-});
-
-// ── Scroll reveal ──
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add('visible');
-  });
-}, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
-document.querySelectorAll('.reveal, .tli').forEach(el => observer.observe(el));
-
-// ── Scroll spy — active nav link ──
-const sections = document.querySelectorAll('section[id]');
-const navLinks  = document.querySelectorAll('.nav-links a[href^="#"]');
-const spyObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      navLinks.forEach(link => link.classList.remove('active'));
-      const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
-      if (active) active.classList.add('active');
-    }
-  });
-}, { threshold: 0.3, rootMargin: "-66px 0px -40% 0px" });
-sections.forEach(s => spyObserver.observe(s));
-
-// ── Timeline accordion ──
-document.querySelectorAll('.tl-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const tli    = header.closest('.tli');
-    const isOpen = tli.classList.contains('open');
-    document.querySelectorAll('.tli.open').forEach(el => el.classList.remove('open'));
-    if (!isOpen) tli.classList.add('open');
-  });
-});
-
-// ── Project filter with fade ──
-document.querySelectorAll('.p-filter-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    document.querySelectorAll('.p-filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    const filter = e.target.getAttribute('data-filter');
-
-    document.querySelectorAll('.pc').forEach(card => {
-      card.style.transition = 'opacity 0.2s, transform 0.2s';
-      card.style.opacity    = '0';
-      card.style.transform  = 'translateY(8px)';
-    });
-
-    setTimeout(() => {
-      document.querySelectorAll('.pc').forEach(card => {
-        const show = filter === 'all' || card.getAttribute('data-category') === filter;
-        card.style.display = show ? 'flex' : 'none';
-      });
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
       requestAnimationFrame(() => {
-        document.querySelectorAll('.pc').forEach(card => {
-          if (card.style.display !== 'none') {
-            card.style.opacity   = card.classList.contains('coming-soon') ? '0.55' : '1';
-            card.style.transform = 'translateY(0)';
-          }
-        });
+        updateTerminals();
+        updateExperienceScroll();
+        ticking = false;
       });
-    }, 200);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("resize", () => {
+    updateTerminals();
+    updateExperienceScroll();
   });
+
+  updateTerminals();
+  updateExperienceScroll();
 });
 
-// ── Custom cursor ──
-const cursor = document.querySelector('.custom-cursor');
-const dot    = document.querySelector('.custom-cursor-dot');
+document.querySelectorAll('.faq-item').forEach((item) => {
+  item.addEventListener('click', () => {
+    // Optional: Close all other open items
+    document.querySelectorAll('.faq-item').forEach((otherItem) => {
+      if (otherItem !== item) {
+        otherItem.classList.remove('active');
+      }
+    });
 
-document.addEventListener('mousemove', (e) => {
-  cursor.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 250, fill: "forwards" });
-  dot.style.left = `${e.clientX}px`;
-  dot.style.top  = `${e.clientY}px`;
-});
-
-document.querySelectorAll('a, button, .btn-p, .btn-o').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-});
-
-
-
-
-// Add loading class to freeze scrolling during loading state
-document.body.classList.add('loading');
-
-function dismissLoader() {
-  const loader = document.getElementById('loader');
-  if (loader && loader.style.opacity !== '0') {
-    loader.style.opacity = '0';
-    loader.style.visibility = 'hidden';
-    document.body.classList.remove('loading');
-  }
-}
-
-// 1. Dismiss exactly 1.5 seconds after DOM structures are built
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(dismissLoader, 1500); 
-});
-
-// 2. Backup trigger if the DOM event already swept past
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  setTimeout(dismissLoader, 1500);
-}
-
-// 3. Absolute catch-all safety parameter
-window.addEventListener('load', () => {
-  setTimeout(dismissLoader, 1500);
+    // Toggle current card
+    item.classList.toggle('active');
+  });
 });

@@ -6,7 +6,7 @@
 }
 
 :root {
-  --section-title-gap: 28px;
+  --section-title-gap: 68px;
 }
 
 html {
@@ -119,6 +119,36 @@ body {
   color: #000000;
   text-shadow: 0 4px 8px rgba(107, 60, 46, 0.3);
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+}
+
+.nav-links a.active {
+  color: #6b3c2e;
+  font-weight: 700;
+}
+
+/* Visible keyboard-focus states (site previously suppressed outline with no replacement) */
+.book-btn:focus-visible,
+.faq-question:focus-visible,
+.ai-buddy-btn:focus-visible,
+.cv-widget-btn:focus-visible,
+.nav-links a:focus-visible,
+.contact-link:focus-visible,
+.contact-detail-row:focus-visible,
+.cv-modal-close:focus-visible {
+  outline: 2px solid #6b3c2e;
+  outline-offset: 3px;
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Hero Section */
@@ -369,6 +399,275 @@ body {
   padding: 4px 10px;
 }
 
+.ai-buddy-status {
+  position: absolute;
+  top: 50%;
+  right: 110%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 0.85rem;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ai-buddy-status.show {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-6px);
+}
+
+/* CV Floating Component — mirrors AI Buddy, docks bottom-left */
+.cv-widget-container {
+  position: fixed;
+  top: 70%;
+  left: 12vw;
+  right: auto;
+  bottom: auto;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 10px;
+  z-index: 150;
+
+  transition:
+    top 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    left 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cv-widget-tooltip {
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  text-align: center;
+  transition:
+    opacity 0.4s ease,
+    font-size 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    padding 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cv-widget-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  outline: none;
+}
+
+.cv-widget-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 150px;
+  height: 194px;
+  box-sizing: border-box;
+  padding: 18px 16px;
+  background: #faf8f0;
+  border: 1px solid #e2ddd3;
+  border-radius: 12px;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  transform: rotate(-8deg);
+  transform-origin: bottom left;
+
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    padding 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cv-widget-btn:hover .cv-widget-preview {
+  transform: rotate(-3deg) scale(1.04);
+}
+
+.cv-preview-heading {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 1.6rem;
+  color: #2b1f1d;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.cv-preview-line {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #d7d4b1;
+}
+
+.cv-preview-gap {
+  height: 6px;
+}
+
+.cv-widget-container.docked-bottom-left {
+  top: auto;
+  left: 24px;
+  right: auto;
+  bottom: 24px;
+  transform: translateY(0);
+}
+
+.cv-widget-container.docked-bottom-left .cv-widget-preview {
+  width: 70px;
+  height: 90px;
+  padding: 9px 8px;
+  gap: 4px;
+}
+
+.cv-widget-container.docked-bottom-left .cv-preview-heading {
+  font-size: 1rem;
+}
+
+.cv-widget-container.docked-bottom-left .cv-preview-line {
+  height: 3px;
+  border-radius: 2px;
+}
+
+.cv-widget-container.docked-bottom-left .cv-preview-gap {
+  height: 3px;
+}
+
+.cv-widget-container.docked-bottom-left .cv-widget-tooltip {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+}
+
+/* CV Modal */
+.cv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 14, 12, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 24px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.cv-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cv-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: min(720px, 100%);
+  max-height: 90vh;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cv-modal-overlay.active .cv-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* The terminal window holds only the PDF */
+.cv-modal-window {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  background: #faf8f0;
+  border: 1px solid #e2ddd3;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+}
+
+.cv-modal-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.cv-preview-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+  display: block;
+}
+
+/* Close button floats above the terminal window, outside it */
+.cv-modal-close {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 248, 240, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: #6b3c2e;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.cv-modal-close:hover {
+  background: #ffffff;
+  transform: scale(1.08);
+}
+
+/* Download button sits separately below the terminal window */
+.cv-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #6b3c2e;
+  padding: 12px 30px;
+  border-radius: 24px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cv-download-btn:hover {
+  background-color: #543023;
+  transform: translateY(-2px);
+}
+
 /* ABOUT ME SECTION - 3D BOOK & DYNAMIC SCREEN PROPORTIONS */
 .about-section {
   display: flex;
@@ -448,7 +747,7 @@ body {
   justify-content: center;
   align-items: center;
   perspective: 1200px;
-  padding: 40px 0;
+  padding: 0 0 40px;
   z-index: 10;
 }
 

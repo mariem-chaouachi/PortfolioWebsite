@@ -4,7 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mariem Chaouachi - Portfolio</title>
-  
+  <meta name="description" content="Mariem Chaouachi — Biomedical Engineering student building medical devices, imaging tools, embedded systems, and healthcare software." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mariem Chaouachi - Portfolio" />
+  <meta property="og:description" content="Biomedical Engineering student building medical devices, imaging tools, embedded systems, and healthcare software." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="Hero-me.png" />
+
+  <!-- Favicon (inline SVG, matches the terminal dot motif) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23faf8f0'/%3E%3Ccircle cx='20' cy='32' r='7' fill='%23ff5f57'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23febc2e'/%3E%3Ccircle cx='44' cy='32' r='7' fill='%2328c840'/%3E%3C/svg%3E" />
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +28,12 @@
   <nav class="navbar liquid-glass-container" id="navbar">
     <div class="nav-logo">Mariem Chaouachi</div>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills-terminal">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#home" data-section="home">Home</a></li>
+      <li><a href="#about" data-section="about">About</a></li>
+      <li><a href="#skills-terminal" data-section="skills-terminal">Skills</a></li>
+      <li><a href="#experience" data-section="experience">Experience</a></li>
+      <li><a href="#projects" data-section="projects">Projects</a></li>
+      <li><a href="#contact" data-section="contact">Contact</a></li>
     </ul>
   </nav>
 
@@ -80,6 +90,44 @@
         <path d="M12 6L13.1 8.9L16 10L13.1 11.1L12 14L10.9 8.9L12 6Z" fill="#ffffff"/>
       </svg>
     </button>
+    <span class="ai-buddy-status" id="aiBuddyStatus">AI Buddy is under development 🚧</span>
+  </div>
+
+  <!-- CV Floating Component (mirrors AI Buddy, docks bottom-left) -->
+  <div class="cv-widget-container" id="cvWidgetContainer">
+    <span class="cv-widget-tooltip">Check my CV!</span>
+    <button class="cv-widget-btn" id="cvWidgetBtn" aria-label="View my CV" aria-haspopup="dialog">
+      <span class="cv-widget-preview">
+        <span class="cv-preview-heading">CV</span>
+        <span class="cv-preview-line" style="width: 82%;"></span>
+        <span class="cv-preview-line" style="width: 95%;"></span>
+        <span class="cv-preview-line" style="width: 60%;"></span>
+        <span class="cv-preview-gap"></span>
+        <span class="cv-preview-line" style="width: 88%;"></span>
+        <span class="cv-preview-line" style="width: 70%;"></span>
+        <span class="cv-preview-line" style="width: 92%;"></span>
+        <span class="cv-preview-line" style="width: 50%;"></span>
+      </span>
+    </button>
+  </div>
+
+  <!-- CV Modal -->
+  <div class="cv-modal-overlay" id="cvModalOverlay" role="dialog" aria-modal="true" aria-label="Curriculum Vitae">
+    <div class="cv-modal-content">
+      <button class="cv-modal-close" id="cvModalCloseBtn" aria-label="Close CV">&times;</button>
+
+      <div class="cv-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename">CV.pdf</span>
+        </div>
+        <div class="cv-modal-body">
+          <iframe src="cv.pdf" class="cv-preview-frame" title="Mariem Chaouachi CV"></iframe>
+        </div>
+      </div>
+
+      <a href="cv.pdf" download="Mariem-Chaouachi-CV.pdf" class="cv-download-btn">Download Me ⬇</a>
+    </div>
   </div>
 
   <!-- About Me - 3D Page Flip Book Section -->

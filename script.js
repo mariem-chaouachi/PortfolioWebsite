@@ -1,27 +1,104 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Bind Mouse Glow for all Liquid Glass Containers
-  const glassElements = document.querySelectorAll('.liquid-glass-container');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  glassElements.forEach(element => {
-    element.addEventListener('mousemove', (e) => {
-      const rect = element.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      element.style.setProperty('--x', `${x}px`);
-      element.style.setProperty('--y', `${y}px`);
+  // Bind Mouse Glow for all Liquid Glass Containers
+  if (!prefersReducedMotion) {
+    const glassElements = document.querySelectorAll('.liquid-glass-container');
+
+    glassElements.forEach(element => {
+      element.addEventListener('mousemove', (e) => {
+        const rect = element.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        element.style.setProperty('--x', `${x}px`);
+        element.style.setProperty('--y', `${y}px`);
+      });
     });
+  }
+
+  // Scroll Handler for AI Buddy + CV Widget Docking
+  // Large ("hero style") at the very top of the page AND while the
+  // Let's Connect section is in view; docked to the corners everywhere else.
+  const aiBuddyContainer = document.getElementById('aiBuddyContainer');
+  const cvWidgetContainer = document.getElementById('cvWidgetContainer');
+  const contactSection = document.getElementById('contact');
+
+  function updateWidgetDocking() {
+    let large = window.scrollY <= 10;
+
+    if (!large && contactSection) {
+      const rect = contactSection.getBoundingClientRect();
+      large = rect.top < window.innerHeight * 0.65 && rect.bottom > window.innerHeight * 0.15;
+    }
+
+    aiBuddyContainer.classList.toggle('docked-bottom-right', !large);
+    cvWidgetContainer.classList.toggle('docked-bottom-left', !large);
+  }
+
+  window.addEventListener('scroll', updateWidgetDocking, { passive: true });
+  window.addEventListener('resize', updateWidgetDocking);
+  updateWidgetDocking();
+
+  // AI Buddy: "under development" status toast
+  const aiBuddyBtn = document.getElementById('aiBuddyBtn');
+  const aiBuddyStatus = document.getElementById('aiBuddyStatus');
+  let aiBuddyStatusTimer = null;
+
+  aiBuddyBtn.addEventListener('click', () => {
+    aiBuddyStatus.classList.add('show');
+    clearTimeout(aiBuddyStatusTimer);
+    aiBuddyStatusTimer = setTimeout(() => {
+      aiBuddyStatus.classList.remove('show');
+    }, 2800);
   });
 
-  // Scroll Handler for AI Buddy Docking
-  const aiBuddyContainer = document.getElementById('aiBuddyContainer');
+  // CV Modal
+  const cvWidgetBtn = document.getElementById('cvWidgetBtn');
+  const cvModalOverlay = document.getElementById('cvModalOverlay');
+  const cvModalCloseBtn = document.getElementById('cvModalCloseBtn');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 10) {
-      aiBuddyContainer.classList.add('docked-bottom-right');
-    } else {
-      aiBuddyContainer.classList.remove('docked-bottom-right');
+  function openCvModal() {
+    cvModalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCvModal() {
+    cvModalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  cvWidgetBtn.addEventListener('click', openCvModal);
+  cvModalCloseBtn.addEventListener('click', closeCvModal);
+
+  cvModalOverlay.addEventListener('click', (e) => {
+    if (e.target === cvModalOverlay) closeCvModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cvModalOverlay.classList.contains('active')) {
+      closeCvModal();
     }
   });
+
+  // Nav Scroll-Spy
+  const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+  const spySections = Array.from(navLinks)
+    .map(link => document.getElementById(link.dataset.section))
+    .filter(Boolean);
+
+  if (spySections.length && 'IntersectionObserver' in window) {
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.dataset.section === entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+    spySections.forEach(section => spyObserver.observe(section));
+  }
 
   // 3D Flip Book Handler
   const book = document.getElementById('flipBook');

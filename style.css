@@ -582,8 +582,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  width: min(720px, 100%);
+  gap: 24px;
+  max-width: 92vw;
   max-height: 90vh;
   transform: scale(0.92) translateY(20px);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -595,9 +595,10 @@ body {
 
 /* The terminal window holds only the PDF */
 .cv-modal-window {
-  width: 100%;
-  flex: 1;
-  min-height: 0;
+  height: min(85vh, 950px);
+  width: auto;
+  max-width: 92vw;
+  aspect-ratio: 210 / 297;
   background: #faf8f0;
   border: 1px solid #e2ddd3;
   border-radius: 16px;
@@ -610,23 +611,25 @@ body {
 .cv-modal-body {
   flex: 1;
   min-height: 0;
+  overflow: hidden;
 }
 
 .cv-preview-frame {
-  width: 100%;
+  width: calc(100% + 20px);
   height: 100%;
   border: none;
   background: #ffffff;
   display: block;
+  margin-right: -20px;
 }
 
 /* Close button floats above the terminal window, outside it */
 .cv-modal-close {
   position: absolute;
-  top: -46px;
+  top: -48px;
   right: 0;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -653,18 +656,19 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #2b1f1d;
   text-decoration: none;
-  background-color: #6b3c2e;
-  padding: 12px 30px;
+  background-color: #d7d4b1;
+  border: 1px solid #b8b58f;
+  padding: 14px 32px;
   border-radius: 24px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
   transition: background-color 0.2s ease, transform 0.2s ease;
   flex-shrink: 0;
 }
 
 .cv-download-btn:hover {
-  background-color: #543023;
+  background-color: #c9c69f;
   transform: translateY(-2px);
 }
 
@@ -1190,7 +1194,7 @@ body {
   font-size: 3.8rem;
   font-weight: 400;
   color: #2b1f1d;
-  margin-bottom: 20px;
+  margin-bottom: var(--section-title-gap);
   text-align: center;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }

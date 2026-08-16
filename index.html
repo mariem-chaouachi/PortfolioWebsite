@@ -32,6 +32,7 @@
       <li><a href="#about" data-section="about">About</a></li>
       <li><a href="#skills-terminal" data-section="skills-terminal">Skills</a></li>
       <li><a href="#experience" data-section="experience">Experience</a></li>
+      <li><a href="#leadership" data-section="leadership">Leadership</a></li>
       <li><a href="#projects" data-section="projects">Projects</a></li>
       <li><a href="#contact" data-section="contact">Contact</a></li>
     </ul>
@@ -127,6 +128,42 @@
       </div>
 
       <a href="cv.pdf" download="Mariem-Chaouachi-CV.pdf" class="cv-download-btn">Download Me ⬇</a>
+    </div>
+  </div>
+
+  <!-- Skill Detail Modal -->
+  <div class="skill-modal-overlay" id="skillModalOverlay" role="dialog" aria-modal="true" aria-label="Skill details">
+    <div class="skill-modal-content">
+      <button class="cv-modal-close" id="skillModalCloseBtn" aria-label="Close">&times;</button>
+
+      <div class="skill-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename" id="skillModalFilename">skill.md</span>
+        </div>
+        <div class="skill-modal-body">
+          <div class="skill-modal-heading">
+            <img id="skillModalIcon" class="skill-modal-icon" src="" alt="" />
+            <span id="skillModalIconEmoji" class="skill-modal-icon skill-modal-icon-emoji"></span>
+            <h3 id="skillModalName">Skill</h3>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; how I learned it</span>
+            <p id="skillModalLearned"></p>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; where I used it</span>
+            <p id="skillModalUsed"></p>
+          </div>
+
+          <div class="skill-modal-block" id="skillModalCertBlock">
+            <span class="skill-modal-label">&gt; certificate</span>
+            <div id="skillModalCertArea"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -256,6 +293,10 @@
       <div class="terminal-sticky">
         <h2 class="section-title-dark skills-fixed-title">Skills</h2>
 
+        <div class="skills-sticky-note">
+          <span>click any skill to see how &amp; where I used it</span>
+        </div>
+
         <div class="terminal-deck">
 
           <!-- Card 0: Languages -->
@@ -267,23 +308,23 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="html-css" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/html.png" alt="HTML / CSS" />
                     <span>HTML / CSS</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="javascript" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/javascript.png" alt="JavaScript" />
                     <span>JavaScript</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="typescript" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/typescript.png" alt="TypeScript" />
                     <span>TypeScript</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="python" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/python.png" alt="Python" />
                     <span>Python</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="cpp" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/cpp.png" alt="C / C++" />
                     <span>C / C++</span>
                   </div>
@@ -302,23 +343,23 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="arduino" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/arduino.png" alt="Arduino" />
                     <span>Arduino</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="esp32" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/esp32.png" alt="ESP32" />
                     <span>ESP32</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="sensor" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/sensor.png" alt="MAX30100 Sensor" />
                     <span>MAX30100 Sensor</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="circuit" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/circuit.png" alt="Circuit Design" />
                     <span>Circuit Design</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="embedded" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/embedded.png" alt="Embedded Systems" />
                     <span>Embedded Systems</span>
                   </div>
@@ -337,23 +378,23 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="unity" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/unity.png" alt="Unity" />
                     <span>Unity</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="react-native" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/react.png" alt="React Native" />
                     <span>React Native</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="nodejs" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/node.png" alt="Node.js" />
                     <span>Node.js</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="postgresql" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/postgresql.png" alt="PostgreSQL" />
                     <span>PostgreSQL</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="notion" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/notion.png" alt="Notion" />
                     <span>Notion</span>
                   </div>
@@ -372,21 +413,45 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="imaging" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/imaging.png" alt="Medical Imaging" />
                     <span>Medical Imaging</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="biomedical" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/biomedical.png" alt="Biomedical Devices" />
                     <span>Biomedical Devices</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="clinical" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/clinical.png" alt="Clinical Data" />
                     <span>Clinical Data</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="healthcare" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/healthcare.png" alt="Healthcare Innovation" />
                     <span>Healthcare Innovation</span>
+                  </div>
+                </div>
+                <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Spoken Languages -->
+          <div class="terminal-card" id="termCard4" data-index="4">
+            <div class="terminal-window liquid-glass-card">
+              <div class="terminal-titlebar">
+                <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                <span class="terminal-filename">spoken-languages</span>
+              </div>
+              <div class="terminal-body">
+                <div class="skills-glass-grid">
+                  <div class="skill-chip liquid-glass-container" data-skill="english" role="button" tabindex="0">
+                    <span>English</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="french" role="button" tabindex="0">
+                    <span>French</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="arabic" role="button" tabindex="0">
+                    <span>Arabic</span>
                   </div>
                 </div>
                 <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
@@ -407,9 +472,6 @@
       <div class="experience-gallery-wrapper">
         <div class="experience-gallery-track">
 
-          <!-- Connecting Horizontal Timeline Line (scrolls with cards) -->
-          <div class="experience-timeline-line"></div>
-
           <!-- Experience Card 1 -->
           <div class="experience-card">
             <div class="exp-content">
@@ -420,29 +482,16 @@
                 Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
               </p>
             </div>
-            
-            <div class="exp-photos-grid">
-              <!-- Photo 1 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp1_1.jpg" alt="Event photo 1" />
-                </div>
-              </div>
 
-              <!-- Photo 2 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="exp1_1.png" alt="Event photo 1" />
+                  <img src="exp1_2.png" alt="Event photo 2" />
                 </div>
-                <div class="exp-photo-box">
-                  <img src="exp1_2.jpg" alt="Event photo 2" />
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="exp1_1.png" alt="" />
+                  <img src="exp1_2.png" alt="" />
                 </div>
               </div>
             </div>
@@ -459,28 +508,15 @@
               </p>
             </div>
             
-            <div class="exp-photos-grid">
-              <!-- Photo 1 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="exp2_1.png" alt="Internship photo 1" />
+                  <img src="exp2_2.png" alt="Internship photo 2" />
                 </div>
-                <div class="exp-photo-box">
-                  <img src="exp2_1.jpg" alt="Internship photo 1" />
-                </div>
-              </div>
-
-              <!-- Photo 2 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp2_2.jpg" alt="Internship photo 2" />
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="exp2_1.png" alt="" />
+                  <img src="exp2_2.png" alt="" />
                 </div>
               </div>
             </div>
@@ -497,28 +533,128 @@
               </p>
             </div>
             
-            <div class="exp-photos-grid">
-              <!-- Photo 1 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="exp3_1.png" alt="Clinical photo 1" />
+                  <img src="exp3_2.png" alt="Clinical photo 2" />
                 </div>
-                <div class="exp-photo-box">
-                  <img src="exp3_1.jpg" alt="Clinical photo 1" />
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="exp3_1.png" alt="" />
+                  <img src="exp3_2.png" alt="" />
                 </div>
               </div>
+            </div>
+          </div>
 
-              <!-- Photo 2 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Section -->
+  <section class="leadership-section" id="leadership">
+    <div class="leadership-pinned-container">
+      <h2 class="section-title-dark leadership-title-centered">Leadership</h2>
+
+      <div class="leadership-gallery-wrapper">
+        <div class="leadership-gallery-track">
+
+          <!-- Leadership Card 1 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">Present</span>
+              <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
+              <p class="timeline-org">Biomed Innov Club</p>
+              <p class="timeline-desc">
+                Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
+              </p>
+            </div>
+
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track leadership-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="lead1_1.png" alt="Sponsorship photo 1" />
+                  <img src="lead1_2.png" alt="Sponsorship photo 2" />
                 </div>
-                <div class="exp-photo-box">
-                  <img src="exp3_2.jpg" alt="Clinical photo 2" />
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="lead1_1.png" alt="" />
+                  <img src="lead1_2.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leadership Card 2 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">Present</span>
+              <h3 class="timeline-role">Campus Leader</h3>
+              <p class="timeline-org">Notion</p>
+              <p class="timeline-desc">
+                Representing Notion on campus, helping students and organizations adopt it for their workflows.
+              </p>
+            </div>
+
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track leadership-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="lead2_1.png" alt="Campus Leader photo 1" />
+                  <img src="lead2_2.png" alt="Campus Leader photo 2" />
+                </div>
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="lead2_1.png" alt="" />
+                  <img src="lead2_2.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leadership Card 3 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">2026</span>
+              <h3 class="timeline-role">Ambassador</h3>
+              <p class="timeline-org">National Robotics Week</p>
+              <p class="timeline-desc">
+                Promoting robotics engagement and outreach as part of National Robotics Week.
+              </p>
+            </div>
+
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track leadership-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="lead3_1.png" alt="Robotics Week photo 1" />
+                  <img src="lead3_2.png" alt="Robotics Week photo 2" />
+                </div>
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="lead3_1.png" alt="" />
+                  <img src="lead3_2.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leadership Card 4 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">MindHack 1.0</span>
+              <h3 class="timeline-role">Challenger</h3>
+              <p class="timeline-org">MindHack 1.0 Hackathon</p>
+              <p class="timeline-desc">
+                Competed in MindHack 1.0, developing a project under hackathon time constraints.
+              </p>
+            </div>
+
+            <div class="exp-photo-stripe">
+              <div class="exp-photo-stripe-track leadership-stripe-track">
+                <div class="exp-photo-stripe-content">
+                  <img src="lead4_1.png" alt="MindHack photo 1" />
+                  <img src="lead4_2.png" alt="MindHack photo 2" />
+                </div>
+                <div class="exp-photo-stripe-content" aria-hidden="true">
+                  <img src="lead4_1.png" alt="" />
+                  <img src="lead4_2.png" alt="" />
                 </div>
               </div>
             </div>
@@ -530,14 +666,19 @@
   </section>
 
   <!-- Projects Section -->
-  <!-- Projects Section -->
   <section class="projects-section" id="projects">
     <h2 class="about-title">Projects</h2>
 
-    <div class="projects-container">
+    <div class="projects-tabs" role="tablist">
+      <button class="projects-tab active" data-filter="all" role="tab" aria-selected="true" type="button">All</button>
+      <button class="projects-tab" data-filter="software" role="tab" aria-selected="false" type="button">Software</button>
+      <button class="projects-tab" data-filter="hardware" role="tab" aria-selected="false" type="button">Hardware</button>
+    </div>
+
+      <div class="projects-container" id="projectsContainer">
 
       <!-- Project 1: Text Left / Video Right -->
-      <div class="project-row">
+      <div class="project-row" data-category="software">
         <div class="project-info">
           <span class="project-tag">Mobile App</span>
           <h3 class="project-title">RadConnect</h3>
@@ -571,7 +712,7 @@
       </div>
 
       <!-- Project 2: Video Left / Text Right -->
-      <div class="project-row reverse">
+      <div class="project-row reverse" data-category="software">
         <div class="project-info">
           <span class="project-tag">Web Tool</span>
           <h3 class="project-title">Homeostasis Diagnostic Tool</h3>
@@ -605,7 +746,7 @@
       </div>
 
       <!-- Project 3: Text Left / Video Right -->
-      <div class="project-row">
+      <div class="project-row" data-category="software">
         <div class="project-info">
           <span class="project-tag">Hackathon</span>
           <h3 class="project-title">BioFarm</h3>

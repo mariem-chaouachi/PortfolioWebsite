@@ -288,6 +288,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Project Detail Modal
+  const projectDetails = {
+    'radconnect': {
+      name: 'RadConnect',
+      tag: 'Mobile App',
+      description: "A React Native / Expo mobile app that streamlines communication between radiology technicians and radiologists, with role-based views, real-time messaging, and localization. Connected to a Node.js/Express backend on Neon PostgreSQL.",
+      stack: ['React Native', 'Expo', 'Node.js', 'PostgreSQL']
+    },
+    'homeostasis': {
+      name: 'Homeostasis Diagnostic Tool',
+      tag: 'Web Tool',
+      description: "A clinical web tool for milieu intérieur analysis, covering sodium, acid-base, potassium, calcium, and renal function panels. Uses Claude's API to extract data directly from uploaded lab files.",
+      stack: ['Web', 'Claude API', 'Clinical Data']
+    },
+    'biofarm': {
+      name: 'BioFarm',
+      tag: 'Hackathon',
+      description: "A pixel-art Unity farm game connected to an Arduino MAX30100 heart-rate sensor, with a Python stress-scoring layer, guided breathing triggers, and a weekly wellness review for parents.",
+      stack: ['Unity', 'Arduino', 'Python']
+    }
+  };
+
+  const projectModalOverlay = document.getElementById('projectModalOverlay');
+  const projectModalCloseBtn = document.getElementById('projectModalCloseBtn');
+  const projectModalFilename = document.getElementById('projectModalFilename');
+  const projectModalTag = document.getElementById('projectModalTag');
+  const projectModalName = document.getElementById('projectModalName');
+  const projectModalDescription = document.getElementById('projectModalDescription');
+  const projectModalStack = document.getElementById('projectModalStack');
+
+  function openProjectModal(slug) {
+    const data = projectDetails[slug];
+    if (!data) return;
+
+    projectModalFilename.textContent = `${slug}.md`;
+    projectModalTag.textContent = data.tag;
+    projectModalName.textContent = data.name;
+    projectModalDescription.textContent = data.description;
+
+    projectModalStack.innerHTML = '';
+    data.stack.forEach((item) => {
+      const span = document.createElement('span');
+      span.textContent = item;
+      projectModalStack.appendChild(span);
+    });
+
+    projectModalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProjectModal() {
+    projectModalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.projects-list-item[data-project]').forEach((item) => {
+    item.addEventListener('click', () => openProjectModal(item.dataset.project));
+  });
+
+  projectModalCloseBtn.addEventListener('click', closeProjectModal);
+
+  projectModalOverlay.addEventListener('click', (e) => {
+    if (e.target === projectModalOverlay) closeProjectModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && projectModalOverlay.classList.contains('active')) {
+      closeProjectModal();
+    }
+  });
+
   // Nav Scroll-Spy
   const navLinks = document.querySelectorAll('.nav-links a[data-section]');
   const spySections = Array.from(navLinks)
@@ -602,7 +673,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { reverse: true }
   );
 
-  // Projects folder tabs (All / Software / Hardware)
+  // Projects folder tabs (Main / Software / Hardware)
   const projectsTabs = document.querySelectorAll('.projects-tab');
   const projectRows = document.querySelectorAll('.project-row');
 
@@ -616,11 +687,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       projectRows.forEach((row) => {
-        const show = filter === 'all' || row.dataset.category === filter;
+        const show = filter === 'main' || row.dataset.category === filter;
         row.style.display = show ? '' : 'none';
       });
     });
   });
+
+  // "All" button — jumps to the permanent project list at the end of the section
+  const projectsAllBtn = document.getElementById('projectsAllBtn');
+  const projectsList = document.getElementById('projectsList');
+
+  if (projectsAllBtn && projectsList) {
+    projectsAllBtn.addEventListener('click', () => {
+      projectsList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 
   let ticking = false;
   window.addEventListener(

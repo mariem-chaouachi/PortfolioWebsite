@@ -167,6 +167,46 @@
     </div>
   </div>
 
+  <!-- Project Detail Modal -->
+  <div class="skill-modal-overlay" id="projectModalOverlay" role="dialog" aria-modal="true" aria-label="Project details">
+    <div class="skill-modal-content">
+      <button class="cv-modal-close" id="projectModalCloseBtn" aria-label="Close">&times;</button>
+
+      <div class="skill-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename" id="projectModalFilename">project.md</span>
+        </div>
+        <div class="skill-modal-body">
+          <div class="skill-modal-heading">
+            <span class="project-modal-tag" id="projectModalTag">Tag</span>
+            <h3 id="projectModalName">Project</h3>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; about</span>
+            <p id="projectModalDescription"></p>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; demo</span>
+            <div class="project-modal-video-box">
+              <video id="projectModalVideo" autoplay loop muted playsinline controls>
+                <source id="projectModalVideoSource" src="" type="video/mp4" />
+                Your browser does not support video playback.
+              </video>
+            </div>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; built with</span>
+            <div class="project-modal-stack" id="projectModalStack"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- About Me - 3D Page Flip Book Section -->
   <section class="about-section" id="about">
     <h2 class="about-title">About Me</h2>
@@ -482,19 +522,6 @@
                 Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
               </p>
             </div>
-
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="exp1_1.png" alt="Event photo 1" />
-                  <img src="exp1_2.png" alt="Event photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="exp1_1.png" alt="" />
-                  <img src="exp1_2.png" alt="" />
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Experience Card 2 -->
@@ -506,19 +533,6 @@
               <p class="timeline-desc">
                 Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
               </p>
-            </div>
-            
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="exp2_1.png" alt="Internship photo 1" />
-                  <img src="exp2_2.png" alt="Internship photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="exp2_1.png" alt="" />
-                  <img src="exp2_2.png" alt="" />
-                </div>
-              </div>
             </div>
           </div>
 
@@ -532,21 +546,57 @@
                 Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
               </p>
             </div>
-            
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="exp3_1.png" alt="Clinical photo 1" />
-                  <img src="exp3_2.png" alt="Clinical photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="exp3_1.png" alt="" />
-                  <img src="exp3_2.png" alt="" />
-                </div>
-              </div>
-            </div>
           </div>
 
+        </div>
+      </div>
+
+      <div class="photo-stripe-bar exp-photo-stripe-bar liquid-glass-container">
+        <div class="photo-stripe-track">
+          <div class="photo-stripe-content">
+            <img src="exp-strip-01.png" alt="" />
+            <img src="exp-strip-02.png" alt="" />
+            <img src="exp-strip-03.png" alt="" />
+            <img src="exp-strip-04.png" alt="" />
+            <img src="exp-strip-05.png" alt="" />
+            <img src="exp-strip-06.png" alt="" />
+            <img src="exp-strip-07.png" alt="" />
+            <img src="exp-strip-08.png" alt="" />
+            <img src="exp-strip-09.png" alt="" />
+            <img src="exp-strip-10.png" alt="" />
+            <img src="exp-strip-11.png" alt="" />
+            <img src="exp-strip-12.png" alt="" />
+            <img src="exp-strip-13.png" alt="" />
+            <img src="exp-strip-14.png" alt="" />
+            <img src="exp-strip-15.png" alt="" />
+            <img src="exp-strip-16.png" alt="" />
+            <img src="exp-strip-17.png" alt="" />
+            <img src="exp-strip-18.png" alt="" />
+            <img src="exp-strip-19.png" alt="" />
+            <img src="exp-strip-20.png" alt="" />
+          </div>
+          <div class="photo-stripe-content" aria-hidden="true">
+            <img src="exp-strip-01.png" alt="" />
+            <img src="exp-strip-02.png" alt="" />
+            <img src="exp-strip-03.png" alt="" />
+            <img src="exp-strip-04.png" alt="" />
+            <img src="exp-strip-05.png" alt="" />
+            <img src="exp-strip-06.png" alt="" />
+            <img src="exp-strip-07.png" alt="" />
+            <img src="exp-strip-08.png" alt="" />
+            <img src="exp-strip-09.png" alt="" />
+            <img src="exp-strip-10.png" alt="" />
+            <img src="exp-strip-11.png" alt="" />
+            <img src="exp-strip-12.png" alt="" />
+            <img src="exp-strip-13.png" alt="" />
+            <img src="exp-strip-14.png" alt="" />
+            <img src="exp-strip-15.png" alt="" />
+            <img src="exp-strip-16.png" alt="" />
+            <img src="exp-strip-17.png" alt="" />
+            <img src="exp-strip-18.png" alt="" />
+            <img src="exp-strip-19.png" alt="" />
+            <img src="exp-strip-20.png" alt="" />
+          </div>
         </div>
       </div>
     </div>
@@ -570,19 +620,6 @@
                 Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
               </p>
             </div>
-
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track leadership-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="lead1_1.png" alt="Sponsorship photo 1" />
-                  <img src="lead1_2.png" alt="Sponsorship photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="lead1_1.png" alt="" />
-                  <img src="lead1_2.png" alt="" />
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Leadership Card 2 -->
@@ -594,19 +631,6 @@
               <p class="timeline-desc">
                 Representing Notion on campus, helping students and organizations adopt it for their workflows.
               </p>
-            </div>
-
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track leadership-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="lead2_1.png" alt="Campus Leader photo 1" />
-                  <img src="lead2_2.png" alt="Campus Leader photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="lead2_1.png" alt="" />
-                  <img src="lead2_2.png" alt="" />
-                </div>
-              </div>
             </div>
           </div>
 
@@ -620,19 +644,6 @@
                 Promoting robotics engagement and outreach as part of National Robotics Week.
               </p>
             </div>
-
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track leadership-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="lead3_1.png" alt="Robotics Week photo 1" />
-                  <img src="lead3_2.png" alt="Robotics Week photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="lead3_1.png" alt="" />
-                  <img src="lead3_2.png" alt="" />
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Leadership Card 4 -->
@@ -645,21 +656,57 @@
                 Competed in MindHack 1.0, developing a project under hackathon time constraints.
               </p>
             </div>
-
-            <div class="exp-photo-stripe">
-              <div class="exp-photo-stripe-track leadership-stripe-track">
-                <div class="exp-photo-stripe-content">
-                  <img src="lead4_1.png" alt="MindHack photo 1" />
-                  <img src="lead4_2.png" alt="MindHack photo 2" />
-                </div>
-                <div class="exp-photo-stripe-content" aria-hidden="true">
-                  <img src="lead4_1.png" alt="" />
-                  <img src="lead4_2.png" alt="" />
-                </div>
-              </div>
-            </div>
           </div>
 
+        </div>
+      </div>
+
+      <div class="photo-stripe-bar leadership-photo-stripe-bar liquid-glass-container">
+        <div class="photo-stripe-track">
+          <div class="photo-stripe-content">
+            <img src="lead-strip-01.png" alt="" />
+            <img src="lead-strip-02.png" alt="" />
+            <img src="lead-strip-03.png" alt="" />
+            <img src="lead-strip-04.png" alt="" />
+            <img src="lead-strip-05.png" alt="" />
+            <img src="lead-strip-06.png" alt="" />
+            <img src="lead-strip-07.png" alt="" />
+            <img src="lead-strip-08.png" alt="" />
+            <img src="lead-strip-09.png" alt="" />
+            <img src="lead-strip-10.png" alt="" />
+            <img src="lead-strip-11.png" alt="" />
+            <img src="lead-strip-12.png" alt="" />
+            <img src="lead-strip-13.png" alt="" />
+            <img src="lead-strip-14.png" alt="" />
+            <img src="lead-strip-15.png" alt="" />
+            <img src="lead-strip-16.png" alt="" />
+            <img src="lead-strip-17.png" alt="" />
+            <img src="lead-strip-18.png" alt="" />
+            <img src="lead-strip-19.png" alt="" />
+            <img src="lead-strip-20.png" alt="" />
+          </div>
+          <div class="photo-stripe-content" aria-hidden="true">
+            <img src="lead-strip-01.png" alt="" />
+            <img src="lead-strip-02.png" alt="" />
+            <img src="lead-strip-03.png" alt="" />
+            <img src="lead-strip-04.png" alt="" />
+            <img src="lead-strip-05.png" alt="" />
+            <img src="lead-strip-06.png" alt="" />
+            <img src="lead-strip-07.png" alt="" />
+            <img src="lead-strip-08.png" alt="" />
+            <img src="lead-strip-09.png" alt="" />
+            <img src="lead-strip-10.png" alt="" />
+            <img src="lead-strip-11.png" alt="" />
+            <img src="lead-strip-12.png" alt="" />
+            <img src="lead-strip-13.png" alt="" />
+            <img src="lead-strip-14.png" alt="" />
+            <img src="lead-strip-15.png" alt="" />
+            <img src="lead-strip-16.png" alt="" />
+            <img src="lead-strip-17.png" alt="" />
+            <img src="lead-strip-18.png" alt="" />
+            <img src="lead-strip-19.png" alt="" />
+            <img src="lead-strip-20.png" alt="" />
+          </div>
         </div>
       </div>
     </div>
@@ -669,16 +716,19 @@
   <section class="projects-section" id="projects">
     <h2 class="about-title">Projects</h2>
 
-    <div class="projects-tabs" role="tablist">
-      <button class="projects-tab active" data-filter="all" role="tab" aria-selected="true" type="button">All</button>
-      <button class="projects-tab" data-filter="software" role="tab" aria-selected="false" type="button">Software</button>
-      <button class="projects-tab" data-filter="hardware" role="tab" aria-selected="false" type="button">Hardware</button>
+    <div class="projects-tabs-row">
+      <div class="projects-tabs" role="tablist">
+        <button class="projects-tab active" data-filter="main" role="tab" aria-selected="true" type="button">Main</button>
+        <button class="projects-tab" data-filter="software" role="tab" aria-selected="false" type="button">Software</button>
+        <button class="projects-tab" data-filter="hardware" role="tab" aria-selected="false" type="button">Hardware</button>
+      </div>
+      <button class="projects-all-btn" id="projectsAllBtn" type="button">All</button>
     </div>
 
       <div class="projects-container" id="projectsContainer">
 
       <!-- Project 1: Text Left / Video Right -->
-      <div class="project-row" data-category="software">
+      <div class="project-row" data-category="software" id="project-radconnect">
         <div class="project-info">
           <span class="project-tag">Mobile App</span>
           <h3 class="project-title">RadConnect</h3>
@@ -712,7 +762,7 @@
       </div>
 
       <!-- Project 2: Video Left / Text Right -->
-      <div class="project-row reverse" data-category="software">
+      <div class="project-row reverse" data-category="software" id="project-homeostasis">
         <div class="project-info">
           <span class="project-tag">Web Tool</span>
           <h3 class="project-title">Homeostasis Diagnostic Tool</h3>
@@ -746,7 +796,7 @@
       </div>
 
       <!-- Project 3: Text Left / Video Right -->
-      <div class="project-row" data-category="software">
+      <div class="project-row" data-category="software" id="project-biofarm">
         <div class="project-info">
           <span class="project-tag">Hackathon</span>
           <h3 class="project-title">BioFarm</h3>
@@ -778,6 +828,37 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Permanent project list, always at the end of the section -->
+    <div class="projects-list-section" id="projectsList">
+      <div class="projects-list-sticky-note">
+        <span>click on a project to learn more / see more detail</span>
+      </div>
+
+      <ul class="projects-list">
+        <li>
+          <button class="projects-list-item" type="button" data-project="radconnect">
+            <span class="projects-list-index">01</span>
+            <span class="projects-list-name">RadConnect</span>
+            <span class="projects-list-tag">Mobile App</span>
+          </button>
+        </li>
+        <li>
+          <button class="projects-list-item" type="button" data-project="homeostasis">
+            <span class="projects-list-index">02</span>
+            <span class="projects-list-name">Homeostasis Diagnostic Tool</span>
+            <span class="projects-list-tag">Web Tool</span>
+          </button>
+        </li>
+        <li>
+          <button class="projects-list-item" type="button" data-project="biofarm">
+            <span class="projects-list-index">03</span>
+            <span class="projects-list-name">BioFarm</span>
+            <span class="projects-list-tag">Hackathon</span>
+          </button>
+        </li>
+      </ul>
     </div>
   </section>
 

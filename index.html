@@ -4,7 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mariem Chaouachi - Portfolio</title>
-  
+  <meta name="description" content="Mariem Chaouachi — Biomedical Engineering student building medical devices, imaging tools, embedded systems, and healthcare software." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mariem Chaouachi - Portfolio" />
+  <meta property="og:description" content="Biomedical Engineering student building medical devices, imaging tools, embedded systems, and healthcare software." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="Hero-me.png" />
+
+  <!-- Favicon (inline SVG, matches the terminal dot motif) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23faf8f0'/%3E%3Ccircle cx='20' cy='32' r='7' fill='%23ff5f57'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23febc2e'/%3E%3Ccircle cx='44' cy='32' r='7' fill='%2328c840'/%3E%3C/svg%3E" />
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +28,13 @@
   <nav class="navbar liquid-glass-container" id="navbar">
     <div class="nav-logo">Mariem Chaouachi</div>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills-terminal">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#home" data-section="home">Home</a></li>
+      <li><a href="#about" data-section="about">About</a></li>
+      <li><a href="#skills-terminal" data-section="skills-terminal">Skills</a></li>
+      <li><a href="#experience" data-section="experience">Experience</a></li>
+      <li><a href="#leadership" data-section="leadership">Leadership</a></li>
+      <li><a href="#projects" data-section="projects">Projects</a></li>
+      <li><a href="#contact" data-section="contact">Contact</a></li>
     </ul>
   </nav>
 
@@ -80,6 +91,120 @@
         <path d="M12 6L13.1 8.9L16 10L13.1 11.1L12 14L10.9 8.9L12 6Z" fill="#ffffff"/>
       </svg>
     </button>
+    <span class="ai-buddy-status" id="aiBuddyStatus">AI Buddy is under development 🚧</span>
+  </div>
+
+  <!-- CV Floating Component (mirrors AI Buddy, docks bottom-left) -->
+  <div class="cv-widget-container" id="cvWidgetContainer">
+    <span class="cv-widget-tooltip">Check my CV!</span>
+    <button class="cv-widget-btn" id="cvWidgetBtn" aria-label="View my CV" aria-haspopup="dialog">
+      <span class="cv-widget-preview">
+        <span class="cv-preview-heading">CV</span>
+        <span class="cv-preview-line" style="width: 82%;"></span>
+        <span class="cv-preview-line" style="width: 95%;"></span>
+        <span class="cv-preview-line" style="width: 60%;"></span>
+        <span class="cv-preview-gap"></span>
+        <span class="cv-preview-line" style="width: 88%;"></span>
+        <span class="cv-preview-line" style="width: 70%;"></span>
+        <span class="cv-preview-line" style="width: 92%;"></span>
+        <span class="cv-preview-line" style="width: 50%;"></span>
+      </span>
+    </button>
+  </div>
+
+  <!-- CV Modal -->
+  <div class="cv-modal-overlay" id="cvModalOverlay" role="dialog" aria-modal="true" aria-label="Curriculum Vitae">
+    <div class="cv-modal-content">
+      <button class="cv-modal-close" id="cvModalCloseBtn" aria-label="Close CV">&times;</button>
+
+      <div class="cv-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename">CV.pdf</span>
+        </div>
+        <div class="cv-modal-body">
+          <iframe src="cv.pdf#toolbar=0&navpanes=0&statusbar=0&scrollbar=0&view=FitH" class="cv-preview-frame" title="Mariem Chaouachi CV" scrolling="no"></iframe>
+        </div>
+      </div>
+
+      <a href="cv.pdf" download="Mariem-Chaouachi-CV.pdf" class="cv-download-btn">Download Me ⬇</a>
+    </div>
+  </div>
+
+  <!-- Skill Detail Modal -->
+  <div class="skill-modal-overlay" id="skillModalOverlay" role="dialog" aria-modal="true" aria-label="Skill details">
+    <div class="skill-modal-content">
+      <button class="cv-modal-close" id="skillModalCloseBtn" aria-label="Close">&times;</button>
+
+      <div class="skill-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename" id="skillModalFilename">skill.md</span>
+        </div>
+        <div class="skill-modal-body">
+          <div class="skill-modal-heading">
+            <img id="skillModalIcon" class="skill-modal-icon" src="" alt="" />
+            <span id="skillModalIconEmoji" class="skill-modal-icon skill-modal-icon-emoji"></span>
+            <h3 id="skillModalName">Skill</h3>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; how I learned it</span>
+            <p id="skillModalLearned"></p>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; where I used it</span>
+            <p id="skillModalUsed"></p>
+          </div>
+
+          <div class="skill-modal-block" id="skillModalCertBlock">
+            <span class="skill-modal-label">&gt; certificate</span>
+            <div id="skillModalCertArea"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Detail Modal -->
+  <div class="skill-modal-overlay" id="projectModalOverlay" role="dialog" aria-modal="true" aria-label="Project details">
+    <div class="skill-modal-content">
+      <button class="cv-modal-close" id="projectModalCloseBtn" aria-label="Close">&times;</button>
+
+      <div class="skill-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename" id="projectModalFilename">project.md</span>
+        </div>
+        <div class="skill-modal-body">
+          <div class="skill-modal-heading">
+            <span class="project-modal-tag" id="projectModalTag">Tag</span>
+            <h3 id="projectModalName">Project</h3>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; about</span>
+            <p id="projectModalDescription"></p>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; demo</span>
+            <div class="project-modal-video-box">
+              <video id="projectModalVideo" autoplay loop muted playsinline controls>
+                <source id="projectModalVideoSource" src="" type="video/mp4" />
+                Your browser does not support video playback.
+              </video>
+            </div>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; built with</span>
+            <div class="project-modal-stack" id="projectModalStack"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- About Me - 3D Page Flip Book Section -->
@@ -157,10 +282,10 @@
               <div class="page-content">
                 <h3>02. Engineering & Robotics</h3>
                 <p>
-                  Through active participation in robotics projects and the Biomed Innov club, I combine hands-on mechanical assembly, microcontrollers (Arduino, ESP32), and software development.
+                  Through active participation in robotics projects and clubs, I combine hands-on mechanical assembly, microcontrollers, and software development.
                 </p>
                 <p>
-                  I enjoy turning complex technical problems into functional prototypes—from diagnostic algorithms to embedded hardware solutions.
+                  I enjoy turning technical problems into functional prototypes.
                 </p>
                 <div class="page-number">3</div>
               </div>
@@ -208,6 +333,10 @@
       <div class="terminal-sticky">
         <h2 class="section-title-dark skills-fixed-title">Skills</h2>
 
+        <div class="skills-sticky-note">
+          <span>click any skill to see how &amp; where I used it</span>
+        </div>
+
         <div class="terminal-deck">
 
           <!-- Card 0: Languages -->
@@ -219,23 +348,23 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="html-css" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/html.png" alt="HTML / CSS" />
                     <span>HTML / CSS</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="javascript" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/javascript.png" alt="JavaScript" />
                     <span>JavaScript</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="typescript" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/typescript.png" alt="TypeScript" />
                     <span>TypeScript</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="python" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/python.png" alt="Python" />
                     <span>Python</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="cpp" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/cpp.png" alt="C / C++" />
                     <span>C / C++</span>
                   </div>
@@ -254,23 +383,23 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="arduino" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/arduino.png" alt="Arduino" />
                     <span>Arduino</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="esp32" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/esp32.png" alt="ESP32" />
                     <span>ESP32</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="sensor" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/sensor.png" alt="MAX30100 Sensor" />
                     <span>MAX30100 Sensor</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="circuit" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/circuit.png" alt="Circuit Design" />
                     <span>Circuit Design</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="embedded" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/embedded.png" alt="Embedded Systems" />
                     <span>Embedded Systems</span>
                   </div>
@@ -289,23 +418,23 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="unity" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/unity.png" alt="Unity" />
                     <span>Unity</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="react-native" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/react.png" alt="React Native" />
                     <span>React Native</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="nodejs" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/node.png" alt="Node.js" />
                     <span>Node.js</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="postgresql" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/postgresql.png" alt="PostgreSQL" />
                     <span>PostgreSQL</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="notion" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/notion.png" alt="Notion" />
                     <span>Notion</span>
                   </div>
@@ -324,21 +453,45 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="imaging" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/imaging.png" alt="Medical Imaging" />
                     <span>Medical Imaging</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="biomedical" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/biomedical.png" alt="Biomedical Devices" />
                     <span>Biomedical Devices</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="clinical" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/clinical.png" alt="Clinical Data" />
                     <span>Clinical Data</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container">
+                  <div class="skill-chip liquid-glass-container" data-skill="healthcare" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/healthcare.png" alt="Healthcare Innovation" />
                     <span>Healthcare Innovation</span>
+                  </div>
+                </div>
+                <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Spoken Languages -->
+          <div class="terminal-card" id="termCard4" data-index="4">
+            <div class="terminal-window liquid-glass-card">
+              <div class="terminal-titlebar">
+                <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                <span class="terminal-filename">spoken-languages</span>
+              </div>
+              <div class="terminal-body">
+                <div class="skills-glass-grid">
+                  <div class="skill-chip liquid-glass-container" data-skill="english" role="button" tabindex="0">
+                    <span>English</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="french" role="button" tabindex="0">
+                    <span>French</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="arabic" role="button" tabindex="0">
+                    <span>Arabic</span>
                   </div>
                 </div>
                 <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
@@ -358,9 +511,7 @@
 
       <div class="experience-gallery-wrapper">
         <div class="experience-gallery-track">
-
-          <!-- Connecting Horizontal Timeline Line (scrolls with cards) -->
-          <div class="experience-timeline-line"></div>
+          <div class="gallery-connector-line"></div>
 
           <!-- Experience Card 1 -->
           <div class="experience-card">
@@ -371,32 +522,6 @@
               <p class="timeline-desc">
                 Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
               </p>
-            </div>
-            
-            <div class="exp-photos-grid">
-              <!-- Photo 1 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp1_1.jpg" alt="Event photo 1" />
-                </div>
-              </div>
-
-              <!-- Photo 2 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp1_2.jpg" alt="Event photo 2" />
-                </div>
-              </div>
             </div>
           </div>
 
@@ -410,32 +535,6 @@
                 Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
               </p>
             </div>
-            
-            <div class="exp-photos-grid">
-              <!-- Photo 1 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp2_1.jpg" alt="Internship photo 1" />
-                </div>
-              </div>
-
-              <!-- Photo 2 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp2_2.jpg" alt="Internship photo 2" />
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Experience Card 3 -->
@@ -448,48 +547,190 @@
                 Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
               </p>
             </div>
-            
-            <div class="exp-photos-grid">
-              <!-- Photo 1 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp3_1.jpg" alt="Clinical photo 1" />
-                </div>
-              </div>
+          </div>
 
-              <!-- Photo 2 Container -->
-              <div class="exp-terminal-window">
-                <div class="terminal-titlebar">
-                  <span class="dot dot-red"></span>
-                  <span class="dot dot-yellow"></span>
-                  <span class="dot dot-green"></span>
-                </div>
-                <div class="exp-photo-box">
-                  <img src="exp3_2.jpg" alt="Clinical photo 2" />
-                </div>
-              </div>
+        </div>
+      </div>
+
+      <div class="photo-stripe-bar exp-photo-stripe-bar liquid-glass-container">
+        <div class="photo-stripe-track">
+          <div class="photo-stripe-content">
+            <img src="experience-strip/exp-strip-01.jpg" alt="" />
+            <img src="experience-strip/exp-strip-02.jpg" alt="" />
+            <img src="experience-strip/exp-strip-03.jpg" alt="" />
+            <img src="experience-strip/exp-strip-04.jpg" alt="" />
+            <img src="experience-strip/exp-strip-05.jpg" alt="" />
+            <img src="experience-strip/exp-strip-06.jpg" alt="" />
+            <img src="experience-strip/exp-strip-07.jpg" alt="" />
+            <img src="experience-strip/exp-strip-08.jpg" alt="" />
+            <img src="experience-strip/exp-strip-09.jpg" alt="" />
+            <img src="experience-strip/exp-strip-10.jpg" alt="" />
+            <img src="experience-strip/exp-strip-11.jpg" alt="" />
+            <img src="experience-strip/exp-strip-12.jpg" alt="" />
+            <img src="experience-strip/exp-strip-13.jpg" alt="" />
+            <img src="experience-strip/exp-strip-14.jpg" alt="" />
+            <img src="experience-strip/exp-strip-15.jpg" alt="" />
+            <img src="experience-strip/exp-strip-16.jpg" alt="" />
+            <img src="experience-strip/exp-strip-17.jpg" alt="" />
+            <img src="experience-strip/exp-strip-18.jpg" alt="" />
+            <img src="experience-strip/exp-strip-19.jpg" alt="" />
+            <img src="experience-strip/exp-strip-20.jpg" alt="" />
+          </div>
+          <div class="photo-stripe-content" aria-hidden="true">
+            <img src="experience-strip/exp-strip-01.jpg" alt="" />
+            <img src="experience-strip/exp-strip-02.jpg" alt="" />
+            <img src="experience-strip/exp-strip-03.jpg" alt="" />
+            <img src="experience-strip/exp-strip-04.jpg" alt="" />
+            <img src="experience-strip/exp-strip-05.jpg" alt="" />
+            <img src="experience-strip/exp-strip-06.jpg" alt="" />
+            <img src="experience-strip/exp-strip-07.jpg" alt="" />
+            <img src="experience-strip/exp-strip-08.jpg" alt="" />
+            <img src="experience-strip/exp-strip-09.jpg" alt="" />
+            <img src="experience-strip/exp-strip-10.jpg" alt="" />
+            <img src="experience-strip/exp-strip-11.jpg" alt="" />
+            <img src="experience-strip/exp-strip-12.jpg" alt="" />
+            <img src="experience-strip/exp-strip-13.jpg" alt="" />
+            <img src="experience-strip/exp-strip-14.jpg" alt="" />
+            <img src="experience-strip/exp-strip-15.jpg" alt="" />
+            <img src="experience-strip/exp-strip-16.jpg" alt="" />
+            <img src="experience-strip/exp-strip-17.jpg" alt="" />
+            <img src="experience-strip/exp-strip-18.jpg" alt="" />
+            <img src="experience-strip/exp-strip-19.jpg" alt="" />
+            <img src="experience-strip/exp-strip-20.jpg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Section -->
+  <section class="leadership-section" id="leadership">
+    <div class="leadership-pinned-container">
+      <h2 class="section-title-dark leadership-title-centered">Leadership</h2>
+
+      <div class="leadership-gallery-wrapper">
+        <div class="leadership-gallery-track">
+          <div class="gallery-connector-line"></div>
+
+          <!-- Leadership Card 1 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">Present</span>
+              <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
+              <p class="timeline-org">Biomed Innov Club</p>
+              <p class="timeline-desc">
+                Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
+              </p>
             </div>
           </div>
 
+          <!-- Leadership Card 2 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">Present</span>
+              <h3 class="timeline-role">Campus Leader</h3>
+              <p class="timeline-org">Notion</p>
+              <p class="timeline-desc">
+                Representing Notion on campus, helping students and organizations adopt it for their workflows.
+              </p>
+            </div>
+          </div>
+
+          <!-- Leadership Card 3 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">2026</span>
+              <h3 class="timeline-role">Ambassador</h3>
+              <p class="timeline-org">National Robotics Week</p>
+              <p class="timeline-desc">
+                Promoting robotics engagement and outreach as part of National Robotics Week.
+              </p>
+            </div>
+          </div>
+
+          <!-- Leadership Card 4 -->
+          <div class="experience-card leadership-card">
+            <div class="exp-content">
+              <span class="timeline-date">MindHack 1.0</span>
+              <h3 class="timeline-role">Challenger</h3>
+              <p class="timeline-org">MindHack 1.0 Hackathon</p>
+              <p class="timeline-desc">
+                Competed in MindHack 1.0, developing a project under hackathon time constraints.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="photo-stripe-bar leadership-photo-stripe-bar liquid-glass-container">
+        <div class="photo-stripe-track">
+          <div class="photo-stripe-content">
+            <img src="leadership-strip/lead-strip-01.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-02.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-03.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-04.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-05.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-06.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-07.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-08.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-09.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-10.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-11.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-12.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-13.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-14.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-15.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-16.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-17.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-18.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-19.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-20.jpg" alt="" />
+          </div>
+          <div class="photo-stripe-content" aria-hidden="true">
+            <img src="leadership-strip/lead-strip-01.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-02.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-03.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-04.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-05.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-06.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-07.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-08.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-09.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-10.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-11.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-12.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-13.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-14.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-15.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-16.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-17.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-18.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-19.jpg" alt="" />
+            <img src="leadership-strip/lead-strip-20.jpg" alt="" />
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Projects Section -->
-  <!-- Projects Section -->
   <section class="projects-section" id="projects">
     <h2 class="about-title">Projects</h2>
 
-    <div class="projects-container">
+    <div class="projects-tabs-row">
+      <div class="projects-tabs" role="tablist">
+        <button class="projects-tab active" data-filter="main" role="tab" aria-selected="true" type="button">Main</button>
+        <button class="projects-tab" data-filter="software" role="tab" aria-selected="false" type="button">Software</button>
+        <button class="projects-tab" data-filter="hardware" role="tab" aria-selected="false" type="button">Hardware</button>
+      </div>
+      <button class="projects-all-btn" id="projectsAllBtn" type="button">All</button>
+    </div>
+
+      <div class="projects-container" id="projectsContainer">
 
       <!-- Project 1: Text Left / Video Right -->
-      <div class="project-row">
+      <div class="project-row" data-category="software" id="project-radconnect">
         <div class="project-info">
           <span class="project-tag">Mobile App</span>
           <h3 class="project-title">RadConnect</h3>
@@ -523,7 +764,7 @@
       </div>
 
       <!-- Project 2: Video Left / Text Right -->
-      <div class="project-row reverse">
+      <div class="project-row reverse" data-category="software" id="project-homeostasis">
         <div class="project-info">
           <span class="project-tag">Web Tool</span>
           <h3 class="project-title">Homeostasis Diagnostic Tool</h3>
@@ -557,7 +798,7 @@
       </div>
 
       <!-- Project 3: Text Left / Video Right -->
-      <div class="project-row">
+      <div class="project-row" data-category="software" id="project-biofarm">
         <div class="project-info">
           <span class="project-tag">Hackathon</span>
           <h3 class="project-title">BioFarm</h3>
@@ -589,41 +830,37 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Project 4: Video Left / Text Right -->
-      <div class="project-row reverse">
-        <div class="project-info">
-          <span class="project-tag">Game Prototype</span>
-          <h3 class="project-title">NeuroBalance</h3>
-          <p class="project-description">
-            A neurochemistry simulation game modeling how serotonin, dopamine, and cortisol interact — built as a single-file, fully playable HTML/CSS/JS prototype.
-          </p>
-          <div class="project-stack">
-            <span>HTML</span><span>CSS</span><span>JavaScript</span>
-          </div>
-          <a href="https://github.com/your-username/neurobalance" target="_blank" rel="noopener" class="project-link">
-            open project <span class="arrow">↗</span>
-          </a>
-        </div>
-
-        <div class="project-media">
-          <div class="project-terminal-window">
-            <div class="terminal-titlebar">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-yellow"></span>
-              <span class="dot dot-green"></span>
-              <span class="terminal-filename">neurobalance-demo.mp4</span>
-            </div>
-            <div class="project-video-box">
-              <video autoplay loop muted playsinline>
-                <source src="videos/neurobalance.mp4" type="video/mp4" />
-                Your browser does not support video playback.
-              </video>
-            </div>
-          </div>
-        </div>
+    <!-- Permanent project list, always at the end of the section -->
+    <div class="projects-list-section" id="projectsList">
+      <div class="projects-list-sticky-note">
+        <span>click on a project to learn more / see more detail</span>
       </div>
 
+      <ul class="projects-list">
+        <li>
+          <button class="projects-list-item" type="button" data-project="radconnect">
+            <span class="projects-list-index">01</span>
+            <span class="projects-list-name">RadConnect</span>
+            <span class="projects-list-tag">Mobile App</span>
+          </button>
+        </li>
+        <li>
+          <button class="projects-list-item" type="button" data-project="homeostasis">
+            <span class="projects-list-index">02</span>
+            <span class="projects-list-name">Homeostasis Diagnostic Tool</span>
+            <span class="projects-list-tag">Web Tool</span>
+          </button>
+        </li>
+        <li>
+          <button class="projects-list-item" type="button" data-project="biofarm">
+            <span class="projects-list-index">03</span>
+            <span class="projects-list-name">BioFarm</span>
+            <span class="projects-list-tag">Hackathon</span>
+          </button>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -672,15 +909,6 @@
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>what is this cursor thing?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <p>It's a custom interactive pixel cursor element integrated directly into the website theme.</p>
-        </div>
-      </div>
 
       <div class="faq-item">
         <button class="faq-question">
@@ -698,7 +926,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Built from scratch by Mariem Chaouachi.</p>
+          <p>Built from scratch by me</p>
         </div>
       </div>
     </div>
@@ -719,14 +947,14 @@
           <span class="contact-detail-icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6.5C3 5.67157 3.67157 5 4.5 5H19.5C20.3284 5 21 5.67157 21 6.5V17.5C21 18.3284 20.3284 19 19.5 19H4.5C3.67157 19 3 18.3284 3 17.5V6.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M4 6.5L12 13L20 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
-          <span class="contact-detail-text">your.email@example.com</span>
+          <span class="contact-detail-text">mariemchaouachi18@gmail.com</span>
         </a>
 
         <a href="https://wa.me/21600000000" class="contact-detail-row" target="_blank" rel="noopener">
           <span class="contact-detail-icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.02 3.4C7.17 3.4 3.23 7.34 3.23 12.19c0 1.6.42 3.16 1.22 4.53L3.1 21.4l4.78-1.25a8.98 8.98 0 0 0 4.14 1.06h.01c4.85 0 8.79-3.94 8.79-8.79a8.75 8.75 0 0 0-2.62-6.1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.4 8.4c-.19-.42-.39-.43-.57-.44-.15-.01-.32-.01-.49-.01-.17 0-.45.06-.68.32-.24.26-.9.87-.9 2.13 0 1.26.92 2.47 1.04 2.64.13.17 1.78 2.85 4.4 3.88 2.17.85 2.61.68 3.08.64.47-.04 1.53-.62 1.75-1.23.21-.6.21-1.11.15-1.22-.06-.11-.23-.17-.49-.3-.25-.13-1.53-.75-1.77-.84-.24-.09-.41-.13-.58.13-.17.26-.66.83-.81 1-.15.17-.3.19-.55.06-.26-.13-1.08-.39-2.05-1.25-.76-.67-1.27-1.5-1.42-1.75-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.46.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.55-1.38-.78-1.9Z" fill="currentColor"/></svg>
           </span>
-          <span class="contact-detail-text">+216 00 000 000 · WhatsApp</span>
+          <span class="contact-detail-text">+216 99 387 764 · WhatsApp</span>
         </a>
 
         <div class="contact-detail-row contact-detail-static">
@@ -739,15 +967,15 @@
 
       <!-- Social Links -->
       <div class="contact-links">
-        <a href="https://linkedin.com/in/your-profile" class="contact-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/in/mariem-chaouachi/" class="contact-link" target="_blank" rel="noopener" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 10.5V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.5" cy="7.3" r="1.1" fill="currentColor"/><path d="M11.5 17V13.4C11.5 11.9 12.4 10.9 13.7 10.9C15 10.9 15.7 11.8 15.7 13.4V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.5 10.7V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           <span>LinkedIn</span>
         </a>
-        <a href="https://github.com/your-username" class="contact-link" target="_blank" rel="noopener" aria-label="GitHub">
+        <a href="https://github.com/mariem-chaouachi" class="contact-link" target="_blank" rel="noopener" aria-label="GitHub">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.58 2 12.2C2 16.68 4.87 20.47 8.84 21.8C9.34 21.89 9.52 21.58 9.52 21.31C9.52 21.07 9.51 20.29 9.51 19.46C7 19.96 6.35 18.86 6.15 18.28C6.04 18 5.55 17.12 5.12 16.88C4.77 16.69 4.27 16.19 5.11 16.18C5.9 16.17 6.46 16.91 6.65 17.2C7.55 18.72 8.98 18.29 9.55 18.03C9.64 17.37 9.9 16.93 10.19 16.68C7.95 16.43 5.6 15.55 5.6 11.68C5.6 10.58 5.99 9.68 6.67 8.97C6.57 8.72 6.21 7.7 6.77 6.32C6.77 6.32 7.65 6.05 9.52 7.33C10.31 7.11 11.15 7 12 7C12.85 7 13.69 7.11 14.48 7.33C16.35 6.04 17.23 6.32 17.23 6.32C17.79 7.7 17.43 8.72 17.33 8.97C18.01 9.68 18.4 10.57 18.4 11.68C18.4 15.56 16.04 16.43 13.8 16.68C14.17 16.99 14.49 17.6 14.49 18.54C14.49 19.89 14.48 20.97 14.48 21.31C14.48 21.58 14.66 21.9 15.16 21.8C19.13 20.46 22 16.68 22 12.2C22 6.58 17.52 2 12 2Z" fill="currentColor"/></svg>
           <span>GitHub</span>
         </a>
-        <a href="https://instagram.com/your-handle" class="contact-link" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="https://www.instagram.com/marym_chaouachi/" class="contact-link" target="_blank" rel="noopener" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg>
           <span>Instagram</span>
         </a>

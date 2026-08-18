@@ -33,6 +33,7 @@
       <li><a href="#skills-terminal" data-section="skills-terminal">Skills</a></li>
       <li><a href="#experience" data-section="experience">Experience</a></li>
       <li><a href="#leadership" data-section="leadership">Leadership</a></li>
+      <li><a href="#awards" data-section="awards">Awards</a></li>
       <li><a href="#projects" data-section="projects">Projects</a></li>
       <li><a href="#contact" data-section="contact">Contact</a></li>
     </ul>
@@ -207,6 +208,39 @@
     </div>
   </div>
 
+  <!-- Experience / Leadership Detail Modal -->
+  <div class="skill-modal-overlay" id="experienceModalOverlay" role="dialog" aria-modal="true" aria-label="Experience details">
+    <div class="skill-modal-content">
+      <button class="cv-modal-close" id="experienceModalCloseBtn" aria-label="Close">&times;</button>
+
+      <div class="skill-modal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename" id="experienceModalFilename">role.md</span>
+        </div>
+        <div class="skill-modal-body">
+          <div class="skill-modal-heading exp-modal-heading">
+            <div>
+              <h3 id="experienceModalRole">Role</h3>
+              <p class="exp-modal-org" id="experienceModalOrg"></p>
+            </div>
+            <span class="exp-modal-date" id="experienceModalDate"></span>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; about</span>
+            <p id="experienceModalDescription"></p>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label">&gt; certificate</span>
+            <img class="skill-cert-image" id="experienceModalCert" src="" alt="Certificate" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- About Me - 3D Page Flip Book Section -->
   <section class="about-section" id="about">
     <h2 class="about-title">About Me</h2>
@@ -344,9 +378,10 @@
             <div class="terminal-window liquid-glass-card">
               <div class="terminal-titlebar">
                 <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                <span class="terminal-filename">languages</span>
+                <span class="terminal-filename">software</span>
               </div>
               <div class="terminal-body">
+                <span class="skills-subcategory-label">// languages</span>
                 <div class="skills-glass-grid">
                   <div class="skill-chip liquid-glass-container" data-skill="html-css" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/html.png" alt="HTML / CSS" />
@@ -369,54 +404,8 @@
                     <span>C / C++</span>
                   </div>
                 </div>
-                <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
-              </div>
-            </div>
-          </div>
 
-          <!-- Card 1: Hardware -->
-          <div class="terminal-card" id="termCard1" data-index="1">
-            <div class="terminal-window liquid-glass-card">
-              <div class="terminal-titlebar">
-                <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                <span class="terminal-filename">hardware</span>
-              </div>
-              <div class="terminal-body">
-                <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container" data-skill="arduino" role="button" tabindex="0">
-                    <img class="skill-icon" src="Skills/arduino.png" alt="Arduino" />
-                    <span>Arduino</span>
-                  </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="esp32" role="button" tabindex="0">
-                    <img class="skill-icon" src="Skills/esp32.png" alt="ESP32" />
-                    <span>ESP32</span>
-                  </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="sensor" role="button" tabindex="0">
-                    <img class="skill-icon" src="Skills/sensor.png" alt="MAX30100 Sensor" />
-                    <span>MAX30100 Sensor</span>
-                  </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="circuit" role="button" tabindex="0">
-                    <img class="skill-icon" src="Skills/circuit.png" alt="Circuit Design" />
-                    <span>Circuit Design</span>
-                  </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="embedded" role="button" tabindex="0">
-                    <img class="skill-icon" src="Skills/embedded.png" alt="Embedded Systems" />
-                    <span>Embedded Systems</span>
-                  </div>
-                </div>
-                <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: Tools -->
-          <div class="terminal-card" id="termCard2" data-index="2">
-            <div class="terminal-window liquid-glass-card">
-              <div class="terminal-titlebar">
-                <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                <span class="terminal-filename">tools</span>
-              </div>
-              <div class="terminal-body">
+                <span class="skills-subcategory-label">// tools &amp; frameworks</span>
                 <div class="skills-glass-grid">
                   <div class="skill-chip liquid-glass-container" data-skill="unity" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/unity.png" alt="Unity" />
@@ -439,19 +428,45 @@
                     <span>Notion</span>
                   </div>
                 </div>
+
                 <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
               </div>
             </div>
           </div>
 
-          <!-- Card 3: Domain -->
-          <div class="terminal-card" id="termCard3" data-index="3">
+          <!-- Card 1: Hardware -->
+          <div class="terminal-card" id="termCard1" data-index="1">
             <div class="terminal-window liquid-glass-card">
               <div class="terminal-titlebar">
                 <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                <span class="terminal-filename">domain</span>
+                <span class="terminal-filename">hardware</span>
               </div>
               <div class="terminal-body">
+                <span class="skills-subcategory-label">// hardware</span>
+                <div class="skills-glass-grid">
+                  <div class="skill-chip liquid-glass-container" data-skill="arduino" role="button" tabindex="0">
+                    <img class="skill-icon" src="Skills/arduino.png" alt="Arduino" />
+                    <span>Arduino</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="esp32" role="button" tabindex="0">
+                    <img class="skill-icon" src="Skills/esp32.png" alt="ESP32" />
+                    <span>ESP32</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="sensor" role="button" tabindex="0">
+                    <img class="skill-icon" src="Skills/sensor.png" alt="MAX30100 Sensor" />
+                    <span>MAX30100 Sensor</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="circuit" role="button" tabindex="0">
+                    <img class="skill-icon" src="Skills/circuit.png" alt="Circuit Design" />
+                    <span>Circuit Design</span>
+                  </div>
+                  <div class="skill-chip liquid-glass-container" data-skill="embedded" role="button" tabindex="0">
+                    <img class="skill-icon" src="Skills/embedded.png" alt="Embedded Systems" />
+                    <span>Embedded Systems</span>
+                  </div>
+                </div>
+
+                <span class="skills-subcategory-label">// domain</span>
                 <div class="skills-glass-grid">
                   <div class="skill-chip liquid-glass-container" data-skill="imaging" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/imaging.png" alt="Medical Imaging" />
@@ -470,17 +485,18 @@
                     <span>Healthcare Innovation</span>
                   </div>
                 </div>
+
                 <p class="term-line term-cursor"><span class="prompt">mariem@istmt</span><span class="path">~</span><span class="prompt-sign">$</span> <span class="blink">▌</span></p>
               </div>
             </div>
           </div>
 
-          <!-- Card 4: Spoken Languages -->
-          <div class="terminal-card" id="termCard4" data-index="4">
+          <!-- Card 2: Languages (spoken) -->
+          <div class="terminal-card" id="termCard2" data-index="2">
             <div class="terminal-window liquid-glass-card">
               <div class="terminal-titlebar">
                 <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                <span class="terminal-filename">spoken-languages</span>
+                <span class="terminal-filename">languages</span>
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
@@ -514,38 +530,47 @@
           <div class="gallery-connector-line"></div>
 
           <!-- Experience Card 1 -->
-          <div class="experience-card">
-            <div class="exp-content">
-              <span class="timeline-date">Present</span>
-              <h3 class="timeline-role">Head of External Relations</h3>
-              <p class="timeline-org">Club Biomed Innov · ISTMT</p>
-              <p class="timeline-desc">
-                Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
-              </p>
+          <div class="experience-card" data-card="external-relations" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/external-relations.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">Present</span>
+                <h3 class="timeline-role">Head of External Relations</h3>
+                <p class="timeline-org">Club Biomed Innov · ISTMT</p>
+                <p class="timeline-desc">
+                  Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Experience Card 2 -->
-          <div class="experience-card">
-            <div class="exp-content">
-              <span class="timeline-date">July 2026</span>
-              <h3 class="timeline-role">Observation Internship</h3>
-              <p class="timeline-org">STIET — Philips Distributor, Tunisia</p>
-              <p class="timeline-desc">
-                Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
-              </p>
+          <div class="experience-card" data-card="stiet-internship" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/stiet-internship.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">July 2026</span>
+                <h3 class="timeline-role">Observation Internship</h3>
+                <p class="timeline-org">STIET — Philips Distributor, Tunisia</p>
+                <p class="timeline-desc">
+                  Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Experience Card 3 -->
-          <div class="experience-card">
-            <div class="exp-content">
-              <span class="timeline-date">Clinical Practice</span>
-              <h3 class="timeline-role">Clinical Internship</h3>
-              <p class="timeline-org">Clinique Zaghouan</p>
-              <p class="timeline-desc">
-                Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
-              </p>
+          <div class="experience-card" data-card="clinical-internship" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/clinical-internship.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">Clinical Practice</span>
+                <h3 class="timeline-role">Clinical Internship</h3>
+                <p class="timeline-org">Clinique Zaghouan</p>
+                <p class="timeline-desc">
+                  Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -613,50 +638,62 @@
           <div class="gallery-connector-line"></div>
 
           <!-- Leadership Card 1 -->
-          <div class="experience-card leadership-card">
-            <div class="exp-content">
-              <span class="timeline-date">Present</span>
-              <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
-              <p class="timeline-org">Biomed Innov Club</p>
-              <p class="timeline-desc">
-                Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
-              </p>
+          <div class="experience-card leadership-card" data-card="sponsorship" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/sponsorship.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">Present</span>
+                <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
+                <p class="timeline-org">Biomed Innov Club</p>
+                <p class="timeline-desc">
+                  Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Leadership Card 2 -->
-          <div class="experience-card leadership-card">
-            <div class="exp-content">
-              <span class="timeline-date">Present</span>
-              <h3 class="timeline-role">Campus Leader</h3>
-              <p class="timeline-org">Notion</p>
-              <p class="timeline-desc">
-                Representing Notion on campus, helping students and organizations adopt it for their workflows.
-              </p>
+          <div class="experience-card leadership-card" data-card="notion-campus-leader" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/notion-campus-leader.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">Present</span>
+                <h3 class="timeline-role">Campus Leader</h3>
+                <p class="timeline-org">Notion</p>
+                <p class="timeline-desc">
+                  Representing Notion on campus, helping students and organizations adopt it for their workflows.
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Leadership Card 3 -->
-          <div class="experience-card leadership-card">
-            <div class="exp-content">
-              <span class="timeline-date">2026</span>
-              <h3 class="timeline-role">Ambassador</h3>
-              <p class="timeline-org">National Robotics Week</p>
-              <p class="timeline-desc">
-                Promoting robotics engagement and outreach as part of National Robotics Week.
-              </p>
+          <div class="experience-card leadership-card" data-card="robotics-week" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/robotics-week.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">2026</span>
+                <h3 class="timeline-role">Ambassador</h3>
+                <p class="timeline-org">National Robotics Week</p>
+                <p class="timeline-desc">
+                  Promoting robotics engagement and outreach as part of National Robotics Week.
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Leadership Card 4 -->
-          <div class="experience-card leadership-card">
-            <div class="exp-content">
-              <span class="timeline-date">MindHack 1.0</span>
-              <h3 class="timeline-role">Challenger</h3>
-              <p class="timeline-org">MindHack 1.0 Hackathon</p>
-              <p class="timeline-desc">
-                Competed in MindHack 1.0, developing a project under hackathon time constraints.
-              </p>
+          <div class="experience-card leadership-card" data-card="mindhack" role="button" tabindex="0">
+            <div class="exp-card-inner">
+              <img class="exp-cert-thumb" src="certs/mindhack.png" alt="Certificate" />
+              <div class="exp-content">
+                <span class="timeline-date">MindHack 1.0</span>
+                <h3 class="timeline-role">Challenger</h3>
+                <p class="timeline-org">MindHack 1.0 Hackathon</p>
+                <p class="timeline-desc">
+                  Competed in MindHack 1.0, developing a project under hackathon time constraints.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -709,6 +746,25 @@
             <img src="leadership-strip/lead-strip-19.jpg" alt="" />
             <img src="leadership-strip/lead-strip-20.jpg" alt="" />
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Awards & Honors Section -->
+  <section class="awards-section" id="awards">
+    <h2 class="about-title">Awards &amp; Honors</h2>
+
+    <div class="awards-grid">
+      <div class="award-card project-terminal-window">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename">mindhack.md</span>
+        </div>
+        <div class="award-card-body">
+          <span class="award-icon">🏆</span>
+          <h3>MindHack 1.0 Hackathon</h3>
+          <p>Competed as a challenger, developing a project under hackathon time constraints.</p>
         </div>
       </div>
     </div>

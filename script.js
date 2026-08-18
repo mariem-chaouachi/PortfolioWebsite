@@ -390,6 +390,111 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Experience / Leadership Detail Modal
+  const experienceDetails = {
+    'external-relations': {
+      role: 'Head of External Relations',
+      org: 'Club Biomed Innov · ISTMT',
+      date: 'Present',
+      description: "Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.",
+      certImage: 'certs/external-relations.png'
+    },
+    'stiet-internship': {
+      role: 'Observation Internship',
+      org: 'STIET — Philips Distributor, Tunisia',
+      date: 'July 2026',
+      description: "Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.",
+      certImage: 'certs/stiet-internship.png'
+    },
+    'clinical-internship': {
+      role: 'Clinical Internship',
+      org: 'Clinique Zaghouan',
+      date: 'Clinical Practice',
+      description: "Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.",
+      certImage: 'certs/clinical-internship.png'
+    },
+    'sponsorship': {
+      role: 'External Relations & Sponsorship Manager',
+      org: 'Biomed Innov Club',
+      date: 'Present',
+      description: "Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.",
+      certImage: 'certs/sponsorship.png'
+    },
+    'notion-campus-leader': {
+      role: 'Campus Leader',
+      org: 'Notion',
+      date: 'Present',
+      description: "Representing Notion on campus, helping students and organizations adopt it for their workflows.",
+      certImage: 'certs/notion-campus-leader.png'
+    },
+    'robotics-week': {
+      role: 'Ambassador',
+      org: 'National Robotics Week',
+      date: '2026',
+      description: "Promoting robotics engagement and outreach as part of National Robotics Week.",
+      certImage: 'certs/robotics-week.png'
+    },
+    'mindhack': {
+      role: 'Challenger',
+      org: 'MindHack 1.0 Hackathon',
+      date: 'MindHack 1.0',
+      description: "Competed in MindHack 1.0, developing a project under hackathon time constraints.",
+      certImage: 'certs/mindhack.png'
+    }
+  };
+
+  const experienceModalOverlay = document.getElementById('experienceModalOverlay');
+  const experienceModalCloseBtn = document.getElementById('experienceModalCloseBtn');
+  const experienceModalFilename = document.getElementById('experienceModalFilename');
+  const experienceModalRole = document.getElementById('experienceModalRole');
+  const experienceModalOrg = document.getElementById('experienceModalOrg');
+  const experienceModalDate = document.getElementById('experienceModalDate');
+  const experienceModalDescription = document.getElementById('experienceModalDescription');
+  const experienceModalCert = document.getElementById('experienceModalCert');
+
+  function openExperienceModal(slug) {
+    const data = experienceDetails[slug];
+    if (!data) return;
+
+    experienceModalFilename.textContent = `${slug}.md`;
+    experienceModalRole.textContent = data.role;
+    experienceModalOrg.textContent = data.org;
+    experienceModalDate.textContent = data.date;
+    experienceModalDescription.textContent = data.description;
+    experienceModalCert.src = data.certImage;
+    experienceModalCert.alt = `${data.role} certificate`;
+
+    experienceModalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeExperienceModal() {
+    experienceModalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.experience-card[data-card]').forEach((card) => {
+    card.addEventListener('click', () => openExperienceModal(card.dataset.card));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openExperienceModal(card.dataset.card);
+      }
+    });
+  });
+
+  experienceModalCloseBtn.addEventListener('click', closeExperienceModal);
+
+  experienceModalOverlay.addEventListener('click', (e) => {
+    if (e.target === experienceModalOverlay) closeExperienceModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && experienceModalOverlay.classList.contains('active')) {
+      closeExperienceModal();
+    }
+  });
+
   // Nav Scroll-Spy
   const navLinks = document.querySelectorAll('.nav-links a[data-section]');
   const spySections = Array.from(navLinks)
@@ -557,7 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       windowEl.style.transformOrigin = "bottom center";
 
-      const initialWidth = windowEl.offsetWidth || 795;
+      const initialWidth = windowEl.offsetWidth || 950;
       const minScale = 1 / initialWidth;
 
       const initialDeckOffsetY = (cards.length - 1 - index) * 10;

@@ -126,6 +126,59 @@ body {
   font-weight: 700;
 }
 
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #000000;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 14, 12, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* Visible keyboard-focus states (site previously suppressed outline with no replacement) */
 .book-btn:focus-visible,
 .faq-question:focus-visible,
@@ -1557,13 +1610,37 @@ h2.skills-fixed-title {
   width: 100%;
 }
 
+/* Certificate now sits on the right, sized to its own content rather than
+   a forced crop — capped so it can't dominate the card. */
 .exp-cert-thumb {
-  width: 96px;
-  height: 128px;
-  object-fit: cover;
+  max-width: 130px;
+  max-height: 160px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   border-radius: 10px;
   border: 1px solid #e2ddd3;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+  background: #ffffff;
+}
+
+.exp-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.exp-card-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2ddd3;
+  padding: 4px;
   flex-shrink: 0;
 }
 
@@ -1706,8 +1783,9 @@ h2.skills-fixed-title {
   max-width: 1200px;
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 220px));
+  justify-content: center;
+  gap: 20px;
 }
 
 .award-card {
@@ -1716,22 +1794,37 @@ h2.skills-fixed-title {
 }
 
 .award-card-body {
-  padding: 26px 26px 30px;
+  padding: 18px 18px 22px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 6px;
 }
 
-.award-icon {
-  font-size: 2rem;
-  line-height: 1;
+.award-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2ddd3;
+  padding: 4px;
   margin-bottom: 4px;
+}
+
+.award-cert {
+  width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #e2ddd3;
+  margin-top: 6px;
+  background: #ffffff;
 }
 
 .award-card-body h3 {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #2b1f1d;
   margin: 0;
@@ -1739,8 +1832,8 @@ h2.skills-fixed-title {
 
 .award-card-body p {
   font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.92rem;
-  line-height: 1.5;
+  font-size: 0.85rem;
+  line-height: 1.45;
   color: #333333;
   margin: 0;
 }
@@ -2227,6 +2320,10 @@ a.contact-detail-row:hover {
     flex-wrap: wrap;
     gap: 20px;
   }
+
+  .tv-left { order: 1; }
+  .book-container { order: 2; }
+  .tv-right { order: 3; }
 }
 
 @media (max-width: 900px) {
@@ -2371,4 +2468,323 @@ a.contact-detail-row:hover {
   line-height: 1.6;
   color: #555555;
   margin: 0;
+}
+/* ======================================================================
+   MOBILE RESPONSIVE LAYER
+   Below 900px: the pinned scroll-jacking sections (Skills, Experience,
+   Leadership) switch from horizontal/stacked-deck scroll animations to a
+   plain vertical stack — scroll-jacking is unreliable on touch devices,
+   so this trades the desktop choreography for a layout that just works.
+   ====================================================================== */
+@media (max-width: 900px) {
+
+  /* ---- Navbar / hamburger menu ---- */
+  .navbar {
+    top: 10px;
+    width: 94%;
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .nav-logo {
+    font-size: 1.05rem;
+  }
+
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(78vw, 320px);
+    height: 100vh;
+    background: #faf8f0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 90px 28px 40px;
+    box-sizing: border-box;
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.15);
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 95;
+    overflow-y: auto;
+  }
+
+  .nav-links.mobile-open {
+    right: 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    width: 100%;
+    padding: 14px 6px;
+    font-size: 1.05rem;
+    border-bottom: 1px solid rgba(107, 60, 46, 0.12);
+  }
+
+  .nav-links a:hover {
+    transform: none;
+  }
+
+  /* ---- Hero ---- */
+  .hero-greeting {
+    font-size: 2.1rem;
+  }
+
+  .hero-tagline {
+    font-size: 3.4rem;
+  }
+
+  .name-highlight::before,
+  .name-highlight::after {
+    width: 10px;
+    height: 10px;
+  }
+
+  .hero-profile-pic {
+    height: 58vh;
+  }
+
+  /* ---- Floating widgets (CV / AI Buddy) ---- */
+  .ai-buddy-container,
+  .cv-widget-container {
+    top: auto;
+    bottom: 90px;
+    transform: none;
+  }
+
+  .ai-buddy-container { right: 16px; }
+  .cv-widget-container { left: 16px; }
+
+  .ai-buddy-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ai-buddy-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .ai-buddy-tooltip {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .cv-widget-preview {
+    width: 100px;
+    height: 128px;
+    padding: 12px 10px;
+    gap: 5px;
+  }
+
+  .cv-preview-heading {
+    font-size: 1.1rem;
+  }
+
+  .cv-widget-tooltip {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .ai-buddy-container.docked-bottom-right,
+  .cv-widget-container.docked-bottom-left {
+    bottom: 16px;
+  }
+
+  /* ---- Skills: drop the pinned scroll-jack for a plain stacked list ---- */
+  .terminal-scroll-stage {
+    height: auto !important;
+  }
+
+  .terminal-sticky {
+    position: static;
+    height: auto;
+    padding: 60px 5vw 40px;
+  }
+
+  .skills-sticky-note {
+    display: none;
+  }
+
+  .terminal-deck {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .terminal-card {
+    position: static !important;
+    width: 100% !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  .terminal-window {
+    max-width: 100%;
+  }
+
+  .terminal-dock {
+    display: none;
+  }
+
+  /* ---- Experience & Leadership: same static-stack treatment ---- */
+  .experience-section,
+  .leadership-section {
+    height: auto !important;
+  }
+
+  .experience-pinned-container,
+  .leadership-pinned-container {
+    position: static;
+    height: auto;
+    width: 100%;
+    padding: 60px 5vw 0;
+  }
+
+  .experience-gallery-wrapper,
+  .leadership-gallery-wrapper {
+    position: static;
+    width: 100%;
+  }
+
+  .experience-gallery-track,
+  .leadership-gallery-track {
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    gap: 24px;
+    transform: none !important;
+  }
+
+  .gallery-connector-line {
+    display: none;
+  }
+
+  .experience-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .exp-card-inner {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .exp-cert-thumb {
+    max-width: 100%;
+    max-height: 200px;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .photo-stripe-bar {
+    flex: none;
+    height: 90px;
+    margin-top: 24px;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  /* ---- Awards ---- */
+  .awards-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---- Projects ---- */
+  .projects-tabs-row {
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .projects-tab {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .projects-all-btn {
+    padding: 7px 16px;
+    font-size: 0.78rem;
+  }
+
+  .projects-list-item {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  .projects-list-name {
+    font-size: 1.05rem;
+  }
+
+  /* ---- Modals ---- */
+  .skill-modal-content,
+  .cv-modal-content {
+    width: 94vw;
+  }
+
+  .skill-modal-body {
+    padding: 22px 20px 26px;
+  }
+
+  .skill-modal-heading h3,
+  .exp-modal-heading h3 {
+    font-size: 1.15rem;
+  }
+
+  .cv-modal-window {
+    height: min(80vh, 950px);
+  }
+
+  /* ---- General heading scale-down (reinforces existing 768px rule) ---- */
+  .skills-fixed-title,
+  .exp-title-centered,
+  .leadership-title-centered {
+    font-size: 2.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-tagline {
+    font-size: 2.6rem;
+  }
+
+  .hero-greeting {
+    font-size: 1.7rem;
+  }
+
+  .cv-widget-preview {
+    width: 80px;
+    height: 102px;
+  }
+
+  .skill-chip {
+    padding: 8px 12px;
+  }
+
+  .skill-chip span {
+    font-size: 0.85rem;
+  }
+
+  .exp-card-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .timeline-role {
+    font-size: 1.15rem;
+  }
 }

@@ -27,7 +27,7 @@
   <!-- Liquid Glass Navigation Bar -->
   <nav class="navbar liquid-glass-container" id="navbar">
     <div class="nav-logo">Mariem Chaouachi</div>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="#home" data-section="home">Home</a></li>
       <li><a href="#about" data-section="about">About</a></li>
       <li><a href="#skills-terminal" data-section="skills-terminal">Skills</a></li>
@@ -37,7 +37,11 @@
       <li><a href="#projects" data-section="projects">Projects</a></li>
       <li><a href="#contact" data-section="contact">Contact</a></li>
     </ul>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
 
   <!-- Hero Section -->
   <section class="hero-section" id="home">
@@ -529,48 +533,54 @@
         <div class="experience-gallery-track">
           <div class="gallery-connector-line"></div>
 
-          <!-- Experience Card 1 -->
           <div class="experience-card" data-card="external-relations" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/external-relations.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">Present</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/biomed-innov.png" alt="Club Biomed Innov · ISTMT logo" />
+                  <span class="timeline-date">Present</span>
+                </div>
                 <h3 class="timeline-role">Head of External Relations</h3>
                 <p class="timeline-org">Club Biomed Innov · ISTMT</p>
                 <p class="timeline-desc">
                   Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/external-relations.png" alt="Certificate" />
             </div>
           </div>
 
-          <!-- Experience Card 2 -->
           <div class="experience-card" data-card="stiet-internship" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/stiet-internship.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">July 2026</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/stiet.png" alt="STIET — Philips Distributor, Tunisia logo" />
+                  <span class="timeline-date">July 2026</span>
+                </div>
                 <h3 class="timeline-role">Observation Internship</h3>
                 <p class="timeline-org">STIET — Philips Distributor, Tunisia</p>
                 <p class="timeline-desc">
                   Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/stiet-internship.png" alt="Certificate" />
             </div>
           </div>
 
-          <!-- Experience Card 3 -->
           <div class="experience-card" data-card="clinical-internship" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/clinical-internship.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">Clinical Practice</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/clinique-zaghouan.png" alt="Clinique Zaghouan logo" />
+                  <span class="timeline-date">Clinical Practice</span>
+                </div>
                 <h3 class="timeline-role">Clinical Internship</h3>
                 <p class="timeline-org">Clinique Zaghouan</p>
                 <p class="timeline-desc">
                   Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/clinical-internship.png" alt="Certificate" />
             </div>
           </div>
 
@@ -637,63 +647,71 @@
         <div class="leadership-gallery-track">
           <div class="gallery-connector-line"></div>
 
-          <!-- Leadership Card 1 -->
           <div class="experience-card leadership-card" data-card="sponsorship" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/sponsorship.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">Present</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/biomed-innov.png" alt="Biomed Innov Club logo" />
+                  <span class="timeline-date">Present</span>
+                </div>
                 <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
                 <p class="timeline-org">Biomed Innov Club</p>
                 <p class="timeline-desc">
                   Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/sponsorship.png" alt="Certificate" />
             </div>
           </div>
 
-          <!-- Leadership Card 2 -->
           <div class="experience-card leadership-card" data-card="notion-campus-leader" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/notion-campus-leader.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">Present</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/notion.png" alt="Notion logo" />
+                  <span class="timeline-date">Present</span>
+                </div>
                 <h3 class="timeline-role">Campus Leader</h3>
                 <p class="timeline-org">Notion</p>
                 <p class="timeline-desc">
                   Representing Notion on campus, helping students and organizations adopt it for their workflows.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/notion-campus-leader.png" alt="Certificate" />
             </div>
           </div>
 
-          <!-- Leadership Card 3 -->
           <div class="experience-card leadership-card" data-card="robotics-week" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/robotics-week.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">2026</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/robotics-week.png" alt="National Robotics Week logo" />
+                  <span class="timeline-date">2026</span>
+                </div>
                 <h3 class="timeline-role">Ambassador</h3>
                 <p class="timeline-org">National Robotics Week</p>
                 <p class="timeline-desc">
                   Promoting robotics engagement and outreach as part of National Robotics Week.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/robotics-week.png" alt="Certificate" />
             </div>
           </div>
 
-          <!-- Leadership Card 4 -->
           <div class="experience-card leadership-card" data-card="mindhack" role="button" tabindex="0">
             <div class="exp-card-inner">
-              <img class="exp-cert-thumb" src="certs/mindhack.png" alt="Certificate" />
               <div class="exp-content">
-                <span class="timeline-date">MindHack 1.0</span>
+                <div class="exp-card-header">
+                  <img class="exp-card-logo" src="logos/mindhack.png" alt="MindHack 1.0 Hackathon logo" />
+                  <span class="timeline-date">MindHack 1.0</span>
+                </div>
                 <h3 class="timeline-role">Challenger</h3>
                 <p class="timeline-org">MindHack 1.0 Hackathon</p>
                 <p class="timeline-desc">
                   Competed in MindHack 1.0, developing a project under hackathon time constraints.
                 </p>
               </div>
+              <img class="exp-cert-thumb" src="certs/mindhack.png" alt="Certificate" />
             </div>
           </div>
 
@@ -762,9 +780,10 @@
           <span class="terminal-filename">mindhack.md</span>
         </div>
         <div class="award-card-body">
-          <span class="award-icon">🏆</span>
+          <img class="award-logo" src="logos/mindhack.png" alt="MindHack 1.0 logo" />
           <h3>MindHack 1.0 Hackathon</h3>
           <p>Competed as a challenger, developing a project under hackathon time constraints.</p>
+          <img class="award-cert" src="certs/award-mindhack.png" alt="MindHack 1.0 certificate" />
         </div>
       </div>
     </div>

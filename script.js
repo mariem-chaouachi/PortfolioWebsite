@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobileMediaQuery = window.matchMedia('(max-width: 900px)');
+  function isMobileLayout() {
+    return mobileMediaQuery.matches;
+  }
 
   // Bind Mouse Glow for all Liquid Glass Containers
   if (!prefersReducedMotion) {
@@ -495,6 +499,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Mobile hamburger nav
+  const navHamburger = document.getElementById('navHamburger');
+  const navLinksEl = document.getElementById('navLinks');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function closeMobileNav() {
+    navHamburger.classList.remove('open');
+    navLinksEl.classList.remove('mobile-open');
+    navOverlay.classList.remove('active');
+    navHamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  function toggleMobileNav() {
+    const isOpen = navLinksEl.classList.toggle('mobile-open');
+    navHamburger.classList.toggle('open', isOpen);
+    navOverlay.classList.toggle('active', isOpen);
+    navHamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  if (navHamburger) {
+    navHamburger.addEventListener('click', toggleMobileNav);
+    navOverlay.addEventListener('click', closeMobileNav);
+    navLinksEl.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileNav);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMobileNav();
+    });
+  }
+
   // Nav Scroll-Spy
   const navLinks = document.querySelectorAll('.nav-links a[data-section]');
   const spySections = Array.from(navLinks)
@@ -637,6 +673,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateTerminals() {
+    if (isMobileLayout()) {
+      dock.classList.remove("is-visible");
+      return;
+    }
+
     const { progress, inSection } = getProgress();
 
     if (inSection) {
@@ -743,6 +784,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return function update() {
+      if (isMobileLayout()) {
+        track.style.transform = '';
+        return;
+      }
+
       const rect = section.getBoundingClientRect();
       const sectionHeight = section.offsetHeight;
       const viewportHeight = window.innerHeight;

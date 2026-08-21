@@ -437,13 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
       date: '2026',
       description: "Promoting robotics engagement and outreach as part of National Robotics Week.",
       certImage: 'certs/robotics-week.png'
-    },
-    'mindhack': {
-      role: 'Challenger',
-      org: 'MindHack 1.0 Hackathon',
-      date: 'MindHack 1.0',
-      description: "Competed in MindHack 1.0, developing a project under hackathon time constraints.",
-      certImage: 'certs/mindhack.png'
     }
   };
 
@@ -675,6 +668,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateTerminals() {
     if (isMobileLayout()) {
       dock.classList.remove("is-visible");
+      cards.forEach((card) => {
+        const windowEl = card.querySelector(".terminal-window");
+        windowEl.style.transform = '';
+        windowEl.style.opacity = '';
+        card.style.pointerEvents = '';
+      });
       return;
     }
 

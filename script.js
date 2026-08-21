@@ -20,10 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Scroll Handler for AI Buddy + CV Widget Docking
+  // Scroll Handler for CV Widget Docking
   // Large ("hero style") at the very top of the page AND while the
-  // Let's Connect section is in view; docked to the corners everywhere else.
-  const aiBuddyContainer = document.getElementById('aiBuddyContainer');
+  // Let's Connect section is in view; docked to the corner everywhere else.
   const cvWidgetContainer = document.getElementById('cvWidgetContainer');
   const contactSection = document.getElementById('contact');
 
@@ -35,26 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
       large = rect.top < window.innerHeight * 0.65 && rect.bottom > window.innerHeight * 0.15;
     }
 
-    aiBuddyContainer.classList.toggle('docked-bottom-right', !large);
     cvWidgetContainer.classList.toggle('docked-bottom-left', !large);
   }
 
   window.addEventListener('scroll', updateWidgetDocking, { passive: true });
   window.addEventListener('resize', updateWidgetDocking);
   updateWidgetDocking();
-
-  // AI Buddy: "under development" status toast
-  const aiBuddyBtn = document.getElementById('aiBuddyBtn');
-  const aiBuddyStatus = document.getElementById('aiBuddyStatus');
-  let aiBuddyStatusTimer = null;
-
-  aiBuddyBtn.addEventListener('click', () => {
-    aiBuddyStatus.classList.add('show');
-    clearTimeout(aiBuddyStatusTimer);
-    aiBuddyStatusTimer = setTimeout(() => {
-      aiBuddyStatus.classList.remove('show');
-    }, 2800);
-  });
 
   // CV Modal
   const cvWidgetBtn = document.getElementById('cvWidgetBtn');
@@ -399,6 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'external-relations': {
       role: 'Head of External Relations',
       org: 'Club Biomed Innov · ISTMT',
+      orgUrl: 'https://www.instagram.com/club_biomed_innov/',
       date: 'Present',
       description: "Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.",
       certImage: 'certs/external-relations.png'
@@ -406,6 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'stiet-internship': {
       role: 'Observation Internship',
       org: 'STIET — Philips Distributor, Tunisia',
+      orgUrl: 'https://stiet.com.tn/',
       date: 'July 2026',
       description: "Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.",
       certImage: 'certs/stiet-internship.png'
@@ -413,6 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'clinical-internship': {
       role: 'Clinical Internship',
       org: 'Clinique Zaghouan',
+      orgUrl: 'http://www.clinique-zaghouan.com/',
       date: 'Clinical Practice',
       description: "Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.",
       certImage: 'certs/clinical-internship.png'
@@ -420,6 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'sponsorship': {
       role: 'External Relations & Sponsorship Manager',
       org: 'Biomed Innov Club',
+      orgUrl: 'https://www.instagram.com/club_biomed_innov/',
       date: 'Present',
       description: "Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.",
       certImage: 'certs/sponsorship.png'
@@ -427,15 +416,17 @@ document.addEventListener("DOMContentLoaded", () => {
     'notion-campus-leader': {
       role: 'Campus Leader',
       org: 'Notion',
+      orgUrl: 'https://www.notion.so/',
       date: 'Present',
       description: "Representing Notion on campus, helping students and organizations adopt it for their workflows.",
       certImage: 'certs/notion-campus-leader.png'
     },
     'robotics-week': {
       role: 'Ambassador',
-      org: 'National Robotics Week',
+      org: 'National Robotics Weekend',
+      orgUrl: 'https://nrw.ieee.tn/',
       date: '2026',
-      description: "Promoting robotics engagement and outreach as part of National Robotics Week.",
+      description: "Promoting robotics engagement and outreach as part of National Robotics Weekend.",
       certImage: 'certs/robotics-week.png'
     }
   };
@@ -456,6 +447,7 @@ document.addEventListener("DOMContentLoaded", () => {
     experienceModalFilename.textContent = `${slug}.md`;
     experienceModalRole.textContent = data.role;
     experienceModalOrg.textContent = data.org;
+    experienceModalOrg.href = data.orgUrl || '#';
     experienceModalDate.textContent = data.date;
     experienceModalDescription.textContent = data.description;
     experienceModalCert.src = data.certImage;
@@ -478,6 +470,11 @@ document.addEventListener("DOMContentLoaded", () => {
         openExperienceModal(card.dataset.card);
       }
     });
+
+    const orgLink = card.querySelector('.timeline-org');
+    if (orgLink) {
+      orgLink.addEventListener('click', (e) => e.stopPropagation());
+    }
   });
 
   experienceModalCloseBtn.addEventListener('click', closeExperienceModal);

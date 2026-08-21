@@ -182,7 +182,6 @@ body {
 /* Visible keyboard-focus states (site previously suppressed outline with no replacement) */
 .book-btn:focus-visible,
 .faq-question:focus-visible,
-.ai-buddy-btn:focus-visible,
 .cv-widget-btn:focus-visible,
 .nav-links a:focus-visible,
 .contact-link:focus-visible,
@@ -352,131 +351,6 @@ body {
 @keyframes marqueeRightToLeft {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
-}
-
-/* AI Buddy Floating Component */
-.ai-buddy-container {
-  position: fixed;
-  top: 70%;
-  right: 12vw;
-  left: auto;
-  bottom: auto;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 10px;
-  z-index: 150;
-
-  transition:
-    top 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    left 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ai-buddy-tooltip {
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.95rem;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 6px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  white-space: nowrap;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-  pointer-events: none;
-  text-align: center;
-  transition:
-    opacity 0.4s ease,
-    font-size 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    padding 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ai-buddy-btn {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-
-  transition:
-    transform 0.3s ease,
-    width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ai-buddy-btn:hover {
-  transform: scale(1.08);
-}
-
-.ai-buddy-icon {
-  width: 45px;
-  height: 45px;
-  color: #6b3c2e;
-  position: relative;
-  z-index: 2;
-
-  transition:
-    width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ai-buddy-container.docked-bottom-right {
-  top: auto;
-  left: auto;
-  bottom: 24px;
-  right: 24px;
-  transform: translateY(0);
-  flex-direction: row;
-}
-
-.ai-buddy-container.docked-bottom-right .ai-buddy-btn {
-  width: 56px;
-  height: 56px;
-}
-
-.ai-buddy-container.docked-bottom-right .ai-buddy-icon {
-  width: 28px;
-  height: 28px;
-}
-
-.ai-buddy-container.docked-bottom-right .ai-buddy-tooltip {
-  font-size: 0.85rem;
-  padding: 4px 10px;
-}
-
-.ai-buddy-status {
-  position: absolute;
-  top: 50%;
-  right: 110%;
-  transform: translateY(-50%);
-  white-space: nowrap;
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.85rem;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 8px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.ai-buddy-status.show {
-  opacity: 1;
-  transform: translateY(-50%) translateX(-6px);
 }
 
 /* CV Floating Component — mirrors AI Buddy, docks bottom-left */
@@ -859,11 +733,22 @@ body {
 }
 
 .exp-modal-org {
+  display: inline-block;
   font-family: 'Roboto Mono', 'Roboto', monospace;
   font-size: 0.9rem;
   font-weight: 600;
   color: #6b3c2e;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(107, 60, 46, 0.4);
   margin-top: 4px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.exp-modal-org:hover,
+.exp-modal-org:focus-visible {
+  color: #a8583b;
+  border-bottom-color: #a8583b;
+  outline: none;
 }
 
 .exp-modal-date {
@@ -1239,7 +1124,15 @@ h2.skills-fixed-title {
 
 @media (max-width: 1100px) {
   .skills-sticky-note {
-    display: none;
+    position: static;
+    margin: 0 auto 24px;
+    transform: rotate(-4deg);
+    width: fit-content;
+    max-width: 220px;
+  }
+
+  .skills-sticky-note:hover {
+    transform: rotate(-1deg) scale(1.03);
   }
 }
 
@@ -1631,20 +1524,24 @@ h2.skills-fixed-title {
 .exp-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
   width: 100%;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .exp-card-logo {
-  width: 38px;
-  height: 38px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid #e2ddd3;
-  padding: 4px;
   flex-shrink: 0;
+}
+
+.exp-card-heading-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .exp-content {
@@ -1698,6 +1595,7 @@ h2.skills-fixed-title {
   align-items: center;
   gap: 5px;
   height: 100%;
+  margin-right: 5px;
   animation: marqueeRightToLeft 30s linear infinite;
 }
 
@@ -1743,14 +1641,24 @@ h2.skills-fixed-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: #2b1f1d;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .timeline-org {
   font-family: 'Pixelify Sans', sans-serif;
   font-size: 0.95rem;
   color: #a8583b;
-  margin-bottom: 12px;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(168, 88, 59, 0.4);
+  width: fit-content;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.timeline-org:hover,
+.timeline-org:focus-visible {
+  color: #6b3c2e;
+  border-bottom-color: #6b3c2e;
+  outline: none;
 }
 
 .timeline-desc {
@@ -1786,9 +1694,9 @@ h2.skills-fixed-title {
   max-width: 1200px;
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 220px));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 300px));
   justify-content: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .award-card {
@@ -1797,27 +1705,54 @@ h2.skills-fixed-title {
 }
 
 .award-card-body {
-  padding: 18px 18px 22px;
+  padding: 24px 24px 28px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 8px;
+}
+
+.award-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .award-logo {
-  width: 34px;
-  height: 34px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid #e2ddd3;
-  padding: 4px;
-  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.award-header-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.award-org-link {
+  font-family: 'Roboto Mono', 'Roboto', monospace;
+  font-size: 0.75rem;
+  color: #a8583b;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(168, 88, 59, 0.4);
+  width: fit-content;
+  margin-top: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.award-org-link:hover,
+.award-org-link:focus-visible {
+  color: #6b3c2e;
+  border-bottom-color: #6b3c2e;
+  outline: none;
 }
 
 .award-cert {
   width: 100%;
-  max-height: 140px;
+  max-height: 170px;
   object-fit: contain;
   border-radius: 8px;
   border: 1px solid #e2ddd3;
@@ -1827,7 +1762,7 @@ h2.skills-fixed-title {
 
 .award-card-body h3 {
   font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #2b1f1d;
   margin: 0;
@@ -1835,8 +1770,8 @@ h2.skills-fixed-title {
 
 .award-card-body p {
   font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.85rem;
-  line-height: 1.45;
+  font-size: 0.92rem;
+  line-height: 1.5;
   color: #333333;
   margin: 0;
 }
@@ -2018,7 +1953,15 @@ h2.skills-fixed-title {
 
 @media (max-width: 900px) {
   .projects-list-sticky-note {
-    display: none;
+    position: static;
+    margin: 0 auto 20px;
+    transform: rotate(-3deg);
+    width: fit-content;
+    max-width: 220px;
+  }
+
+  .projects-list-sticky-note:hover {
+    transform: rotate(0deg) scale(1.03);
   }
 }
 
@@ -2327,6 +2270,31 @@ a.contact-detail-row:hover {
   .book-container { order: 2; }
   .book-controls { order: 3; }
   .tv-right { order: 4; }
+
+  .book {
+    width: 260px;
+    height: 377px;
+  }
+}
+
+@media (max-width: 480px) {
+  .book {
+    width: 200px;
+    height: 290px;
+  }
+
+  .cover-design h3 {
+    font-size: 2.2rem;
+  }
+
+  .cover-design p {
+    font-size: 0.8rem;
+  }
+
+  .book-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2554,30 +2522,12 @@ a.contact-detail-row:hover {
     height: 58vh;
   }
 
-  /* ---- Floating widgets (CV / AI Buddy) ---- */
-  .ai-buddy-container,
+  /* ---- Floating widget (CV) ---- */
   .cv-widget-container {
     top: auto;
     bottom: 90px;
     transform: none;
-  }
-
-  .ai-buddy-container { right: 16px; }
-  .cv-widget-container { left: 16px; }
-
-  .ai-buddy-btn {
-    width: 60px;
-    height: 60px;
-  }
-
-  .ai-buddy-icon {
-    width: 26px;
-    height: 26px;
-  }
-
-  .ai-buddy-tooltip {
-    font-size: 0.7rem;
-    padding: 3px 8px;
+    left: 16px;
   }
 
   .cv-widget-preview {
@@ -2596,7 +2546,6 @@ a.contact-detail-row:hover {
     padding: 3px 8px;
   }
 
-  .ai-buddy-container.docked-bottom-right,
   .cv-widget-container.docked-bottom-left {
     bottom: 16px;
   }

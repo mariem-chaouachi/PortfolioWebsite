@@ -87,18 +87,6 @@
     </div>
   </section>
 
-  <!-- AI Buddy Floating Component -->
-  <div class="ai-buddy-container" id="aiBuddyContainer">
-    <span class="ai-buddy-tooltip">Ask my AI Buddy about me</span>
-    <button class="ai-buddy-btn liquid-glass-container" id="aiBuddyBtn" aria-label="Chat with AI Buddy">
-      <svg class="ai-buddy-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.477 2 2 6.029 2 11C2 13.593 3.23 15.918 5.21 17.584L4.2 21.36a0.75 0.75 0 0 0 0.95.91l4.28-1.78C10.15 20.81 11.06 21 12 21C17.523 21 22 16.971 22 12C22 7.029 17.523 2 12 2Z" fill="currentColor"/>
-        <path d="M12 6L13.1 8.9L16 10L13.1 11.1L12 14L10.9 8.9L12 6Z" fill="#ffffff"/>
-      </svg>
-    </button>
-    <span class="ai-buddy-status" id="aiBuddyStatus">AI Buddy is under development 🚧</span>
-  </div>
-
   <!-- CV Floating Component (mirrors AI Buddy, docks bottom-left) -->
   <div class="cv-widget-container" id="cvWidgetContainer">
     <span class="cv-widget-tooltip">Check my CV!</span>
@@ -226,7 +214,7 @@
           <div class="skill-modal-heading exp-modal-heading">
             <div>
               <h3 id="experienceModalRole">Role</h3>
-              <p class="exp-modal-org" id="experienceModalOrg"></p>
+              <a class="exp-modal-org" id="experienceModalOrg" href="" target="_blank" rel="noopener"></a>
             </div>
             <span class="exp-modal-date" id="experienceModalDate"></span>
           </div>
@@ -538,10 +526,12 @@
               <div class="exp-content">
                 <div class="exp-card-header">
                   <img class="exp-card-logo" src="logos/biomed-innov.png" alt="Club Biomed Innov · ISTMT logo" />
+                  <div class="exp-card-heading-text">
+                    <h3 class="timeline-role">Head of External Relations</h3>
+                    <a class="timeline-org" href="https://www.instagram.com/club_biomed_innov/" target="_blank" rel="noopener">Club Biomed Innov · ISTMT</a>
+                  </div>
                   <span class="timeline-date">Present</span>
                 </div>
-                <h3 class="timeline-role">Head of External Relations</h3>
-                <p class="timeline-org">Club Biomed Innov · ISTMT</p>
                 <p class="timeline-desc">
                   Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.
                 </p>
@@ -555,10 +545,12 @@
               <div class="exp-content">
                 <div class="exp-card-header">
                   <img class="exp-card-logo" src="logos/stiet.png" alt="STIET — Philips Distributor, Tunisia logo" />
+                  <div class="exp-card-heading-text">
+                    <h3 class="timeline-role">Observation Internship</h3>
+                    <a class="timeline-org" href="https://stiet.com.tn/" target="_blank" rel="noopener">STIET — Philips Distributor, Tunisia</a>
+                  </div>
                   <span class="timeline-date">July 2026</span>
                 </div>
-                <h3 class="timeline-role">Observation Internship</h3>
-                <p class="timeline-org">STIET — Philips Distributor, Tunisia</p>
                 <p class="timeline-desc">
                   Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
                 </p>
@@ -572,10 +564,12 @@
               <div class="exp-content">
                 <div class="exp-card-header">
                   <img class="exp-card-logo" src="logos/clinique-zaghouan.png" alt="Clinique Zaghouan logo" />
+                  <div class="exp-card-heading-text">
+                    <h3 class="timeline-role">Clinical Internship</h3>
+                    <a class="timeline-org" href="http://www.clinique-zaghouan.com/" target="_blank" rel="noopener">Clinique Zaghouan</a>
+                  </div>
                   <span class="timeline-date">Clinical Practice</span>
                 </div>
-                <h3 class="timeline-role">Clinical Internship</h3>
-                <p class="timeline-org">Clinique Zaghouan</p>
                 <p class="timeline-desc">
                   Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
                 </p>
@@ -652,10 +646,12 @@
               <div class="exp-content">
                 <div class="exp-card-header">
                   <img class="exp-card-logo" src="logos/biomed-innov.png" alt="Biomed Innov Club logo" />
+                  <div class="exp-card-heading-text">
+                    <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
+                    <a class="timeline-org" href="https://www.instagram.com/club_biomed_innov/" target="_blank" rel="noopener">Biomed Innov Club</a>
+                  </div>
                   <span class="timeline-date">Present</span>
                 </div>
-                <h3 class="timeline-role">External Relations &amp; Sponsorship Manager</h3>
-                <p class="timeline-org">Biomed Innov Club</p>
                 <p class="timeline-desc">
                   Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.
                 </p>
@@ -669,10 +665,12 @@
               <div class="exp-content">
                 <div class="exp-card-header">
                   <img class="exp-card-logo" src="logos/notion.png" alt="Notion logo" />
+                  <div class="exp-card-heading-text">
+                    <h3 class="timeline-role">Campus Leader</h3>
+                    <a class="timeline-org" href="https://www.notion.so/" target="_blank" rel="noopener">Notion</a>
+                  </div>
                   <span class="timeline-date">Present</span>
                 </div>
-                <h3 class="timeline-role">Campus Leader</h3>
-                <p class="timeline-org">Notion</p>
                 <p class="timeline-desc">
                   Representing Notion on campus, helping students and organizations adopt it for their workflows.
                 </p>
@@ -685,13 +683,15 @@
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
-                  <img class="exp-card-logo" src="logos/robotics-week.png" alt="National Robotics Week logo" />
+                  <img class="exp-card-logo" src="logos/robotics-week.png" alt="National Robotics Weekend logo" />
+                  <div class="exp-card-heading-text">
+                    <h3 class="timeline-role">Ambassador</h3>
+                    <a class="timeline-org" href="https://nrw.ieee.tn/" target="_blank" rel="noopener">National Robotics Weekend</a>
+                  </div>
                   <span class="timeline-date">2026</span>
                 </div>
-                <h3 class="timeline-role">Ambassador</h3>
-                <p class="timeline-org">National Robotics Week</p>
                 <p class="timeline-desc">
-                  Promoting robotics engagement and outreach as part of National Robotics Week.
+                  Promoting robotics engagement and outreach as part of National Robotics Weekend.
                 </p>
               </div>
               <img class="exp-cert-thumb" src="certs/robotics-week.png" alt="Certificate" />
@@ -763,8 +763,13 @@
           <span class="terminal-filename">mindhack.md</span>
         </div>
         <div class="award-card-body">
-          <img class="award-logo" src="logos/mindhack.png" alt="MindHack 1.0 logo" />
-          <h3>MindHack 1.0 Hackathon</h3>
+          <div class="award-header">
+            <img class="award-logo" src="logos/mindhack.png" alt="MindHack 1.0 Hackathon logo" />
+            <div class="award-header-text">
+              <h3>MindHack 1.0 Hackathon</h3>
+              <a class="award-org-link" href="https://ieee.tn/event/mind-hack-1-0/" target="_blank" rel="noopener">ieee.tn/event/mind-hack-1-0</a>
+            </div>
+          </div>
           <p>Competed as a challenger, developing a project under hackathon time constraints.</p>
           <img class="award-cert" src="certs/award-mindhack.png" alt="MindHack 1.0 certificate" />
         </div>

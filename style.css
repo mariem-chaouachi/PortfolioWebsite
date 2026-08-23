@@ -132,14 +132,16 @@ body {
   justify-content: center;
   align-items: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
   position: relative;
   z-index: 3;
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-hamburger span {
@@ -233,7 +235,7 @@ body {
 
 .hero-greeting {
   font-family: 'Roboto', sans-serif;
-  font-size: 3.6rem;
+  font-size: 4.6rem;
   font-weight: 400;
   letter-spacing: 1px;
   margin-bottom: 4px;
@@ -552,23 +554,18 @@ body {
 }
 
 /* Close button floats above the terminal window, outside it */
-.cv-modal-close {
-  position: absolute;
-  top: -48px;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(250, 248, 240, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
+.terminal-dot-close {
+  padding: 0;
+  border: none;
   cursor: pointer;
-  font-size: 1.2rem;
-  line-height: 1;
-  color: #6b3c2e;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.terminal-dot-close:hover,
+.terminal-dot-close:focus-visible {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 3px rgba(255, 95, 87, 0.3);
+  outline: none;
 }
 
 .cv-modal-close:hover {
@@ -1513,12 +1510,10 @@ h2.skills-fixed-title {
   max-height: 160px;
   width: auto;
   height: auto;
-  object-fit: contain;
   border-radius: 10px;
   border: 1px solid #e2ddd3;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   flex-shrink: 0;
-  background: #ffffff;
 }
 
 .exp-card-header {
@@ -1751,13 +1746,13 @@ h2.skills-fixed-title {
 }
 
 .award-cert {
-  width: 100%;
+  max-width: 100%;
   max-height: 170px;
-  object-fit: contain;
+  width: auto;
+  height: auto;
   border-radius: 8px;
   border: 1px solid #e2ddd3;
   margin-top: 6px;
-  background: #ffffff;
 }
 
 .award-card-body h3 {
@@ -2299,30 +2294,21 @@ a.contact-detail-row:hover {
 
 @media (max-width: 900px) {
   .book-container { max-width: 95vw; }
-  .book { width: 80vw; }
-  .terminal-deck { width: 94vw; height: 360px; }
 }
 
 @media (max-width: 768px) {
   .about-title, .section-title-dark { font-size: 2.8rem; }
-  .book-container { height: 440px; }
-  .page-front, .page-back { padding: 24px 20px; }
   .page-content h3 { font-size: 1.8rem; }
   .page-content p { font-size: 0.88rem; }
 
-  .terminal-deck { width: 94vw; height: 340px; }
-  .terminal-body { padding: 20px 16px 24px; }
   .skill-chip span { font-size: 0.95rem; }
   .skill-icon { width: 18px; height: 18px; }
 
   .projects-grid { grid-template-columns: 1fr; }
   .contact-card { padding: 32px 24px; }
-  .experience-card { width: 85vw; }
 }
 
 @media (max-width: 480px) {
-  .terminal-deck { width: 96vw; height: 310px; }
-  .terminal-body { padding: 16px 12px 20px; }
   .skill-chip { padding: 8px 12px; }
 }
 
@@ -2505,7 +2491,7 @@ a.contact-detail-row:hover {
 
   /* ---- Hero ---- */
   .hero-greeting {
-    font-size: 2.1rem;
+    font-size: 2.7rem;
   }
 
   .hero-tagline {
@@ -2520,6 +2506,66 @@ a.contact-detail-row:hover {
 
   .hero-profile-pic {
     height: 58vh;
+  }
+
+  /* ---- About: TVs a touch bigger, tighter book-to-controls gap,
+     bigger controls-to-TV gap, and book/pages fully readable ---- */
+  .tv-screen-terminal {
+    width: 250px !important;
+  }
+
+  .book-stage {
+    row-gap: 14px;
+  }
+
+  .book-controls {
+    margin-top: 4px;
+  }
+
+  .tv-right {
+    margin-top: 36px;
+  }
+
+  .book-container {
+    perspective: none;
+    max-width: 95vw;
+    padding-bottom: 0;
+  }
+
+  .book {
+    position: static;
+    width: min(88vw, 320px);
+    height: auto;
+    transform: none !important;
+    transition: none;
+  }
+
+  .page {
+    position: static;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    transform-style: flat;
+  }
+
+  .page-front,
+  .page-back {
+    position: static;
+    width: 100%;
+    height: auto;
+    min-height: calc(min(88vw, 320px) * 1.414);
+    max-height: 72vh;
+    overflow-y: auto;
+    transform: none !important;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+    border-radius: 12px;
+    display: none;
+  }
+
+  .page-front.mobile-active,
+  .page-back.mobile-active {
+    display: flex;
   }
 
   /* ---- Floating widget (CV) ---- */
@@ -2559,10 +2605,6 @@ a.contact-detail-row:hover {
     position: static;
     height: auto;
     padding: 60px 5vw 40px;
-  }
-
-  .skills-sticky-note {
-    display: none;
   }
 
   .terminal-deck {
@@ -2634,15 +2676,21 @@ a.contact-detail-row:hover {
   }
 
   .exp-cert-thumb {
-    max-width: 100%;
-    max-height: 200px;
-    width: 100%;
-    object-fit: contain;
+    max-width: 60%;
+    max-height: 220px;
+    width: auto;
+    height: auto;
+  }
+
+  /* Date pill always drops to its own line under the logo/title/org group */
+  .timeline-date {
+    flex-basis: 100%;
+    margin-top: 6px;
   }
 
   .photo-stripe-bar {
     flex: none;
-    height: 90px;
+    height: 140px;
     margin-top: 24px;
     margin-bottom: 0;
     position: relative;
@@ -2658,19 +2706,25 @@ a.contact-detail-row:hover {
 
   /* ---- Projects ---- */
   .projects-tabs-row {
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-wrap: nowrap;
+    gap: 6px;
     align-items: center;
   }
 
+  .projects-tabs {
+    gap: 3px;
+  }
+
   .projects-tab {
-    padding: 8px 14px;
-    font-size: 0.8rem;
+    padding: 6px 9px;
+    font-size: 0.68rem;
+    border-radius: 8px 8px 0 0;
   }
 
   .projects-all-btn {
-    padding: 7px 16px;
-    font-size: 0.78rem;
+    padding: 6px 11px;
+    font-size: 0.68rem;
+    flex-shrink: 0;
   }
 
   .projects-list-item {
@@ -2680,6 +2734,10 @@ a.contact-detail-row:hover {
 
   .projects-list-name {
     font-size: 1.05rem;
+  }
+
+  .faq-heading {
+    font-size: 2.4rem;
   }
 
   /* ---- Modals ---- */
@@ -2715,7 +2773,7 @@ a.contact-detail-row:hover {
   }
 
   .hero-greeting {
-    font-size: 1.7rem;
+    font-size: 2.2rem;
   }
 
   .cv-widget-preview {

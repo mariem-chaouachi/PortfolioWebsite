@@ -592,7 +592,30 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.disabled = currentPageIndex === totalPagePairs;
   }
 
+  // Mobile: one readable page/face at a time instead of the 3D spread.
+  // DOM order of .page-front/.page-back across page0→page2 already gives
+  // the correct linear reading sequence: cover, p1, p2, p3, p4, back cover.
+  const allFaces = Array.from(book.querySelectorAll('.page-front, .page-back'));
+  const mobileLabels = ['Cover', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Back Cover'];
+  let mobilePageIndex = 0;
+
+  function updateMobileBook() {
+    allFaces.forEach((face, i) => {
+      face.classList.toggle('mobile-active', i === mobilePageIndex);
+    });
+    pageIndicator.textContent = mobileLabels[mobilePageIndex] || '';
+    prevBtn.disabled = mobilePageIndex === 0;
+    nextBtn.disabled = mobilePageIndex === allFaces.length - 1;
+  }
+
   nextBtn.addEventListener('click', () => {
+    if (isMobileLayout()) {
+      if (mobilePageIndex < allFaces.length - 1) {
+        mobilePageIndex++;
+        updateMobileBook();
+      }
+      return;
+    }
     if (currentPageIndex < totalPagePairs) {
       currentPageIndex++;
       updateBook();
@@ -600,6 +623,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   prevBtn.addEventListener('click', () => {
+    if (isMobileLayout()) {
+      if (mobilePageIndex > 0) {
+        mobilePageIndex--;
+        updateMobileBook();
+      }
+      return;
+    }
     if (currentPageIndex > 0) {
       currentPageIndex--;
       updateBook();
@@ -608,6 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   pages.forEach((page, idx) => {
     page.addEventListener('click', () => {
+      if (isMobileLayout()) return;
       if (idx === currentPageIndex) {
         currentPageIndex++;
         updateBook();
@@ -619,6 +650,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   updateBook();
+  updateMobileBook();
 
   // Terminal Deck Scroll & Dock Animation
   const stage = document.querySelector(".terminal-scroll-stage");
@@ -901,6 +933,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTerminals();
     updateExperienceScroll();
     updateLeadershipScroll();
+    updateBook();
+    updateMobileBook();
   });
 
   updateTerminals();

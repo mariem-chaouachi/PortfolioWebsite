@@ -235,7 +235,7 @@ body {
 
 .hero-greeting {
   font-family: 'Roboto', sans-serif;
-  font-size: 4.6rem;
+  font-size: 3.6rem;
   font-weight: 400;
   letter-spacing: 1px;
   margin-bottom: 4px;
@@ -244,7 +244,7 @@ body {
 
 .hero-tagline {
   font-family: 'Pinyon Script', cursive;
-  font-size: 6.5rem;
+  font-size: 5.2rem;
   font-weight: 700;
   line-height: 1;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
@@ -359,8 +359,8 @@ body {
 .cv-widget-container {
   position: fixed;
   top: 70%;
-  left: 12vw;
-  right: auto;
+  right: 12vw;
+  left: auto;
   bottom: auto;
   transform: translateY(-50%);
   display: flex;
@@ -451,35 +451,35 @@ body {
   height: 6px;
 }
 
-.cv-widget-container.docked-bottom-left {
+.cv-widget-container.docked-bottom-right {
   top: auto;
-  left: 24px;
-  right: auto;
+  right: 24px;
+  left: auto;
   bottom: 24px;
   transform: translateY(0);
 }
 
-.cv-widget-container.docked-bottom-left .cv-widget-preview {
+.cv-widget-container.docked-bottom-right .cv-widget-preview {
   width: 70px;
   height: 90px;
   padding: 9px 8px;
   gap: 4px;
 }
 
-.cv-widget-container.docked-bottom-left .cv-preview-heading {
+.cv-widget-container.docked-bottom-right .cv-preview-heading {
   font-size: 1rem;
 }
 
-.cv-widget-container.docked-bottom-left .cv-preview-line {
+.cv-widget-container.docked-bottom-right .cv-preview-line {
   height: 3px;
   border-radius: 2px;
 }
 
-.cv-widget-container.docked-bottom-left .cv-preview-gap {
+.cv-widget-container.docked-bottom-right .cv-preview-gap {
   height: 3px;
 }
 
-.cv-widget-container.docked-bottom-left .cv-widget-tooltip {
+.cv-widget-container.docked-bottom-right .cv-widget-tooltip {
   font-size: 0.85rem;
   padding: 4px 10px;
 }
@@ -525,9 +525,9 @@ body {
 
 /* The terminal window holds only the PDF */
 .cv-modal-window {
-  height: min(85vh, 950px);
+  height: min(74vh, 800px);
   width: auto;
-  max-width: 92vw;
+  max-width: 82vw;
   aspect-ratio: 210 / 297;
   background: #faf8f0;
   border: 1px solid #e2ddd3;
@@ -542,23 +542,50 @@ body {
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  position: relative;
 }
 
+/* The PDF's own viewer applies unpredictable zoom across browsers, so
+   instead of relying on it we render the iframe oversized and scale the
+   whole thing down by a fixed, consistent factor. The scaled content
+   exactly fills the container width (no side cropping) and the user can
+   scroll down inside it to see the rest of the page. */
 .cv-preview-frame {
-  width: calc(100% + 20px);
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 128.5%;
+  height: 128.5%;
   border: none;
   background: #ffffff;
   display: block;
-  margin-right: -20px;
+  transform: scale(0.778);
+  transform-origin: top left;
 }
 
 /* Close button floats above the terminal window, outside it */
 .terminal-dot-close {
+  position: relative;
   padding: 0;
   border: none;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* An open terminal's red dot shows an X so it reads as an exit control,
+   the way macOS traffic lights do on hover. */
+.terminal-dot-close::after {
+  content: '\00d7';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -56%);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(94, 15, 9, 0.8);
+  pointer-events: none;
 }
 
 .terminal-dot-close:hover,
@@ -825,7 +852,12 @@ body {
 
 .tv-screen-terminal {
   position: absolute;
-  top: 50%;
+  /* .book-controls wraps onto its own row below the book (order: 2,
+     flex-basis: 100%) and adds height to .book-stage that the book itself
+     doesn't visually occupy, which pushes a plain 50% vertical center down
+     too low relative to the book. Offset it back up to re-center against
+     the book itself. */
+  top: calc(50% - 40px);
   transform: translateY(-50%);
   background: rgba(250, 248, 240, 0.95);
   backdrop-filter: blur(16px);
@@ -1195,6 +1227,25 @@ h2.skills-fixed-title {
 .dot-red { background: #ff5f57; }
 .dot-yellow { background: #febc2e; }
 .dot-green { background: #28c840; }
+
+/* Bigger, more noticeable traffic-light dots inside the actual popup
+   terminals (CV / skill / project / experience modals) */
+.cv-modal-window .dot,
+.skill-modal-window .dot {
+  width: 15px;
+  height: 15px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.cv-modal-window .terminal-titlebar,
+.skill-modal-window .terminal-titlebar {
+  gap: 13px;
+}
+
+.cv-modal-window .terminal-dot-close::after,
+.skill-modal-window .terminal-dot-close::after {
+  font-size: 12px;
+}
 
 .terminal-filename {
   position: absolute;
@@ -2215,34 +2266,46 @@ a.contact-detail-row:hover {
 .contact-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #2b1f1d;
-  text-decoration: none;
-  background-color: #d7d4b1;
-  border: 1px solid #b8b58f;
-  padding: 8px 20px;
-  border-radius: 20px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: #ffffff;
+  background-color: #6b3c2e;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .contact-link svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 .contact-link:hover {
-  background-color: #c9c69f;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
 }
 
-.footer-note {
+/* Each platform's real brand color */
+.contact-link-linkedin { background-color: #0A66C2; }
+.contact-link-github { background-color: #181717; }
+.contact-link-instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.site-footer {
+  width: 100%;
+  padding: 28px 20px 32px;
+  text-align: center;
+  background-color: #ffffff;
+  border-top: 1px solid #e2ddd3;
+}
+
+.site-footer p {
   font-family: 'Pixelify Sans', sans-serif;
   font-size: 0.8rem;
   color: #a89b8c;
-  margin-top: 40px;
+  margin: 0;
+  line-height: 1.6;
 }
 
 /* RESPONSIVE MEDIA QUERIES */
@@ -2426,13 +2489,109 @@ a.contact-detail-row:hover {
   color: #555555;
   margin: 0;
 }
+
+/* GitHub contribution calendar, sits under the FAQ list */
+#github-activity {
+  width: 100%;
+  max-width: 680px;
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-title {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 22px;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.calendar-title em {
+  font-style: normal;
+  color: #6e8771;
+}
+
+.calendar-wrapper {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.github-chart-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.calendar-details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contrib-count {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #777777;
+}
+
+.legend-colors {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8rem;
+  color: #777777;
+}
+
+.legend-colors svg {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .calendar-wrapper {
+    padding: 16px;
+  }
+
+  .calendar-details {
+    justify-content: center;
+  }
+}
 /* ======================================================================
    MOBILE RESPONSIVE LAYER
-   Below 900px: the pinned scroll-jacking sections (Skills, Experience,
-   Leadership) switch from horizontal/stacked-deck scroll animations to a
-   plain vertical stack — scroll-jacking is unreliable on touch devices,
-   so this trades the desktop choreography for a layout that just works.
+   Below 900px: sizing/spacing adjustments for touch screens. The pinned
+   scroll-jacking sections (Skills, Experience, Leadership) keep the same
+   animated behavior as desktop — see isMobileLayout() usages in
+   script.js for the parts that still branch (e.g. the About Me book,
+   which switches to a single-page tap-to-flip mode on mobile).
    ====================================================================== */
+/* ---- Laptop screens: hero name/tagline a notch smaller ---- */
+@media (max-width: 1440px) {
+  .hero-greeting {
+    font-size: 2.9rem;
+  }
+
+  .hero-tagline {
+    font-size: 4.1rem;
+  }
+}
+
 @media (max-width: 900px) {
 
   /* ---- Navbar / hamburger menu ---- */
@@ -2534,7 +2693,7 @@ a.contact-detail-row:hover {
 
   .book {
     position: static;
-    width: min(88vw, 320px);
+    width: min(66vw, 240px);
     height: auto;
     transform: none !important;
     transition: none;
@@ -2553,7 +2712,7 @@ a.contact-detail-row:hover {
     position: static;
     width: 100%;
     height: auto;
-    min-height: calc(min(88vw, 320px) * 1.414);
+    min-height: calc(min(66vw, 240px) * 1.414);
     max-height: 72vh;
     overflow-y: auto;
     transform: none !important;
@@ -2568,12 +2727,44 @@ a.contact-detail-row:hover {
     display: flex;
   }
 
+  /* Cover page: percentage height can't resolve against the page's auto
+     height above, which breaks vertical centering — stretch via flex
+     instead, and reinforce horizontal centering explicitly. */
+  .cover-design {
+    flex: 1;
+    width: 100%;
+    text-align: center;
+  }
+
+  .cover-design h3,
+  .cover-design p,
+  .cover-design .click-hint {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Simulated page-turn: a quick horizontal squash-and-fade on the newly
+     shown face, triggered by JS via the .page-flip-anim class. */
+  .page-content.page-flip-anim,
+  .cover-design.page-flip-anim {
+    animation: mobilePageFlip 0.45s ease;
+    transform-origin: center;
+  }
+
+  @keyframes mobilePageFlip {
+    0%   { transform: rotateY(0deg) scaleX(1); opacity: 1; }
+    45%  { transform: rotateY(88deg) scaleX(0.35); opacity: 0.35; }
+    55%  { transform: rotateY(-88deg) scaleX(0.35); opacity: 0.35; }
+    100% { transform: rotateY(0deg) scaleX(1); opacity: 1; }
+  }
+
   /* ---- Floating widget (CV) ---- */
   .cv-widget-container {
     top: auto;
     bottom: 90px;
     transform: none;
-    left: 16px;
+    right: 16px;
+    left: auto;
   }
 
   .cv-widget-preview {
@@ -2592,82 +2783,20 @@ a.contact-detail-row:hover {
     padding: 3px 8px;
   }
 
-  .cv-widget-container.docked-bottom-left {
+  .cv-widget-container.docked-bottom-right {
     bottom: 16px;
   }
 
-  /* ---- Skills: drop the pinned scroll-jack for a plain stacked list ---- */
-  .terminal-scroll-stage {
-    height: auto !important;
-  }
-
+  /* ---- Skills / Experience / Leadership: keep the same pinned
+     scroll-jacking animation used on desktop (JS drives the transforms
+     for all viewport widths — see isMobileLayout() in script.js) ---- */
   .terminal-sticky {
-    position: static;
-    height: auto;
     padding: 60px 5vw 40px;
-  }
-
-  .terminal-deck {
-    position: static;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .terminal-card {
-    position: static !important;
-    width: 100% !important;
-    pointer-events: auto !important;
-  }
-
-  .terminal-window {
-    max-width: 100%;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .terminal-dock {
-    display: none;
-  }
-
-  /* ---- Experience & Leadership: same static-stack treatment ---- */
-  .experience-section,
-  .leadership-section {
-    height: auto !important;
   }
 
   .experience-pinned-container,
   .leadership-pinned-container {
-    position: static;
-    height: auto;
-    width: 100%;
     padding: 60px 5vw 0;
-  }
-
-  .experience-gallery-wrapper,
-  .leadership-gallery-wrapper {
-    position: static;
-    width: 100%;
-  }
-
-  .experience-gallery-track,
-  .leadership-gallery-track {
-    flex-direction: column;
-    width: 100%;
-    padding: 0;
-    gap: 24px;
-    transform: none !important;
-  }
-
-  .gallery-connector-line {
-    display: none;
-  }
-
-  .experience-card {
-    width: 100%;
-    max-width: 100%;
   }
 
   .exp-card-inner {
@@ -2690,7 +2819,7 @@ a.contact-detail-row:hover {
 
   .photo-stripe-bar {
     flex: none;
-    height: 140px;
+    height: 190px;
     margin-top: 24px;
     margin-bottom: 0;
     position: relative;
@@ -2756,7 +2885,8 @@ a.contact-detail-row:hover {
   }
 
   .cv-modal-window {
-    height: min(80vh, 950px);
+    height: min(62vh, 620px);
+    max-width: 90vw;
   }
 
   /* ---- General heading scale-down (reinforces existing 768px rule) ---- */
@@ -2796,5 +2926,59 @@ a.contact-detail-row:hover {
 
   .timeline-role {
     font-size: 1.15rem;
+  }
+}
+/* ---- Cursor-following bee ---- */
+#cursorBee {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  z-index: 500;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#cursorBee.bee-active {
+  opacity: 1;
+}
+
+#cursorBee svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
+}
+
+.bee-wing {
+  fill: rgba(255, 255, 255, 0.85);
+  stroke: rgba(160, 160, 160, 0.5);
+  stroke-width: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bee-flutter 0.16s ease-in-out infinite alternate;
+}
+
+.bee-wing-right {
+  animation-delay: 0.02s;
+}
+
+@keyframes bee-flutter {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0.55); }
+}
+
+@media (max-width: 900px), (hover: none) {
+  #cursorBee {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cursorBee {
+    display: none;
   }
 }

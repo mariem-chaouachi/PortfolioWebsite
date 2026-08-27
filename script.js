@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       large = rect.top < window.innerHeight * 0.65 && rect.bottom > window.innerHeight * 0.15;
     }
 
-    cvWidgetContainer.classList.toggle('docked-bottom-left', !large);
+    cvWidgetContainer.classList.toggle('docked-bottom-right', !large);
   }
 
   window.addEventListener('scroll', updateWidgetDocking, { passive: true });
@@ -235,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const skillModalName = document.getElementById('skillModalName');
   const skillModalLearned = document.getElementById('skillModalLearned');
   const skillModalUsed = document.getElementById('skillModalUsed');
+  const skillModalCertBlock = document.getElementById('skillModalCertBlock');
   const skillModalCertArea = document.getElementById('skillModalCertArea');
 
   function openSkillModal(slug) {
@@ -258,13 +259,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     skillModalCertArea.innerHTML = '';
+    skillModalCertBlock.style.display = '';
     const certPath = data.certImage || `certs/${slug}.png`;
     const img = document.createElement('img');
     img.src = certPath;
     img.alt = `${data.name} certificate`;
     img.className = 'skill-cert-image';
     img.onerror = () => {
-      img.remove();
+      skillModalCertBlock.style.display = 'none';
     };
     skillModalCertArea.appendChild(img);
 
@@ -439,6 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const experienceModalDate = document.getElementById('experienceModalDate');
   const experienceModalDescription = document.getElementById('experienceModalDescription');
   const experienceModalCert = document.getElementById('experienceModalCert');
+  const experienceModalCertBlock = document.getElementById('experienceModalCertBlock');
 
   function openExperienceModal(slug) {
     const data = experienceDetails[slug];
@@ -450,8 +453,17 @@ document.addEventListener("DOMContentLoaded", () => {
     experienceModalOrg.href = data.orgUrl || '#';
     experienceModalDate.textContent = data.date;
     experienceModalDescription.textContent = data.description;
-    experienceModalCert.src = data.certImage;
-    experienceModalCert.alt = `${data.role} certificate`;
+
+    if (data.certImage) {
+      experienceModalCertBlock.style.display = '';
+      experienceModalCert.src = data.certImage;
+      experienceModalCert.alt = `${data.role} certificate`;
+      experienceModalCert.onerror = () => {
+        experienceModalCertBlock.style.display = 'none';
+      };
+    } else {
+      experienceModalCertBlock.style.display = 'none';
+    }
 
     experienceModalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -606,6 +618,25 @@ document.addEventListener("DOMContentLoaded", () => {
     pageIndicator.textContent = mobileLabels[mobilePageIndex] || '';
     prevBtn.disabled = mobilePageIndex === 0;
     nextBtn.disabled = mobilePageIndex === allFaces.length - 1;
+    playMobileFlipAnim();
+  }
+
+  // Simulated page-turn animation on the newly visible face.
+  let mobileBookInitialized = false;
+  function playMobileFlipAnim() {
+    if (!mobileBookInitialized) return;
+    const activeFace = allFaces[mobilePageIndex];
+    if (!activeFace) return;
+    const inner = activeFace.querySelector('.page-content') || activeFace.querySelector('.cover-design');
+    if (!inner) return;
+    inner.classList.remove('page-flip-anim');
+    // Force reflow so the animation restarts even if the same class was
+    // just removed (e.g. rapid clicks).
+    void inner.offsetWidth;
+    inner.classList.add('page-flip-anim');
+    inner.addEventListener('animationend', () => {
+      inner.classList.remove('page-flip-anim');
+    }, { once: true });
   }
 
   nextBtn.addEventListener('click', () => {
@@ -649,8 +680,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Mobile: tapping anywhere on the book advances to the next page/face,
+  // the same way tapping a real book page turns it.
+  book.addEventListener('click', () => {
+    if (!isMobileLayout()) return;
+    if (mobilePageIndex < allFaces.length - 1) {
+      mobilePageIndex++;
+      updateMobileBook();
+    }
+  });
+
   updateBook();
   updateMobileBook();
+  mobileBookInitialized = true;
 
   // Terminal Deck Scroll & Dock Animation
   const stage = document.querySelector(".terminal-scroll-stage");
@@ -695,17 +737,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateTerminals() {
-    if (isMobileLayout()) {
-      dock.classList.remove("is-visible");
-      cards.forEach((card) => {
-        const windowEl = card.querySelector(".terminal-window");
-        windowEl.style.transform = '';
-        windowEl.style.opacity = '';
-        card.style.pointerEvents = '';
-      });
-      return;
-    }
-
     const { progress, inSection } = getProgress();
 
     if (inSection) {
@@ -812,11 +843,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return function update() {
-      if (isMobileLayout()) {
-        track.style.transform = '';
-        return;
-      }
-
       const rect = section.getBoundingClientRect();
       const sectionHeight = section.offsetHeight;
       const viewportHeight = window.innerHeight;
@@ -955,3 +981,84 @@ document.querySelectorAll('.faq-item').forEach((item) => {
     item.classList.toggle('active');
   });
 });
+// ---- Cursor-following bee ----
+(function initCursorBee() {
+  const bee = document.getElementById('cursorBee');
+  if (!bee) return;
+  if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let beeX = targetX;
+  let beeY = targetY;
+  let prevX = beeX;
+  let prevY = beeY;
+  let hasMoved = false;
+
+  // Offset so the bee sits close to the cursor, tucked to its bottom-right.
+  const OFFSET_X = 14;
+  const OFFSET_Y = 16;
+
+  function onPointerMove(e) {
+    targetX = e.clientX;
+    targetY = e.clientY;
+    if (!hasMoved) {
+      hasMoved = true;
+      beeX = targetX;
+      beeY = targetY;
+      bee.classList.add('bee-active');
+    }
+  }
+
+  window.addEventListener('mousemove', onPointerMove, { passive: true });
+  window.addEventListener('mouseleave', () => bee.classList.remove('bee-active'));
+  window.addEventListener('mouseenter', () => {
+    if (hasMoved) bee.classList.add('bee-active');
+  });
+
+  const EASE = 0.22;
+  const IDLE_AMPLITUDE = 4;
+  let idleAngle = Math.random() * Math.PI * 2;
+
+  function tick() {
+    if (hasMoved) {
+      const dx = (targetX + OFFSET_X) - beeX;
+      const dy = (targetY + OFFSET_Y) - beeY;
+      const dist = Math.hypot(dx, dy);
+
+      // Bee never fully stops: it keeps a tiny restless wander around its
+      // resting spot even while the cursor is still, so it always reads
+      // as alive rather than frozen.
+      idleAngle += 0.045;
+      const idleX = Math.cos(idleAngle) * IDLE_AMPLITUDE;
+      const idleY = Math.sin(idleAngle * 1.7) * IDLE_AMPLITUDE * 0.6;
+
+      const goalX = targetX + OFFSET_X + (dist < 3 ? idleX : 0);
+      const goalY = targetY + OFFSET_Y + (dist < 3 ? idleY : 0);
+
+      beeX += (goalX - beeX) * EASE;
+      beeY += (goalY - beeY) * EASE;
+
+      const moveX = beeX - prevX;
+      const moveY = beeY - prevY;
+      const speed = Math.hypot(moveX, moveY);
+
+      let angle = 0;
+      if (speed > 0.4) {
+        angle = Math.atan2(moveY, moveX) * (180 / Math.PI) * 0.18;
+        angle = Math.max(-18, Math.min(18, angle));
+      }
+
+      const wobble = Math.sin(idleAngle * 2) * 2;
+
+      bee.style.transform =
+        `translate(${beeX - 13}px, ${beeY - 13}px) rotate(${angle + wobble}deg)`;
+
+      prevX = beeX;
+      prevY = beeY;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();

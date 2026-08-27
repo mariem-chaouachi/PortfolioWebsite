@@ -355,6 +355,21 @@ body {
   100% { transform: translateX(-100%); }
 }
 
+@media (max-width: 900px) {
+  .skills-stripe-container {
+    height: 38px;
+  }
+
+  .skills-marquee-content {
+    gap: 16px;
+    padding-right: 16px;
+  }
+
+  .skills-marquee-content span {
+    font-size: 0.85rem;
+  }
+}
+
 /* CV Floating Component — mirrors AI Buddy, docks bottom-left */
 .cv-widget-container {
   position: fixed;
@@ -1429,6 +1444,27 @@ h2.skills-fixed-title {
 .terminal-dock-item.active::after {
   opacity: 1;
   width: 16px;
+}
+
+@media (max-width: 900px) {
+  /* The dock only lost its "display: none" (which used to hide it
+     entirely on mobile, back when the Skills section used a static
+     stacked layout there) once the pinned scroll-jacking animation was
+     restored for mobile — give it real mobile sizing instead of relying
+     on the desktop numbers. */
+  .terminal-dock {
+    bottom: max(18px, env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 14px;
+    max-width: 92vw;
+  }
+
+  .terminal-dock-item {
+    width: 38px;
+    height: 36px;
+    font-size: 12px;
+  }
 }
 
 /* SHARED SECTION TITLES */
@@ -2933,8 +2969,8 @@ a.contact-detail-row:hover {
   position: fixed;
   top: 0;
   left: 0;
-  width: 26px;
-  height: 26px;
+  width: 36px;
+  height: 36px;
   pointer-events: none;
   z-index: 500;
   will-change: transform;
@@ -2944,6 +2980,14 @@ a.contact-detail-row:hover {
 
 #cursorBee.bee-active {
   opacity: 1;
+}
+
+/* Rotation/tilt lives on this inner wrapper only, not on #cursorBee
+   itself — the speech bubble is a sibling of this wrapper so it stays
+   upright and glide-smooth instead of swaying with the bee's body. */
+.bee-body {
+  width: 100%;
+  height: 100%;
 }
 
 #cursorBee svg {
@@ -2981,4 +3025,47 @@ a.contact-detail-row:hover {
   #cursorBee {
     display: none;
   }
+}
+
+/* ---- Bee speech bubble ---- */
+.bee-speech-bubble {
+  position: absolute;
+  left: 44%;
+  bottom: calc(100% + 12px);
+  transform: translateY(6px) scale(0.94);
+  transform-origin: bottom left;
+  max-width: 220px;
+  width: max-content;
+  padding: 7px 13px;
+  background: #ffffff;
+  color: #2b1f1d;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  border-radius: 12px;
+  border: 1px solid rgba(226, 221, 211, 0.9);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.33, 1, 0.68, 1), transform 0.28s cubic-bezier(0.33, 1, 0.68, 1);
+  white-space: normal;
+}
+
+.bee-speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 14px;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-right: 1px solid rgba(226, 221, 211, 0.9);
+  border-bottom: 1px solid rgba(226, 221, 211, 0.9);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.bee-speech-bubble.bee-bubble-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }

@@ -28,16 +28,16 @@
   <nav class="navbar liquid-glass-container" id="navbar">
     <div class="nav-logo">Mariem Chaouachi</div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#home" data-section="home">Home</a></li>
-      <li><a href="#about" data-section="about">About</a></li>
-      <li><a href="#skills-terminal" data-section="skills-terminal">Skills</a></li>
-      <li><a href="#experience" data-section="experience">Experience</a></li>
-      <li><a href="#leadership" data-section="leadership">Leadership</a></li>
-      <li><a href="#awards" data-section="awards">Awards</a></li>
-      <li><a href="#projects" data-section="projects">Projects</a></li>
-      <li><a href="#contact" data-section="contact">Contact</a></li>
+      <li><a href="#home" data-section="home" data-bee-msg="Back to the top!">Home</a></li>
+      <li><a href="#about" data-section="about" data-bee-msg="Open the book!">About</a></li>
+      <li><a href="#skills-terminal" data-section="skills-terminal" data-bee-msg="See what I can do!">Skills</a></li>
+      <li><a href="#experience" data-section="experience" data-bee-msg="Check out my experience!">Experience</a></li>
+      <li><a href="#leadership" data-section="leadership" data-bee-msg="See my leadership roles!">Leadership</a></li>
+      <li><a href="#awards" data-section="awards" data-bee-msg="Check out my awards!">Awards</a></li>
+      <li><a href="#projects" data-section="projects" data-bee-msg="See what I've built!">Projects</a></li>
+      <li><a href="#contact" data-section="contact" data-bee-msg="Let's connect!">Contact</a></li>
     </ul>
-    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" data-bee-msg="Open the menu!">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <a href="cv.pdf" download="Mariem-Chaouachi-CV.pdf" class="cv-download-btn">Download Me ⬇</a>
+      <a href="cv.pdf" download="Mariem-Chaouachi-CV.pdf" class="cv-download-btn" data-bee-msg="Download my CV!">Download Me ⬇</a>
     </div>
   </div>
 
@@ -260,7 +260,7 @@
       </div>
 
       <div class="book-container">
-        <div class="book closed-front" id="flipBook">
+        <div class="book closed-front" id="flipBook" data-bee-msg="Open the book!">
 
           <!-- COVER -->
           <div class="page cover-page" id="page0">
@@ -337,9 +337,9 @@
 
       <!-- Book Navigation Controls -->
       <div class="book-controls">
-        <button class="book-btn liquid-glass-container" id="prevPageBtn" aria-label="Previous Page">◀ Prev Page</button>
+        <button class="book-btn liquid-glass-container" id="prevPageBtn" aria-label="Previous Page" data-bee-msg="Go back a page!">◀ Prev Page</button>
         <span class="page-indicator" id="pageIndicator">Cover</span>
-        <button class="book-btn liquid-glass-container" id="nextPageBtn" aria-label="Next Page">Next Page ▶</button>
+        <button class="book-btn liquid-glass-container" id="nextPageBtn" aria-label="Next Page" data-bee-msg="Turn the page!">Next Page ▶</button>
       </div>
 
     </div>
@@ -367,23 +367,23 @@
               <div class="terminal-body">
                 <span class="skills-subcategory-label">// languages</span>
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container" data-skill="html-css" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="html-css" data-bee-msg="See how I build with HTML & CSS!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/html.png" alt="HTML / CSS" />
                     <span>HTML / CSS</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="javascript" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="javascript" data-bee-msg="Explore my JavaScript projects!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/javascript.png" alt="JavaScript" />
                     <span>JavaScript</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="typescript" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="typescript" data-bee-msg="Peek at my TypeScript work!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/typescript.png" alt="TypeScript" />
                     <span>TypeScript</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="python" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="python" data-bee-msg="Discover my Python skills!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/python.png" alt="Python" />
                     <span>Python</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="cpp" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="cpp" data-bee-msg="Check out my C++ experience!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/cpp.png" alt="C / C++" />
                     <span>C / C++</span>
                   </div>
@@ -391,23 +391,23 @@
 
                 <span class="skills-subcategory-label">// tools &amp; frameworks</span>
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container" data-skill="unity" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="unity" data-bee-msg="See what I've built in Unity!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/unity.png" alt="Unity" />
                     <span>Unity</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="react-native" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="react-native" data-bee-msg="Explore my React Native apps!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/react.png" alt="React Native" />
                     <span>React Native</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="nodejs" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="nodejs" data-bee-msg="See my Node.js backend work!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/node.png" alt="Node.js" />
                     <span>Node.js</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="postgresql" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="postgresql" data-bee-msg="Check out my PostgreSQL projects!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/postgresql.png" alt="PostgreSQL" />
                     <span>PostgreSQL</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="notion" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="notion" data-bee-msg="See how I use Notion!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/notion.png" alt="Notion" />
                     <span>Notion</span>
                   </div>
@@ -428,23 +428,23 @@
               <div class="terminal-body">
                 <span class="skills-subcategory-label">// hardware</span>
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container" data-skill="arduino" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="arduino" data-bee-msg="Discover my Arduino builds!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/arduino.png" alt="Arduino" />
                     <span>Arduino</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="esp32" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="esp32" data-bee-msg="See my ESP32 projects!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/esp32.png" alt="ESP32" />
                     <span>ESP32</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="sensor" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="sensor" data-bee-msg="Explore my sensor work!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/sensor.png" alt="MAX30100 Sensor" />
                     <span>MAX30100 Sensor</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="circuit" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="circuit" data-bee-msg="Check out my circuit design!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/circuit.png" alt="Circuit Design" />
                     <span>Circuit Design</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="embedded" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="embedded" data-bee-msg="See my embedded systems work!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/embedded.png" alt="Embedded Systems" />
                     <span>Embedded Systems</span>
                   </div>
@@ -452,19 +452,19 @@
 
                 <span class="skills-subcategory-label">// domain</span>
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container" data-skill="imaging" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="imaging" data-bee-msg="Explore my medical imaging work!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/imaging.png" alt="Medical Imaging" />
                     <span>Medical Imaging</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="biomedical" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="biomedical" data-bee-msg="See my biomedical engineering skills!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/biomedical.png" alt="Biomedical Devices" />
                     <span>Biomedical Devices</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="clinical" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="clinical" data-bee-msg="Discover my clinical experience!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/clinical.png" alt="Clinical Data" />
                     <span>Clinical Data</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="healthcare" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="healthcare" data-bee-msg="See my healthcare tech projects!" role="button" tabindex="0">
                     <img class="skill-icon" src="Skills/healthcare.png" alt="Healthcare Innovation" />
                     <span>Healthcare Innovation</span>
                   </div>
@@ -484,13 +484,13 @@
               </div>
               <div class="terminal-body">
                 <div class="skills-glass-grid">
-                  <div class="skill-chip liquid-glass-container" data-skill="english" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="english" data-bee-msg="I speak English fluently!" role="button" tabindex="0">
                     <span>English</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="french" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="french" data-bee-msg="Je parle français !" role="button" tabindex="0">
                     <span>French</span>
                   </div>
-                  <div class="skill-chip liquid-glass-container" data-skill="arabic" role="button" tabindex="0">
+                  <div class="skill-chip liquid-glass-container" data-skill="arabic" data-bee-msg="أتحدث العربية!" role="button" tabindex="0">
                     <span>Arabic</span>
                   </div>
                 </div>
@@ -513,7 +513,7 @@
         <div class="experience-gallery-track">
           <div class="gallery-connector-line"></div>
 
-          <div class="experience-card" data-card="external-relations" role="button" tabindex="0">
+          <div class="experience-card" data-card="external-relations" data-bee-msg="See more of my experience at Biomed Innov!" role="button" tabindex="0">
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
@@ -532,7 +532,7 @@
             </div>
           </div>
 
-          <div class="experience-card" data-card="stiet-internship" role="button" tabindex="0">
+          <div class="experience-card" data-card="stiet-internship" data-bee-msg="Discover my internship at STIET!" role="button" tabindex="0">
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
@@ -551,7 +551,7 @@
             </div>
           </div>
 
-          <div class="experience-card" data-card="clinical-internship" role="button" tabindex="0">
+          <div class="experience-card" data-card="clinical-internship" data-bee-msg="Learn about my clinical internship!" role="button" tabindex="0">
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
@@ -633,7 +633,7 @@
         <div class="leadership-gallery-track">
           <div class="gallery-connector-line"></div>
 
-          <div class="experience-card leadership-card" data-card="sponsorship" role="button" tabindex="0">
+          <div class="experience-card leadership-card" data-card="sponsorship" data-bee-msg="See my sponsorship & partnerships work!" role="button" tabindex="0">
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
@@ -652,7 +652,7 @@
             </div>
           </div>
 
-          <div class="experience-card leadership-card" data-card="notion-campus-leader" role="button" tabindex="0">
+          <div class="experience-card leadership-card" data-card="notion-campus-leader" data-bee-msg="I'm a Notion Campus Leader — see more!" role="button" tabindex="0">
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
@@ -671,7 +671,7 @@
             </div>
           </div>
 
-          <div class="experience-card leadership-card" data-card="robotics-week" role="button" tabindex="0">
+          <div class="experience-card leadership-card" data-card="robotics-week" data-bee-msg="See my role at National Robotics Weekend!" role="button" tabindex="0">
             <div class="exp-card-inner">
               <div class="exp-content">
                 <div class="exp-card-header">
@@ -759,7 +759,7 @@
             <img class="award-logo" src="logos/mindhack.png" alt="MindHack 1.0 Hackathon logo" />
             <div class="award-header-text">
               <h3>MindHack 1.0 Hackathon</h3>
-              <a class="award-org-link" href="https://ieee.tn/event/mind-hack-1-0/" target="_blank" rel="noopener">ieee.tn/event/mind-hack-1-0</a>
+              <a class="award-org-link" href="https://ieee.tn/event/mind-hack-1-0/" target="_blank" rel="noopener" data-bee-msg="See the MindHack event!">ieee.tn/event/mind-hack-1-0</a>
             </div>
           </div>
           <p>Competed as a challenger, developing a project under hackathon time constraints.</p>
@@ -775,11 +775,11 @@
 
     <div class="projects-tabs-row">
       <div class="projects-tabs" role="tablist">
-        <button class="projects-tab active" data-filter="main" role="tab" aria-selected="true" type="button">Main</button>
-        <button class="projects-tab" data-filter="software" role="tab" aria-selected="false" type="button">Software</button>
-        <button class="projects-tab" data-filter="hardware" role="tab" aria-selected="false" type="button">Hardware</button>
+        <button class="projects-tab active" data-filter="main" role="tab" aria-selected="true" type="button" data-bee-msg="See my main projects!">Main</button>
+        <button class="projects-tab" data-filter="software" role="tab" aria-selected="false" type="button" data-bee-msg="Filter to software projects!">Software</button>
+        <button class="projects-tab" data-filter="hardware" role="tab" aria-selected="false" type="button" data-bee-msg="Filter to hardware projects!">Hardware</button>
       </div>
-      <button class="projects-all-btn" id="projectsAllBtn" type="button">All</button>
+      <button class="projects-all-btn" id="projectsAllBtn" type="button" data-bee-msg="See all my projects!">All</button>
     </div>
 
       <div class="projects-container" id="projectsContainer">
@@ -795,7 +795,7 @@
           <div class="project-stack">
             <span>React Native</span><span>Expo</span><span>Node.js</span><span>PostgreSQL</span>
           </div>
-          <a href="https://github.com/your-username/radconnect" target="_blank" rel="noopener" class="project-link">
+          <a href="https://github.com/your-username/radconnect" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the RadConnect repo!">
             open project <span class="arrow">↗</span>
           </a>
         </div>
@@ -808,7 +808,7 @@
               <span class="dot dot-green"></span>
               <span class="terminal-filename">radconnect-demo.mp4</span>
             </div>
-            <div class="project-video-box">
+            <div class="project-video-box" data-bee-msg="Watch RadConnect in action!">
               <video autoplay loop muted playsinline>
                 <source src="videos/radconnect.mp4" type="video/mp4" />
                 Your browser does not support video playback.
@@ -829,7 +829,7 @@
           <div class="project-stack">
             <span>Web</span><span>Claude API</span><span>Clinical Data</span>
           </div>
-          <a href="https://github.com/your-username/homeostasis-tool" target="_blank" rel="noopener" class="project-link">
+          <a href="https://github.com/your-username/homeostasis-tool" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the Homeostasis tool repo!">
             open project <span class="arrow">↗</span>
           </a>
         </div>
@@ -842,7 +842,7 @@
               <span class="dot dot-green"></span>
               <span class="terminal-filename">homeostasis-demo.mp4</span>
             </div>
-            <div class="project-video-box">
+            <div class="project-video-box" data-bee-msg="Watch the Homeostasis tool demo!">
               <video autoplay loop muted playsinline>
                 <source src="videos/homeostasis.mp4" type="video/mp4" />
                 Your browser does not support video playback.
@@ -863,7 +863,7 @@
           <div class="project-stack">
             <span>Unity</span><span>Arduino</span><span>Python</span>
           </div>
-          <a href="https://github.com/your-username/biofarm" target="_blank" rel="noopener" class="project-link">
+          <a href="https://github.com/your-username/biofarm" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the BioFarm repo!">
             open project <span class="arrow">↗</span>
           </a>
         </div>
@@ -876,7 +876,7 @@
               <span class="dot dot-green"></span>
               <span class="terminal-filename">biofarm-demo.mp4</span>
             </div>
-            <div class="project-video-box">
+            <div class="project-video-box" data-bee-msg="Watch the BioFarm demo!">
               <video autoplay loop muted playsinline>
                 <source src="videos/biofarm.mp4" type="video/mp4" />
                 Your browser does not support video playback.
@@ -895,21 +895,21 @@
 
       <ul class="projects-list">
         <li>
-          <button class="projects-list-item" type="button" data-project="radconnect">
+          <button class="projects-list-item" type="button" data-project="radconnect" data-bee-msg="See more of RadConnect!">
             <span class="projects-list-index">01</span>
             <span class="projects-list-name">RadConnect</span>
             <span class="projects-list-tag">Mobile App</span>
           </button>
         </li>
         <li>
-          <button class="projects-list-item" type="button" data-project="homeostasis">
+          <button class="projects-list-item" type="button" data-project="homeostasis" data-bee-msg="See more of the Homeostasis tool!">
             <span class="projects-list-index">02</span>
             <span class="projects-list-name">Homeostasis Diagnostic Tool</span>
             <span class="projects-list-tag">Web Tool</span>
           </button>
         </li>
         <li>
-          <button class="projects-list-item" type="button" data-project="biofarm">
+          <button class="projects-list-item" type="button" data-project="biofarm" data-bee-msg="See more of BioFarm!">
             <span class="projects-list-index">03</span>
             <span class="projects-list-name">BioFarm</span>
             <span class="projects-list-tag">Hackathon</span>
@@ -925,7 +925,7 @@
 
     <div class="faq-container">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" data-bee-msg="See what I actually do!">
           <span>what do you actually do?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -935,7 +935,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" data-bee-msg="Check out my tech stack!">
           <span>what's the stack?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -945,7 +945,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" data-bee-msg="See where I'm based!">
           <span>where are you based?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -955,7 +955,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" data-bee-msg="I'm open to work!">
           <span>are you open to work?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -966,7 +966,7 @@
 
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" data-bee-msg="Ask me about cooking (don't)!">
           <span>can you actually cook?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -976,7 +976,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" data-bee-msg="Curious who built this? Me!">
           <span>who built this site?</span>
           <span class="faq-icon">+</span>
         </button>
@@ -1046,13 +1046,13 @@
 
       <!-- Social Links -->
       <div class="contact-links">
-        <a href="https://www.linkedin.com/in/mariem-chaouachi/" class="contact-link contact-link-linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/in/mariem-chaouachi/" class="contact-link contact-link-linkedin" target="_blank" rel="noopener" aria-label="LinkedIn" data-bee-msg="Connect with me on LinkedIn!">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 10.5V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="7.5" cy="7.3" r="1.1" fill="currentColor"/><path d="M11.5 17V13.4C11.5 11.9 12.4 10.9 13.7 10.9C15 10.9 15.7 11.8 15.7 13.4V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.5 10.7V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         </a>
-        <a href="https://github.com/mariem-chaouachi" class="contact-link contact-link-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <a href="https://github.com/mariem-chaouachi" class="contact-link contact-link-github" target="_blank" rel="noopener" aria-label="GitHub" data-bee-msg="Check out my GitHub!">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.58 2 12.2C2 16.68 4.87 20.47 8.84 21.8C9.34 21.89 9.52 21.58 9.52 21.31C9.52 21.07 9.51 20.29 9.51 19.46C7 19.96 6.35 18.86 6.15 18.28C6.04 18 5.55 17.12 5.12 16.88C4.77 16.69 4.27 16.19 5.11 16.18C5.9 16.17 6.46 16.91 6.65 17.2C7.55 18.72 8.98 18.29 9.55 18.03C9.64 17.37 9.9 16.93 10.19 16.68C7.95 16.43 5.6 15.55 5.6 11.68C5.6 10.58 5.99 9.68 6.67 8.97C6.57 8.72 6.21 7.7 6.77 6.32C6.77 6.32 7.65 6.05 9.52 7.33C10.31 7.11 11.15 7 12 7C12.85 7 13.69 7.11 14.48 7.33C16.35 6.04 17.23 6.32 17.23 6.32C17.79 7.7 17.43 8.72 17.33 8.97C18.01 9.68 18.4 10.57 18.4 11.68C18.4 15.56 16.04 16.43 13.8 16.68C14.17 16.99 14.49 17.6 14.49 18.54C14.49 19.89 14.48 20.97 14.48 21.31C14.48 21.58 14.66 21.9 15.16 21.8C19.13 20.46 22 16.68 22 12.2C22 6.58 17.52 2 12 2Z" fill="currentColor"/></svg>
         </a>
-        <a href="https://www.instagram.com/marym_chaouachi/" class="contact-link contact-link-instagram" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="https://www.instagram.com/marym_chaouachi/" class="contact-link contact-link-instagram" target="_blank" rel="noopener" aria-label="Instagram" data-bee-msg="Follow me on Instagram!">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg>
         </a>
       </div>
@@ -1067,19 +1067,22 @@
 
   <!-- Cursor-following bee -->
   <div id="cursorBee" aria-hidden="true">
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <ellipse class="bee-wing bee-wing-left" cx="24" cy="24" rx="12" ry="8"/>
-      <ellipse class="bee-wing bee-wing-right" cx="40" cy="24" rx="12" ry="8"/>
-      <ellipse cx="32" cy="36" rx="15" ry="12" fill="#2b1f1d"/>
-      <path d="M18 30 Q32 24 46 30 Q32 33 18 30 Z" fill="#febc2e"/>
-      <path d="M19 38 Q32 32 45 38 Q32 41 19 38 Z" fill="#febc2e"/>
-      <path d="M20 45 Q32 40 44 45 Q32 47 20 45 Z" fill="#febc2e"/>
-      <circle cx="32" cy="22" r="7" fill="#2b1f1d"/>
-      <path d="M27 17 L23 10" stroke="#2b1f1d" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M37 17 L41 10" stroke="#2b1f1d" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="23" cy="9" r="1.6" fill="#2b1f1d"/>
-      <circle cx="41" cy="9" r="1.6" fill="#2b1f1d"/>
-    </svg>
+    <div id="beeSpeechBubble" class="bee-speech-bubble"></div>
+    <div class="bee-body">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <ellipse class="bee-wing bee-wing-left" cx="24" cy="24" rx="12" ry="8"/>
+        <ellipse class="bee-wing bee-wing-right" cx="40" cy="24" rx="12" ry="8"/>
+        <ellipse cx="32" cy="36" rx="15" ry="12" fill="#2b1f1d"/>
+        <path d="M18 30 Q32 24 46 30 Q32 33 18 30 Z" fill="#febc2e"/>
+        <path d="M19 38 Q32 32 45 38 Q32 41 19 38 Z" fill="#febc2e"/>
+        <path d="M20 45 Q32 40 44 45 Q32 47 20 45 Z" fill="#febc2e"/>
+        <circle cx="32" cy="22" r="7" fill="#2b1f1d"/>
+        <path d="M27 17 L23 10" stroke="#2b1f1d" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M37 17 L41 10" stroke="#2b1f1d" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="23" cy="9" r="1.6" fill="#2b1f1d"/>
+        <circle cx="41" cy="9" r="1.6" fill="#2b1f1d"/>
+      </svg>
+    </div>
   </div>
 
   <script src="script.js"></script>

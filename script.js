@@ -984,6 +984,8 @@ document.querySelectorAll('.faq-item').forEach((item) => {
 // ---- Cursor-following bee ----
 (function initCursorBee() {
   const bee = document.getElementById('cursorBee');
+  const bubble = document.getElementById('beeSpeechBubble');
+  const beeBody = bee ? bee.querySelector('.bee-body') : null;
   if (!bee) return;
   if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
 
@@ -995,9 +997,11 @@ document.querySelectorAll('.faq-item').forEach((item) => {
   let prevY = beeY;
   let hasMoved = false;
 
-  // Offset so the bee sits close to the cursor, tucked to its bottom-right.
-  const OFFSET_X = 14;
-  const OFFSET_Y = 16;
+  // Offset so the bee sits a comfortable distance from the cursor, tucked
+  // to its bottom-right.
+  const OFFSET_X = 42;
+  const OFFSET_Y = 46;
+  const HALF_SIZE = 18; // half of #cursorBee's 36px box
 
   function onPointerMove(e) {
     targetX = e.clientX;
@@ -1017,7 +1021,9 @@ document.querySelectorAll('.faq-item').forEach((item) => {
   });
 
   const EASE = 0.22;
-  const IDLE_AMPLITUDE = 4;
+  // Gentle, slow idle wander — kept small and slow on purpose so it reads
+  // as a soft, calm hover rather than a jitter.
+  const IDLE_AMPLITUDE = 3;
   let idleAngle = Math.random() * Math.PI * 2;
 
   function tick() {
@@ -1029,7 +1035,7 @@ document.querySelectorAll('.faq-item').forEach((item) => {
       // Bee never fully stops: it keeps a tiny restless wander around its
       // resting spot even while the cursor is still, so it always reads
       // as alive rather than frozen.
-      idleAngle += 0.045;
+      idleAngle += 0.025;
       const idleX = Math.cos(idleAngle) * IDLE_AMPLITUDE;
       const idleY = Math.sin(idleAngle * 1.7) * IDLE_AMPLITUDE * 0.6;
 
@@ -1049,10 +1055,18 @@ document.querySelectorAll('.faq-item').forEach((item) => {
         angle = Math.max(-18, Math.min(18, angle));
       }
 
-      const wobble = Math.sin(idleAngle * 2) * 2;
+      const wobble = Math.sin(idleAngle * 2) * 1.2;
 
-      bee.style.transform =
-        `translate(${beeX - 13}px, ${beeY - 13}px) rotate(${angle + wobble}deg)`;
+      // Position lives on #cursorBee itself; the tilt/wobble rotation is
+      // applied only to the inner .bee-body wrapper. The speech bubble is
+      // a sibling of .bee-body (not a child), so it glides smoothly with
+      // the bee's position without ever inheriting its rotation — that
+      // rotation-on-a-shared-element was what made the bubble look like
+      // it was glitching in place while idle.
+      bee.style.transform = `translate(${beeX - HALF_SIZE}px, ${beeY - HALF_SIZE}px)`;
+      if (beeBody) {
+        beeBody.style.transform = `rotate(${angle + wobble}deg)`;
+      }
 
       prevX = beeX;
       prevY = beeY;
@@ -1061,4 +1075,132 @@ document.querySelectorAll('.faq-item').forEach((item) => {
   }
 
   requestAnimationFrame(tick);
+
+  // ---- Hover tooltip: the bee "speaks" about whatever is clickable ----
+  if (!bubble) return;
+
+  const skillMessages = {
+    'html-css': 'discover my HTML & CSS skills!',
+    'javascript': 'see my JavaScript projects!',
+    'typescript': 'check out my TypeScript work!',
+    'python': 'discover my Python skill!',
+    'cpp': 'peek at my C++ experience!',
+    'unity': 'see what I built in Unity!',
+    'react-native': 'explore my React Native apps!',
+    'nodejs': 'check my Node.js work!',
+    'postgresql': 'see my PostgreSQL projects!',
+    'notion': 'discover how I use Notion!',
+    'arduino': 'see my Arduino builds!',
+    'esp32': 'check out my ESP32 projects!',
+    'sensor': 'discover my sensor work!',
+    'circuit': 'see my circuit design skills!',
+    'embedded': 'explore my embedded systems work!',
+    'imaging': 'discover my medical imaging knowledge!',
+    'biomedical': 'see my biomedical engineering skills!',
+    'clinical': 'check out my clinical experience!',
+    'healthcare': 'discover my healthcare know-how!',
+    'english': 'see my English proficiency!',
+    'french': 'découvrez mon français!',
+    'arabic': 'discover my Arabic fluency!',
+  };
+
+  const cardMessages = {
+    'external-relations': 'see more of my experience at Biomed Innov!',
+    'stiet-internship': 'explore my STIET internship!',
+    'clinical-internship': 'discover my clinical internship!',
+    'sponsorship': 'see how I led sponsorships!',
+    'notion-campus-leader': 'discover my Notion Campus Leader role!',
+    'robotics-week': 'explore National Robotics Weekend!',
+  };
+
+  const projectMessages = {
+    'radconnect': 'explore RadConnect!',
+    'homeostasis': 'discover the Homeostasis tool!',
+    'biofarm': 'check out BioFarm!',
+  };
+
+  const filterMessages = {
+    main: 'see my main projects!',
+    software: 'browse my software projects!',
+    hardware: 'browse my hardware projects!',
+  };
+
+  const sectionMessages = {
+    home: 'back to the top!',
+    about: 'learn more about me!',
+    'skills-terminal': 'check out my skills!',
+    experience: 'see my experience!',
+    leadership: 'discover my leadership roles!',
+    awards: 'see my awards!',
+    projects: 'browse my projects!',
+    contact: "let's get in touch!",
+  };
+
+  function messageFor(el) {
+    const custom = el.closest('[data-bee-msg]');
+    if (custom) return custom.dataset.beeMsg;
+
+    const skillEl = el.closest('[data-skill]');
+    if (skillEl) return skillMessages[skillEl.dataset.skill] || 'discover this skill!';
+
+    const cardEl = el.closest('[data-card]');
+    if (cardEl) return cardMessages[cardEl.dataset.card] || 'see more about this!';
+
+    const projBtn = el.closest('[data-project]');
+    if (projBtn) return projectMessages[projBtn.dataset.project] || 'explore this project!';
+
+    const projLink = el.closest('.project-link');
+    if (projLink) {
+      const row = projLink.closest('.project-row');
+      const id = row && row.id ? row.id.replace('project-', '') : '';
+      return projectMessages[id] || 'explore this project!';
+    }
+
+    const filterBtn = el.closest('[data-filter]');
+    if (filterBtn) return filterMessages[filterBtn.dataset.filter] || 'filter projects!';
+
+    const navLink = el.closest('[data-section]');
+    if (navLink) return sectionMessages[navLink.dataset.section] || 'go there!';
+
+    if (el.closest('#cvWidgetBtn')) return 'check out my CV!';
+    if (el.closest('.cv-download-btn')) return 'download my CV!';
+    if (el.closest('#projectsAllBtn')) return 'see all my projects!';
+    if (el.closest('#prevPageBtn')) return 'flip to the previous page!';
+    if (el.closest('#nextPageBtn')) return 'turn the page!';
+    if (el.closest('.book')) return 'open the book!';
+    if (el.closest('.faq-question')) return 'curious? click to find out!';
+    if (el.closest('.award-card')) return 'see my hackathon award!';
+    if (el.closest('.contact-link-linkedin')) return 'connect with me on LinkedIn!';
+    if (el.closest('.contact-link-github')) return 'check out my GitHub!';
+    if (el.closest('.contact-link-instagram')) return 'see my Instagram!';
+    if (el.closest('a[href^="mailto:"]')) return 'send me an email!';
+    if (el.closest('a[href^="https://wa.me"]')) return 'message me on WhatsApp!';
+    if (el.closest('.terminal-dot-close')) return 'close this!';
+    if (el.closest('.nav-hamburger')) return 'open the menu!';
+    if (el.closest('.timeline-org')) return 'visit this organization!';
+
+    return null;
+  }
+
+  const HOVER_SELECTOR =
+    'a, button, [role="button"], .skill-chip, .experience-card, .book, [data-bee-msg]';
+
+  let currentTarget = null;
+
+  document.addEventListener('mouseover', (e) => {
+    const clickable = e.target.closest(HOVER_SELECTOR);
+    if (!clickable || currentTarget === clickable) return;
+    const msg = messageFor(clickable);
+    if (!msg) return;
+    currentTarget = clickable;
+    bubble.textContent = msg;
+    bubble.classList.add('bee-bubble-visible');
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (!currentTarget) return;
+    if (currentTarget.contains(e.relatedTarget)) return;
+    currentTarget = null;
+    bubble.classList.remove('bee-bubble-visible');
+  });
 })();

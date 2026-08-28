@@ -1,3 +1,118 @@
+// ---- Sound effects (Web Audio API — synthesized, no external audio
+// files needed) ----
+const SoundFX = (function initSoundFX() {
+  let ctx = null;
+  let enabled = true;
+  const STORAGE_KEY = 'siteSoundEnabled';
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored !== null) enabled = stored === 'true';
+  } catch (e) { /* localStorage unavailable — default stays on */ }
+
+  function getCtx() {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return null;
+    if (!ctx) ctx = new AudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  // Soft, short blip for general UI clicks (buttons, links, chips...).
+  function click() {
+    if (!enabled) return;
+    const c = getCtx();
+    if (!c) return;
+    const t = c.currentTime;
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(680, t);
+    osc.frequency.exponentialRampToValueAtTime(400, t + 0.06);
+    gain.gain.setValueAtTime(0.07, t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+    osc.connect(gain).connect(c.destination);
+    osc.start(t);
+    osc.stop(t + 0.09);
+  }
+
+  // Paper-rustle swish for a single page turn, built from filtered noise.
+  function pageTurn() {
+    if (!enabled) return;
+    const c = getCtx();
+    if (!c) return;
+    const t = c.currentTime;
+    const duration = 0.38;
+    const bufferSize = Math.floor(c.sampleRate * duration);
+    const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      const progress = i / bufferSize;
+      const envelope = Math.sin(progress * Math.PI);
+      data[i] = (Math.random() * 2 - 1) * envelope;
+    }
+    const noise = c.createBufferSource();
+    noise.buffer = buffer;
+    const bandpass = c.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.setValueAtTime(1700, t);
+    bandpass.frequency.linearRampToValueAtTime(2500, t + duration);
+    bandpass.Q.value = 0.65;
+    const gain = c.createGain();
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.linearRampToValueAtTime(0.18, t + 0.04);
+    gain.gain.linearRampToValueAtTime(0.0001, t + duration);
+    noise.connect(bandpass).connect(gain).connect(c.destination);
+    noise.start(t);
+    noise.stop(t + duration);
+  }
+
+  // A slightly richer swish + soft low thud for the cover opening/closing.
+  function bookOpen() {
+    if (!enabled) return;
+    pageTurn();
+    const c = getCtx();
+    if (!c) return;
+    const t = c.currentTime + 0.06;
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(170, t);
+    osc.frequency.exponentialRampToValueAtTime(85, t + 0.2);
+    gain.gain.setValueAtTime(0.09, t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+    osc.connect(gain).connect(c.destination);
+    osc.start(t);
+    osc.stop(t + 0.24);
+  }
+
+  function toggle() {
+    enabled = !enabled;
+    try { localStorage.setItem(STORAGE_KEY, String(enabled)); } catch (e) { /* ignore */ }
+    return enabled;
+  }
+
+  function isEnabled() {
+    return enabled;
+  }
+
+  // Browsers require a user gesture before audio can play — prime/resume
+  // the context on the very first pointer or key interaction so the
+  // first real sound effect isn't silently dropped.
+  function primeOnFirstGesture() {
+    const unlock = () => {
+      getCtx();
+      document.removeEventListener('pointerdown', unlock);
+      document.removeEventListener('keydown', unlock);
+    };
+    document.addEventListener('pointerdown', unlock, { once: true });
+    document.addEventListener('keydown', unlock, { once: true });
+  }
+  primeOnFirstGesture();
+
+  return { click, pageTurn, bookOpen, toggle, isEnabled };
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobileMediaQuery = window.matchMedia('(max-width: 900px)');
@@ -502,6 +617,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Mobile hamburger nav
+  const navbarEl = document.getElementById('navbar');
   const navHamburger = document.getElementById('navHamburger');
   const navLinksEl = document.getElementById('navLinks');
   const navOverlay = document.getElementById('navOverlay');
@@ -510,6 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
     navHamburger.classList.remove('open');
     navLinksEl.classList.remove('mobile-open');
     navOverlay.classList.remove('active');
+    navbarEl.classList.remove('menu-open');
     navHamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
@@ -518,6 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isOpen = navLinksEl.classList.toggle('mobile-open');
     navHamburger.classList.toggle('open', isOpen);
     navOverlay.classList.toggle('active', isOpen);
+    navbarEl.classList.toggle('menu-open', isOpen);
     navHamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
@@ -604,50 +722,86 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.disabled = currentPageIndex === totalPagePairs;
   }
 
-  // Mobile: one readable page/face at a time instead of the 3D spread.
+  // Mobile: one readable page/face at a time (screen's too narrow for the
+  // desktop two-page spread), but the transition between faces uses the
+  // same notebook-style flip-up glide, not the desktop's side-flip — see
+  // goToMobilePage() and the .mobile-flip-* rotateX keyframes in style.css.
   // DOM order of .page-front/.page-back across page0→page2 already gives
   // the correct linear reading sequence: cover, p1, p2, p3, p4, back cover.
   const allFaces = Array.from(book.querySelectorAll('.page-front, .page-back'));
   const mobileLabels = ['Cover', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Back Cover'];
   let mobilePageIndex = 0;
+  let mobileBookInitialized = false;
+  let isMobileFlipping = false;
 
-  function updateMobileBook() {
+  function setMobileFace(index) {
     allFaces.forEach((face, i) => {
-      face.classList.toggle('mobile-active', i === mobilePageIndex);
+      face.classList.toggle('mobile-active', i === index);
     });
-    pageIndicator.textContent = mobileLabels[mobilePageIndex] || '';
-    prevBtn.disabled = mobilePageIndex === 0;
-    nextBtn.disabled = mobilePageIndex === allFaces.length - 1;
-    playMobileFlipAnim();
+    pageIndicator.textContent = mobileLabels[index] || '';
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === allFaces.length - 1;
   }
 
-  // Simulated page-turn animation on the newly visible face.
-  let mobileBookInitialized = false;
-  function playMobileFlipAnim() {
-    if (!mobileBookInitialized) return;
-    const activeFace = allFaces[mobilePageIndex];
-    if (!activeFace) return;
-    const inner = activeFace.querySelector('.page-content') || activeFace.querySelector('.cover-design');
-    if (!inner) return;
-    inner.classList.remove('page-flip-anim');
-    // Force reflow so the animation restarts even if the same class was
-    // just removed (e.g. rapid clicks).
-    void inner.offsetWidth;
-    inner.classList.add('page-flip-anim');
-    inner.addEventListener('animationend', () => {
-      inner.classList.remove('page-flip-anim');
-    }, { once: true });
+  function goToMobilePage(newIndex) {
+    if (newIndex < 0 || newIndex >= allFaces.length || newIndex === mobilePageIndex) return;
+
+    // Before the book has finished its first render, or during an
+    // in-progress flip, just jump straight there — no animation to glide.
+    if (!mobileBookInitialized) {
+      mobilePageIndex = newIndex;
+      setMobileFace(mobilePageIndex);
+      return;
+    }
+    if (isMobileFlipping) return;
+
+    const forward = newIndex > mobilePageIndex;
+    const outgoing = allFaces[mobilePageIndex];
+    const incoming = allFaces[newIndex];
+    isMobileFlipping = true;
+
+    // Lock the book's height for the duration of the flip: both faces sit
+    // position:absolute mid-transition and don't contribute to the
+    // container's normal-flow height, which would otherwise collapse it.
+    const bookRect = book.getBoundingClientRect();
+    book.style.height = `${bookRect.height}px`;
+
+    // The very first flip off the cover reads as the book opening; every
+    // other transition is a regular page turn.
+    if (mobilePageIndex === 0 || newIndex === 0) {
+      SoundFX.bookOpen();
+    } else {
+      SoundFX.pageTurn();
+    }
+
+    outgoing.classList.add(forward ? 'mobile-flip-out-forward' : 'mobile-flip-out-backward');
+    incoming.classList.add('mobile-active', forward ? 'mobile-flip-in-forward' : 'mobile-flip-in-backward');
+
+    let settled = false;
+    const settle = () => {
+      if (settled) return;
+      settled = true;
+      outgoing.classList.remove(
+        'mobile-flip-out-forward', 'mobile-flip-out-backward', 'mobile-active'
+      );
+      incoming.classList.remove('mobile-flip-in-forward', 'mobile-flip-in-backward');
+      book.style.height = '';
+      mobilePageIndex = newIndex;
+      setMobileFace(mobilePageIndex);
+      isMobileFlipping = false;
+    };
+
+    outgoing.addEventListener('animationend', settle, { once: true });
+    setTimeout(settle, 780); // safety net in case animationend doesn't fire
   }
 
   nextBtn.addEventListener('click', () => {
     if (isMobileLayout()) {
-      if (mobilePageIndex < allFaces.length - 1) {
-        mobilePageIndex++;
-        updateMobileBook();
-      }
+      goToMobilePage(mobilePageIndex + 1);
       return;
     }
     if (currentPageIndex < totalPagePairs) {
+      SoundFX[currentPageIndex === 0 ? 'bookOpen' : 'pageTurn']();
       currentPageIndex++;
       updateBook();
     }
@@ -655,13 +809,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   prevBtn.addEventListener('click', () => {
     if (isMobileLayout()) {
-      if (mobilePageIndex > 0) {
-        mobilePageIndex--;
-        updateMobileBook();
-      }
+      goToMobilePage(mobilePageIndex - 1);
       return;
     }
     if (currentPageIndex > 0) {
+      SoundFX[currentPageIndex === 1 ? 'bookOpen' : 'pageTurn']();
       currentPageIndex--;
       updateBook();
     }
@@ -671,9 +823,11 @@ document.addEventListener("DOMContentLoaded", () => {
     page.addEventListener('click', () => {
       if (isMobileLayout()) return;
       if (idx === currentPageIndex) {
+        SoundFX[currentPageIndex === 0 ? 'bookOpen' : 'pageTurn']();
         currentPageIndex++;
         updateBook();
       } else if (idx === currentPageIndex - 1) {
+        SoundFX[currentPageIndex === 1 ? 'bookOpen' : 'pageTurn']();
         currentPageIndex--;
         updateBook();
       }
@@ -684,14 +838,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // the same way tapping a real book page turns it.
   book.addEventListener('click', () => {
     if (!isMobileLayout()) return;
-    if (mobilePageIndex < allFaces.length - 1) {
-      mobilePageIndex++;
-      updateMobileBook();
-    }
+    goToMobilePage(mobilePageIndex + 1);
   });
 
   updateBook();
-  updateMobileBook();
+  setMobileFace(mobilePageIndex);
   mobileBookInitialized = true;
 
   // Terminal Deck Scroll & Dock Animation
@@ -737,6 +888,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateTerminals() {
+    if (isMobileLayout()) {
+      dock.classList.remove("is-visible");
+      cards.forEach((card) => {
+        const windowEl = card.querySelector(".terminal-window");
+        windowEl.style.transform = '';
+        windowEl.style.opacity = '';
+        card.style.pointerEvents = '';
+      });
+      return;
+    }
+
     const { progress, inSection } = getProgress();
 
     if (inSection) {
@@ -843,6 +1005,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return function update() {
+      if (isMobileLayout()) {
+        track.style.transform = '';
+        return;
+      }
+
       const rect = section.getBoundingClientRect();
       const sectionHeight = section.offsetHeight;
       const viewportHeight = window.innerHeight;
@@ -960,12 +1127,30 @@ document.addEventListener("DOMContentLoaded", () => {
     updateExperienceScroll();
     updateLeadershipScroll();
     updateBook();
-    updateMobileBook();
+    setMobileFace(mobilePageIndex);
   });
 
   updateTerminals();
   updateExperienceScroll();
   updateLeadershipScroll();
+
+  // ---- General click sound for ordinary interactive elements ----
+  // The book handles its own richer page-turn/open sounds at the sites
+  // where those transitions actually happen, so it's excluded here to
+  // avoid layering two sounds on the same tap.
+  document.addEventListener('click', (e) => {
+    const bookRelated = e.target.closest(
+      '#flipBook, .page, .page-front, .page-back, #nextPageBtn, #prevPageBtn'
+    );
+    if (bookRelated) return;
+
+    const interactive = e.target.closest(
+      'a, button, [role="button"], .skill-chip, .faq-question, .projects-tab, .contact-link, .terminal-dot-close'
+    );
+    if (interactive) {
+      SoundFX.click();
+    }
+  });
 });
 
 document.querySelectorAll('.faq-item').forEach((item) => {

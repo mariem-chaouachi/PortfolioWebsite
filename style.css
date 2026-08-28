@@ -95,12 +95,34 @@ body {
   display: flex;
   list-style: none;
   gap: 24px;
-  position: relative;
-  z-index: 2;
+  margin: 0;
+  padding: 0;
+  /* #navLinks lives outside .navbar in the DOM now (see index.html) so
+     the blur/transform on that liquid-glass container can't trap it as
+     a position:fixed element on mobile. On desktop, replicate the
+     navbar's own fixed-centering here so the links still land in the
+     same visual spot inside the bar. The wrapper spans the navbar's
+     full box but ignores pointer events itself so it doesn't shadow
+     the logo/hamburger beneath it — only the links themselves are
+     interactive. */
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  height: 60px;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 28px;
+  box-sizing: border-box;
+  z-index: 101;
+  pointer-events: none;
 }
 
 .nav-links a {
   display: inline-block;
+  pointer-events: auto;
   font-family: 'Roboto', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
@@ -1446,26 +1468,6 @@ h2.skills-fixed-title {
   width: 16px;
 }
 
-@media (max-width: 900px) {
-  /* The dock only lost its "display: none" (which used to hide it
-     entirely on mobile, back when the Skills section used a static
-     stacked layout there) once the pinned scroll-jacking animation was
-     restored for mobile — give it real mobile sizing instead of relying
-     on the desktop numbers. */
-  .terminal-dock {
-    bottom: max(18px, env(safe-area-inset-bottom, 0px));
-    gap: 8px;
-    padding: 7px 12px;
-    border-radius: 14px;
-    max-width: 92vw;
-  }
-
-  .terminal-dock-item {
-    width: 38px;
-    height: 36px;
-    font-size: 12px;
-  }
-}
 
 /* SHARED SECTION TITLES */
 .section-title-dark {
@@ -1530,7 +1532,11 @@ h2.skills-fixed-title {
 .leadership-gallery-track {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  /* Cards size to their own content now — "stretch" was forcing every
+     card in a row to match the tallest neighbor's height, which left
+     visible empty space below the text in any card with a shorter
+     description or no certificate image. */
+  align-items: flex-start;
   gap: 80px;
   width: max-content;
   padding: 0 10vw;
@@ -2611,11 +2617,10 @@ a.contact-detail-row:hover {
 }
 /* ======================================================================
    MOBILE RESPONSIVE LAYER
-   Below 900px: sizing/spacing adjustments for touch screens. The pinned
-   scroll-jacking sections (Skills, Experience, Leadership) keep the same
-   animated behavior as desktop — see isMobileLayout() usages in
-   script.js for the parts that still branch (e.g. the About Me book,
-   which switches to a single-page tap-to-flip mode on mobile).
+   Below 900px: the pinned scroll-jacking sections (Skills, Experience,
+   Leadership) switch from horizontal/stacked-deck scroll animations to a
+   plain vertical stack — scroll-jacking is unreliable on touch devices,
+   so this trades the desktop choreography for a layout that just works.
    ====================================================================== */
 /* ---- Laptop screens: hero name/tagline a notch smaller ---- */
 @media (max-width: 1440px) {
@@ -2636,6 +2641,15 @@ a.contact-detail-row:hover {
     width: 94%;
     height: 56px;
     padding: 0 16px;
+    transition: border-radius 0.3s ease;
+  }
+
+  /* When the menu is open, flatten the pill's bottom corners so it
+     visually fuses with the panel growing directly beneath it — the two
+     pieces read as one continuous liquid-glass shape expanding open,
+     rather than a separate panel appearing from the side. */
+  .navbar.menu-open {
+    border-radius: 28px 28px 0 0;
   }
 
   .nav-logo {
@@ -2648,24 +2662,43 @@ a.contact-detail-row:hover {
 
   .nav-links {
     position: fixed;
-    top: 0;
-    right: -100%;
-    width: min(78vw, 320px);
-    height: 100vh;
-    background: #faf8f0;
+    /* Sits flush against the navbar pill's bottom edge (top: 10px +
+       height: 56px, no gap) so it reads as part of the same shape. */
+    top: 66px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 94%;
+    max-width: none;
+    height: auto;
+    max-height: 0;
+    background: rgba(250, 248, 240, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-top: none;
+    border-radius: 0 0 28px 28px;
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: stretch;
     gap: 0;
-    padding: 90px 28px 40px;
+    padding: 0 20px;
     box-sizing: border-box;
-    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.15);
-    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
+    transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.3s ease,
+      padding 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 95;
-    overflow-y: auto;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: auto;
   }
 
   .nav-links.mobile-open {
-    right: 0;
+    max-height: 70vh;
+    opacity: 1;
+    padding: 10px 20px 20px;
+    overflow-y: auto;
   }
 
   .nav-links li {
@@ -2722,13 +2755,13 @@ a.contact-detail-row:hover {
   }
 
   .book-container {
-    perspective: none;
+    perspective: 1400px;
     max-width: 95vw;
     padding-bottom: 0;
   }
 
   .book {
-    position: static;
+    position: relative;
     width: min(66vw, 240px);
     height: auto;
     transform: none !important;
@@ -2740,7 +2773,11 @@ a.contact-detail-row:hover {
     width: 100%;
     height: auto;
     transform: none !important;
-    transform-style: flat;
+    /* preserve-3d (not flat) so perspective from .book-container actually
+       passes through to .page-front/.page-back's own rotateY transforms
+       below — without it the flip renders as a flat squish instead of a
+       proper 3D turn. */
+    transform-style: preserve-3d;
   }
 
   .page-front,
@@ -2751,7 +2788,12 @@ a.contact-detail-row:hover {
     min-height: calc(min(66vw, 240px) * 1.414);
     max-height: 72vh;
     overflow-y: auto;
-    transform: none !important;
+    /* No !important here (unlike .book/.page above) — the flip classes
+       below need to be able to apply their own rotateY transform during
+       a transition, and !important would block a CSS animation from
+       ever overriding it. */
+    transform: none;
+    transform-origin: top center;
     backface-visibility: visible;
     -webkit-backface-visibility: visible;
     border-radius: 12px;
@@ -2779,19 +2821,87 @@ a.contact-detail-row:hover {
     text-align: center;
   }
 
-  /* Simulated page-turn: a quick horizontal squash-and-fade on the newly
-     shown face, triggered by JS via the .page-flip-anim class. */
-  .page-content.page-flip-anim,
-  .cover-design.page-flip-anim {
-    animation: mobilePageFlip 0.45s ease;
-    transform-origin: center;
+  /* Notebook-style page flip: pages turn up and over the top edge (like
+     a flip-pad), not side-to-side like a book. JS (goToMobilePage in
+     script.js) briefly stacks the outgoing and incoming faces on top of
+     each other and animates both at once, then settles back into the
+     normal single-face layout above once the transition finishes.
+     Direction-aware: "next page" flips up and away over the top,
+     "previous page" flips back down from the top, matching the way
+     flipping a notepad forward vs. backward actually looks. */
+  .page-front.mobile-flip-out-forward,
+  .page-back.mobile-flip-out-forward,
+  .page-front.mobile-flip-out-backward,
+  .page-back.mobile-flip-out-backward {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    display: flex !important;
+    z-index: 3;
+    pointer-events: none;
+    /* Hide the mirrored backface past 90° instead of showing garbled
+       upside-down content as the page rotates away. */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  @keyframes mobilePageFlip {
-    0%   { transform: rotateY(0deg) scaleX(1); opacity: 1; }
-    45%  { transform: rotateY(88deg) scaleX(0.35); opacity: 0.35; }
-    55%  { transform: rotateY(-88deg) scaleX(0.35); opacity: 0.35; }
-    100% { transform: rotateY(0deg) scaleX(1); opacity: 1; }
+  .page-front.mobile-flip-in-forward,
+  .page-back.mobile-flip-in-forward,
+  .page-front.mobile-flip-in-backward,
+  .page-back.mobile-flip-in-backward {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    display: flex !important;
+    z-index: 2;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .page-front.mobile-flip-out-forward,
+  .page-back.mobile-flip-out-forward {
+    animation: mobileFlipOutForward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  .page-front.mobile-flip-in-forward,
+  .page-back.mobile-flip-in-forward {
+    animation: mobileFlipInForward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  .page-front.mobile-flip-out-backward,
+  .page-back.mobile-flip-out-backward {
+    animation: mobileFlipOutBackward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  .page-front.mobile-flip-in-backward,
+  .page-back.mobile-flip-in-backward {
+    animation: mobileFlipInBackward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  /* Next page: current page lifts and flips up and away over the top. */
+  @keyframes mobileFlipOutForward {
+    0%   { transform: rotateX(0deg); opacity: 1; }
+    100% { transform: rotateX(-150deg); opacity: 0.2; }
+  }
+
+  /* The next page rises up from underneath (as if it was tucked behind
+     the one that just flipped away) and settles flat. */
+  @keyframes mobileFlipInForward {
+    0%   { transform: rotateX(130deg); opacity: 0.25; }
+    55%  { opacity: 0.85; }
+    100% { transform: rotateX(0deg); opacity: 1; }
+  }
+
+  /* Previous page: current page flips back down from the top. */
+  @keyframes mobileFlipOutBackward {
+    0%   { transform: rotateX(0deg); opacity: 1; }
+    100% { transform: rotateX(150deg); opacity: 0.2; }
+  }
+
+  @keyframes mobileFlipInBackward {
+    0%   { transform: rotateX(-130deg); opacity: 0.25; }
+    55%  { opacity: 0.85; }
+    100% { transform: rotateX(0deg); opacity: 1; }
   }
 
   /* ---- Floating widget (CV) ---- */
@@ -2823,16 +2933,78 @@ a.contact-detail-row:hover {
     bottom: 16px;
   }
 
-  /* ---- Skills / Experience / Leadership: keep the same pinned
-     scroll-jacking animation used on desktop (JS drives the transforms
-     for all viewport widths — see isMobileLayout() in script.js) ---- */
+  /* ---- Skills: drop the pinned scroll-jack for a plain stacked list ---- */
+  .terminal-scroll-stage {
+    height: auto !important;
+  }
+
   .terminal-sticky {
+    position: static;
+    height: auto;
     padding: 60px 5vw 40px;
+  }
+
+  .terminal-deck {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .terminal-card {
+    position: static !important;
+    width: 100% !important;
+    pointer-events: auto !important;
+  }
+
+  .terminal-window {
+    max-width: 100%;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .terminal-dock {
+    display: none;
+  }
+
+  /* ---- Experience & Leadership: same static-stack treatment ---- */
+  .experience-section,
+  .leadership-section {
+    height: auto !important;
   }
 
   .experience-pinned-container,
   .leadership-pinned-container {
+    position: static;
+    height: auto;
+    width: 100%;
     padding: 60px 5vw 0;
+  }
+
+  .experience-gallery-wrapper,
+  .leadership-gallery-wrapper {
+    position: static;
+    width: 100%;
+  }
+
+  .experience-gallery-track,
+  .leadership-gallery-track {
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    gap: 24px;
+    transform: none !important;
+  }
+
+  .gallery-connector-line {
+    display: none;
+  }
+
+  .experience-card {
+    width: 100%;
+    max-width: 100%;
   }
 
   .exp-card-inner {
@@ -2840,16 +3012,39 @@ a.contact-detail-row:hover {
     gap: 14px;
   }
 
+  .exp-content {
+    width: 100%;
+  }
+
   .exp-cert-thumb {
     max-width: 60%;
     max-height: 220px;
     width: auto;
     height: auto;
+    /* Center the certificate under the text instead of it sitting flush
+       against the card's left edge (leftover from the desktop row
+       layout's flex-start alignment). */
+    align-self: center;
   }
 
-  /* Date pill always drops to its own line under the logo/title/org group */
-  .timeline-date {
+  /* Date pill always drops to its own line under the logo/title/org
+     group. The line-break is forced with a zero-size flex spacer
+     (::after, ordered between the heading text and the pill) rather
+     than by giving the pill itself flex-basis: 100% — that was
+     stretching the pill's own background to the full card width
+     instead of letting it hug just its text. */
+  .exp-card-header::after {
+    content: '';
     flex-basis: 100%;
+    width: 0;
+    order: 1;
+  }
+
+  .timeline-date {
+    flex: 0 0 auto;
+    width: fit-content;
+    order: 2;
+    align-self: flex-start;
     margin-top: 6px;
   }
 

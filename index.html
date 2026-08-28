@@ -27,20 +27,24 @@
   <!-- Liquid Glass Navigation Bar -->
   <nav class="navbar liquid-glass-container" id="navbar">
     <div class="nav-logo">Mariem Chaouachi</div>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#home" data-section="home" data-bee-msg="Back to the top!">Home</a></li>
-      <li><a href="#about" data-section="about" data-bee-msg="Open the book!">About</a></li>
-      <li><a href="#skills-terminal" data-section="skills-terminal" data-bee-msg="See what I can do!">Skills</a></li>
-      <li><a href="#experience" data-section="experience" data-bee-msg="Check out my experience!">Experience</a></li>
-      <li><a href="#leadership" data-section="leadership" data-bee-msg="See my leadership roles!">Leadership</a></li>
-      <li><a href="#awards" data-section="awards" data-bee-msg="Check out my awards!">Awards</a></li>
-      <li><a href="#projects" data-section="projects" data-bee-msg="See what I've built!">Projects</a></li>
-      <li><a href="#contact" data-section="contact" data-bee-msg="Let's connect!">Contact</a></li>
-    </ul>
     <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" data-bee-msg="Open the menu!">
       <span></span><span></span><span></span>
     </button>
   </nav>
+
+  <!-- Kept outside .navbar: that container's transform + overflow:hidden
+       would otherwise clip this fixed-position slide-in panel and hide
+       it on mobile no matter what the toggle classes say. -->
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" data-section="home" data-bee-msg="Back to the top!">Home</a></li>
+    <li><a href="#about" data-section="about" data-bee-msg="Open the book!">About</a></li>
+    <li><a href="#skills-terminal" data-section="skills-terminal" data-bee-msg="See what I can do!">Skills</a></li>
+    <li><a href="#experience" data-section="experience" data-bee-msg="Check out my experience!">Experience</a></li>
+    <li><a href="#leadership" data-section="leadership" data-bee-msg="See my leadership roles!">Leadership</a></li>
+    <li><a href="#awards" data-section="awards" data-bee-msg="Check out my awards!">Awards</a></li>
+    <li><a href="#projects" data-section="projects" data-bee-msg="See what I've built!">Projects</a></li>
+    <li><a href="#contact" data-section="contact" data-bee-msg="Let's connect!">Contact</a></li>
+  </ul>
   <div class="nav-overlay" id="navOverlay"></div>
 
   <!-- Hero Section -->

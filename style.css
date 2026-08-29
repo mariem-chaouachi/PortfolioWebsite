@@ -2378,11 +2378,6 @@ a.contact-detail-row:hover {
 }
 
 @media (max-width: 480px) {
-  .book {
-    width: 200px;
-    height: 290px;
-  }
-
   .cover-design h3 {
     font-size: 2.2rem;
   }
@@ -2743,11 +2738,22 @@ a.contact-detail-row:hover {
   }
 
   .book-stage {
+    /* Explicit column direction (rather than relying on flex-wrap to
+       naturally stack narrow items) makes the tv → book → buttons → tv
+       order deterministic regardless of viewport width. */
+    flex-direction: column;
     row-gap: 14px;
   }
 
   .book-controls {
     margin-top: 4px;
+    /* .book-stage switches to flex-direction: column above (for a
+       deterministic tv → book → buttons → tv stack order), and the base
+       rule's flex-basis: 100% is a main-axis size — in row mode that
+       meant "full width", but in column mode the main axis is vertical,
+       so left as-is it would try to stretch this to the full height of
+       the stage. Reset it back to auto here. */
+    flex-basis: auto;
   }
 
   .tv-right {
@@ -2762,10 +2768,49 @@ a.contact-detail-row:hover {
 
   .book {
     position: relative;
-    width: min(66vw, 240px);
+    width: min(76vw, 300px);
     height: auto;
     transform: none !important;
     transition: none;
+    /* Room for the notebook binding strip added below, so it doesn't
+       overlap the top of the page content. */
+    margin-top: 14px;
+  }
+
+  /* Notebook binding cue: pages now flip up from the top edge instead of
+     turning like a book, so a plain rectangle could read as an
+     unexplained pivot. This strip + row of ring "holes" makes the top
+     edge look like an actual spiral-bound notepad, telling the user at a
+     glance where the pages are anchored and which way they'll flip.
+     Kept deliberately muted/small — it's a hint, not a decoration that
+     competes with the page content below it. */
+  .book::before {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: 6%;
+    width: 88%;
+    height: 13px;
+    background: linear-gradient(180deg, #ded7c4 0%, #c9bfa0 100%);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .book::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 6%;
+    width: 88%;
+    height: 6px;
+    background-image: radial-gradient(circle, rgba(107, 60, 46, 0.4) 1.8px, transparent 2.2px);
+    background-size: 18px 6px;
+    background-repeat: repeat-x;
+    background-position: 8px center;
+    z-index: 21;
+    pointer-events: none;
   }
 
   .page {
@@ -2784,9 +2829,12 @@ a.contact-detail-row:hover {
   .page-back {
     position: static;
     width: 100%;
-    height: auto;
-    min-height: calc(min(66vw, 240px) * 1.414);
-    max-height: 72vh;
+    /* Fixed height (not auto/min-height) so every page — cover, content
+       pages, back cover — is the exact same A4-ratio box regardless of
+       how much text it holds. Content that doesn't fit just scrolls
+       inside it instead of changing the page's own size. */
+    height: calc(min(76vw, 300px) * 1.414);
+    max-height: 78vh;
     overflow-y: auto;
     /* No !important here (unlike .book/.page above) — the flip classes
        below need to be able to apply their own rotateY transform during
@@ -2878,30 +2926,39 @@ a.contact-detail-row:hover {
     animation: mobileFlipInBackward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
-  /* Next page: current page lifts and flips up and away over the top. */
+  /* Next page: current page lifts and flips up and away over the top.
+     The shadow it casts grows and drops onto the page underneath as it
+     lifts (deepest at the midpoint, when it's furthest from the stack),
+     then fades out with it as it rotates out of view. */
   @keyframes mobileFlipOutForward {
-    0%   { transform: rotateX(0deg); opacity: 1; }
-    100% { transform: rotateX(-150deg); opacity: 0.2; }
+    0%   { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
+    50%  { box-shadow: 0 30px 46px rgba(0, 0, 0, 0.32); }
+    100% { transform: rotateX(-150deg); opacity: 0.2; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); }
   }
 
   /* The next page rises up from underneath (as if it was tucked behind
-     the one that just flipped away) and settles flat. */
+     the one that just flipped away) and settles flat — its shadow starts
+     above it (still in the departing page's shadow) and settles down to
+     the normal resting shadow as it lands flat. */
   @keyframes mobileFlipInForward {
-    0%   { transform: rotateX(130deg); opacity: 0.25; }
+    0%   { transform: rotateX(130deg); opacity: 0.25; box-shadow: 0 -18px 28px rgba(0, 0, 0, 0.22); }
     55%  { opacity: 0.85; }
-    100% { transform: rotateX(0deg); opacity: 1; }
+    100% { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
   }
 
-  /* Previous page: current page flips back down from the top. */
+  /* Previous page: current page flips back down from the top — mirror
+     of the forward-out shadow, gathering above it as it tucks away. */
   @keyframes mobileFlipOutBackward {
-    0%   { transform: rotateX(0deg); opacity: 1; }
-    100% { transform: rotateX(150deg); opacity: 0.2; }
+    0%   { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
+    50%  { box-shadow: 0 -26px 42px rgba(0, 0, 0, 0.3); }
+    100% { transform: rotateX(150deg); opacity: 0.2; box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.05); }
   }
 
+  /* The previous page settles back down from above into place. */
   @keyframes mobileFlipInBackward {
-    0%   { transform: rotateX(-130deg); opacity: 0.25; }
+    0%   { transform: rotateX(-130deg); opacity: 0.25; box-shadow: 0 18px 28px rgba(0, 0, 0, 0.22); }
     55%  { opacity: 0.85; }
-    100% { transform: rotateX(0deg); opacity: 1; }
+    100% { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
   }
 
   /* ---- Floating widget (CV) ---- */

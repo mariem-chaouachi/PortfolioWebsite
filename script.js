@@ -113,11 +113,156 @@ const SoundFX = (function initSoundFX() {
   return { click, pageTurn, bookOpen, toggle, isEnabled };
 })();
 
+// ---- Language (EN/FR) ----
+const I18N = (function initI18N() {
+  const STORAGE_KEY = 'siteLang';
+  let lang = 'en';
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'fr' || stored === 'en') lang = stored;
+  } catch (e) { /* localStorage unavailable — default to English */ }
+
+  function get() {
+    return lang;
+  }
+
+  function set(newLang) {
+    lang = newLang === 'fr' ? 'fr' : 'en';
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* ignore */ }
+    apply();
+    document.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
+  }
+
+  // Swaps every translatable node's visible text/markup/attributes to
+  // match the current language. Called on load and whenever the toggle
+  // is pressed.
+  function apply() {
+    document.documentElement.setAttribute('lang', lang);
+
+    // Plain text nodes: data-en / data-fr → textContent
+    document.querySelectorAll('[data-en]').forEach((el) => {
+      const value = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+      if (value !== undefined) el.textContent = value;
+    });
+
+    // Nodes needing inner markup preserved (e.g. a nested <em>/<span>):
+    // data-en-html / data-fr-html → innerHTML
+    document.querySelectorAll('[data-en-html]').forEach((el) => {
+      const value = lang === 'fr' ? el.dataset.frHtml : el.dataset.enHtml;
+      if (value !== undefined) el.innerHTML = value;
+    });
+
+    // aria-label translations
+    document.querySelectorAll('[data-en-aria]').forEach((el) => {
+      const value = lang === 'fr' ? el.dataset.frAria : el.dataset.enAria;
+      if (value !== undefined) el.setAttribute('aria-label', value);
+    });
+
+    // Bee speech-bubble messages: data-bee-msg holds the live value the
+    // bee script reads; data-bee-msg-fr holds the French swap. English
+    // is captured into data-bee-msg-en the first time apply() runs so
+    // switching back to English later doesn't need its own attribute in
+    // the HTML.
+    document.querySelectorAll('[data-bee-msg]').forEach((el) => {
+      if (el.dataset.beeMsgEn === undefined) {
+        el.dataset.beeMsgEn = el.getAttribute('data-bee-msg');
+      }
+      const fr = el.dataset.beeMsgFr;
+      el.setAttribute('data-bee-msg', lang === 'fr' && fr ? fr : el.dataset.beeMsgEn);
+    });
+  }
+
+  return { get, set, apply };
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
+  I18N.apply();
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobileMediaQuery = window.matchMedia('(max-width: 900px)');
+
+  // ---- Loading screen: wait for the hero background image ----
+  (function initLoadingScreen() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (!loadingScreen) return;
+    const fill = document.getElementById('loadingBarFill');
+
+    document.body.classList.add('is-loading');
+
+    let progress = 0;
+    let tick = null;
+    if (!prefersReducedMotion) {
+      // Purely cosmetic progress creep while we wait — not tied to real
+      // download progress (the browser doesn't expose that for a plain
+      // background-image), just enough motion to read as "loading"
+      // rather than frozen.
+      tick = setInterval(() => {
+        progress = Math.min(progress + Math.random() * 18, 90);
+        if (fill) fill.style.width = `${progress}%`;
+      }, 150);
+    }
+
+    let finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      if (tick) clearInterval(tick);
+      if (fill) fill.style.width = '100%';
+      setTimeout(() => {
+        loadingScreen.classList.add('loaded');
+        document.body.classList.remove('is-loading');
+      }, prefersReducedMotion ? 0 : 200);
+    }
+
+    const heroImg = new Image();
+    heroImg.onload = finish;
+    heroImg.onerror = finish; // don't get stuck if the image fails to load
+    heroImg.src = 'hero-background.png';
+
+    // Safety net: never block the site for more than ~6s even if the
+    // image is unusually slow or the load/error events never fire.
+    setTimeout(finish, 6000);
+  })();
   function isMobileLayout() {
     return mobileMediaQuery.matches;
+  }
+
+  // ---- Language toggle button ----
+  const langToggleBtn = document.getElementById('langToggleBtn');
+  const langToggleLabel = document.getElementById('langToggleLabel');
+  if (langToggleBtn) {
+    const syncLangBtn = () => {
+      const current = I18N.get();
+      // Button shows the language you'd switch TO, not the current one.
+      langToggleLabel.textContent = current === 'fr' ? 'EN' : 'FR';
+      langToggleBtn.setAttribute('aria-label', current === 'fr' ? 'Switch to English' : 'Switch to French');
+    };
+    syncLangBtn();
+    langToggleBtn.addEventListener('click', () => {
+      I18N.set(I18N.get() === 'fr' ? 'en' : 'fr');
+      syncLangBtn();
+    });
+  }
+
+  // ---- Sound effects toggle button ----
+  const soundToggleBtn = document.getElementById('soundToggleBtn');
+  if (soundToggleBtn) {
+    const syncSoundBtn = () => {
+      const muted = !SoundFX.isEnabled();
+      soundToggleBtn.classList.toggle('muted', muted);
+      soundToggleBtn.setAttribute('aria-pressed', String(muted));
+      soundToggleBtn.setAttribute('aria-label', muted ? 'Unmute sound effects' : 'Mute sound effects');
+    };
+    syncSoundBtn();
+    soundToggleBtn.addEventListener('click', () => {
+      SoundFX.toggle();
+      syncSoundBtn();
+      // No explicit SoundFX.click() here — the delegated click-sound
+      // listener further down (bound on document) will already fire
+      // naturally as this event bubbles, and by then SoundFX.isEnabled()
+      // reflects the new state, so unmuting gets its own audible
+      // confirmation for free without double-firing the sound.
+    });
   }
 
   // Bind Mouse Glow for all Liquid Glass Containers
@@ -342,6 +487,124 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // French text for the modal content above — kept as a separate parallel
+  // dictionary (rather than restructuring every field into {en, fr}
+  // pairs) since only name/learned/used need a translation; icon paths,
+  // emoji, and cert images stay the same regardless of language and are
+  // read from skillDetails either way.
+  const skillDetailsFR = {
+    'html-css': {
+      name: 'HTML / CSS',
+      learned: "Appris en construisant et en itérant sur ce portfolio depuis zéro — en structurant les mises en page, puis en les affinant section par section.",
+      used: "Utilisé sur l'ensemble de ce portfolio et dans NeuroBalance, un prototype de jeu HTML/CSS/JS en un seul fichier."
+    },
+    'javascript': {
+      name: 'JavaScript',
+      learned: "Appris en parallèle du HTML/CSS en ajoutant de l'interactivité à des projets personnels.",
+      used: "Alimente la logique interactive de ce portfolio et la simulation de neurochimie de NeuroBalance."
+    },
+    'typescript': {
+      name: 'TypeScript',
+      learned: "Exploré en travaillant sur des bases de code front-end typées pour un développement d'interface plus fiable.",
+      used: "Appliqué dans des expérimentations front-end et des interfaces à base de composants."
+    },
+    'python': {
+      name: 'Python',
+      learned: "Appris à travers des cours et des scripts pratiques de traitement de données.",
+      used: "A servi à construire la couche de calcul du stress pour BioFarm, un projet de hackathon connecté à un capteur portable."
+    },
+    'cpp': {
+      name: 'C / C++',
+      learned: "Appris à travers des cours de systèmes embarqués et le développement sur Arduino.",
+      used: "Utilisé pour écrire le firmware/les sketches de prototypes matériels à capteurs comme BioFarm."
+    },
+    'arduino': {
+      name: 'Arduino',
+      learned: "Appris à travers des projets matériels pratiques et des cours de génie biomédical.",
+      used: "Utilisé pour connecter un capteur cardiaque MAX30100 pour BioFarm, un projet de bien-être de hackathon."
+    },
+    'esp32': {
+      name: 'ESP32',
+      learned: "Exploré comme une évolution d'Arduino pour des prototypes plus connectés, pilotés par capteurs.",
+      used: "Utilisé en prototypage embarqué aux côtés de projets à capteurs basés sur Arduino."
+    },
+    'sensor': {
+      name: 'Capteur MAX30100',
+      learned: "Appris en intégrant un capteur cardiaque dans un prototype matériel.",
+      used: "Central à BioFarm — lit les données cardiaques pour piloter le calcul du stress en jeu et déclencher des exercices de respiration."
+    },
+    'circuit': {
+      name: 'Conception de circuits',
+      learned: "Développé à travers des cours de génie biomédical couvrant l'électronique et l'instrumentation.",
+      used: "Appliqué dans le prototypage matériel pour des projets à capteurs."
+    },
+    'embedded': {
+      name: 'Systèmes embarqués',
+      learned: "Appris à travers des projets matériels Arduino/ESP32 et des cours.",
+      used: "Utilisé pour relier le matériel des capteurs à la logique logicielle dans BioFarm."
+    },
+    'unity': {
+      name: 'Unity',
+      learned: "Appris en créant des prototypes de jeux autour de concepts biomédicaux et de santé.",
+      used: "A servi à créer le jeu de ferme en pixel art de BioFarm, et à prototyper HormoneQuest sous Unity."
+    },
+    'react-native': {
+      name: 'React Native',
+      learned: "Appris en développant une application mobile multiplateforme depuis zéro.",
+      used: "A servi à construire le frontend de RadConnect — vues selon le rôle, messagerie en temps réel, localisation et notifications."
+    },
+    'nodejs': {
+      name: 'Node.js',
+      learned: "Appris en connectant un frontend mobile à un service backend en production.",
+      used: "Alimente le backend de RadConnect, construit avec Node.js et Express."
+    },
+    'postgresql': {
+      name: 'PostgreSQL',
+      learned: "Appris en concevant un schéma relationnel pour une application réelle.",
+      used: "Utilisé comme base de données de RadConnect, hébergée sur Neon."
+    },
+    'notion': {
+      name: 'Notion',
+      learned: "Adopté pour organiser les initiatives du club et planifier des projets personnels.",
+      used: "Utilisé pour planifier et suivre les projets du Club Biomed Innov et du travail personnel."
+    },
+    'imaging': {
+      name: 'Imagerie médicale',
+      learned: "Appris lors d'un stage d'étude des équipements d'imagerie médicale.",
+      used: "Étude des systèmes d'imagerie commercialisés par STIET, distributeur Philips en Tunisie, durant un stage."
+    },
+    'biomedical': {
+      name: 'Dispositifs biomédicaux',
+      learned: "Axe central des cours de génie biomédical à l'ISTMT.",
+      used: "Appliqué à travers les cours, le stage chez STIET et des projets de hackathon biomédical."
+    },
+    'clinical': {
+      name: 'Données cliniques',
+      learned: "Appris à travers des cours sur l'analyse de laboratoire et les systèmes de diagnostic.",
+      used: "A servi à construire un outil web de diagnostic clinique pour l'analyse de l'homéostasie/milieu intérieur, couvrant les bilans sodium, acido-basique, potassium, calcium et fonction rénale."
+    },
+    'healthcare': {
+      name: 'Innovation en santé',
+      learned: "Développé à travers des études de génie biomédical et un rôle de direction au sein du club.",
+      used: "Guide mes choix de projets — de BioFarm à l'outil de diagnostic Homéostasie — ainsi que mon rôle de responsable des relations extérieures au Club Biomed Innov."
+    },
+    'english': {
+      name: 'Anglais',
+      learned: "Développé à travers des années d'études académiques et une utilisation régulière dans le travail technique.",
+      used: "Utilisé pour les cours, la documentation technique et ce portfolio."
+    },
+    'french': {
+      name: 'Français',
+      learned: "Appris à travers le système éducatif bilingue de la Tunisie.",
+      used: "Utilisé quotidiennement dans des contextes académiques et professionnels."
+    },
+    'arabic': {
+      name: 'Arabe',
+      learned: "Langue maternelle.",
+      used: "Utilisé pour la communication quotidienne."
+    }
+  };
+
   const skillModalOverlay = document.getElementById('skillModalOverlay');
   const skillModalCloseBtn = document.getElementById('skillModalCloseBtn');
   const skillModalFilename = document.getElementById('skillModalFilename');
@@ -356,11 +619,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function openSkillModal(slug) {
     const data = skillDetails[slug];
     if (!data) return;
+    const fr = skillDetailsFR[slug];
+    const t = (I18N.get() === 'fr' && fr) ? fr : data;
 
     skillModalFilename.textContent = `${slug}.md`;
-    skillModalName.textContent = data.name;
-    skillModalLearned.textContent = data.learned;
-    skillModalUsed.textContent = data.used;
+    skillModalName.textContent = t.name;
+    skillModalLearned.textContent = t.learned;
+    skillModalUsed.textContent = t.used;
 
     if (data.iconEmoji) {
       skillModalIcon.style.display = 'none';
@@ -370,7 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
       skillModalIconEmoji.style.display = 'none';
       skillModalIcon.style.display = 'block';
       skillModalIcon.src = data.icon;
-      skillModalIcon.alt = data.name;
+      skillModalIcon.alt = t.name;
     }
 
     skillModalCertArea.innerHTML = '';
@@ -378,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const certPath = data.certImage || `certs/${slug}.png`;
     const img = document.createElement('img');
     img.src = certPath;
-    img.alt = `${data.name} certificate`;
+    img.alt = `${t.name} certificate`;
     img.className = 'skill-cert-image';
     img.onerror = () => {
       skillModalCertBlock.style.display = 'none';
@@ -441,6 +706,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Reuses the same French copy already shown on the visible project
+  // cards, so the modal and the card stay consistent.
+  const projectDetailsFR = {
+    'radconnect': {
+      name: 'RadConnect',
+      tag: 'Application mobile',
+      description: "Une application mobile React Native / Expo qui fluidifie la communication entre techniciens et radiologues, avec des vues selon le rôle, une messagerie en temps réel et une localisation multilingue. Connectée à un backend Node.js/Express sur Neon PostgreSQL.",
+      stack: ['React Native', 'Expo', 'Node.js', 'PostgreSQL']
+    },
+    'homeostasis': {
+      name: 'Outil de diagnostic Homéostasie',
+      tag: 'Outil web',
+      description: "Un outil web clinique pour l'analyse du milieu intérieur, couvrant les bilans sodium, acido-basique, potassium, calcium et fonction rénale. Utilise l'API Claude pour extraire les données directement des fichiers de laboratoire téléversés.",
+      stack: ['Web', 'API Claude', 'Données cliniques']
+    },
+    'biofarm': {
+      name: 'BioFarm',
+      tag: 'Hackathon',
+      description: "Un jeu de ferme en pixel art sous Unity connecté à un capteur cardiaque Arduino MAX30100, avec un calcul du stress en Python, des exercices de respiration guidée et un bilan de bien-être hebdomadaire pour les parents.",
+      stack: ['Unity', 'Arduino', 'Python']
+    }
+  };
+
   const projectModalOverlay = document.getElementById('projectModalOverlay');
   const projectModalCloseBtn = document.getElementById('projectModalCloseBtn');
   const projectModalFilename = document.getElementById('projectModalFilename');
@@ -454,14 +742,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function openProjectModal(slug) {
     const data = projectDetails[slug];
     if (!data) return;
+    const fr = projectDetailsFR[slug];
+    const t = (I18N.get() === 'fr' && fr) ? fr : data;
 
     projectModalFilename.textContent = `${slug}.md`;
-    projectModalTag.textContent = data.tag;
-    projectModalName.textContent = data.name;
-    projectModalDescription.textContent = data.description;
+    projectModalTag.textContent = t.tag;
+    projectModalName.textContent = t.name;
+    projectModalDescription.textContent = t.description;
 
     projectModalStack.innerHTML = '';
-    data.stack.forEach((item) => {
+    t.stack.forEach((item) => {
       const span = document.createElement('span');
       span.textContent = item;
       projectModalStack.appendChild(span);
@@ -548,6 +838,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Same French copy already used on the visible experience/leadership cards.
+  const experienceDetailsFR = {
+    'external-relations': {
+      role: 'Responsable des relations extérieures',
+      date: 'Actuel',
+      description: "Je pilote la prospection et les partenariats du club d'innovation biomédicale, en connectant les projets étudiants avec des professionnels du secteur et des collaborateurs académiques."
+    },
+    'stiet-internship': {
+      role: "Stage d'observation",
+      date: 'Juillet 2026',
+      description: "J'ai étudié et documenté des équipements d'imagerie médicale en radiologie conventionnelle & interventionnelle, scanner, échographie, IRM et médecine nucléaire."
+    },
+    'clinical-internship': {
+      role: 'Stage clinique',
+      date: 'Pratique clinique',
+      description: "J'ai observé les flux de travail cliniques et les équipements médicaux en milieu hospitalier, développant une compréhension concrète des environnements de soins."
+    },
+    'sponsorship': {
+      role: 'Responsable relations extérieures & sponsoring',
+      date: 'Actuel',
+      description: "Je développe des partenariats et obtiens des sponsors pour soutenir les initiatives du club en génie biomédical."
+    },
+    'notion-campus-leader': {
+      role: 'Ambassadrice de campus',
+      date: 'Actuel',
+      description: "Je représente Notion sur le campus, en aidant étudiants et organisations à l'adopter pour leurs flux de travail."
+    },
+    'robotics-week': {
+      role: 'Ambassadrice',
+      date: '2026',
+      description: "Je fais la promotion de la robotique et de son rayonnement dans le cadre du National Robotics Weekend."
+    }
+  };
+
   const experienceModalOverlay = document.getElementById('experienceModalOverlay');
   const experienceModalCloseBtn = document.getElementById('experienceModalCloseBtn');
   const experienceModalFilename = document.getElementById('experienceModalFilename');
@@ -561,18 +885,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function openExperienceModal(slug) {
     const data = experienceDetails[slug];
     if (!data) return;
+    const fr = experienceDetailsFR[slug];
+    const t = (I18N.get() === 'fr' && fr) ? fr : data;
 
     experienceModalFilename.textContent = `${slug}.md`;
-    experienceModalRole.textContent = data.role;
+    experienceModalRole.textContent = t.role;
     experienceModalOrg.textContent = data.org;
     experienceModalOrg.href = data.orgUrl || '#';
-    experienceModalDate.textContent = data.date;
-    experienceModalDescription.textContent = data.description;
+    experienceModalDate.textContent = t.date;
+    experienceModalDescription.textContent = t.description;
 
     if (data.certImage) {
       experienceModalCertBlock.style.display = '';
       experienceModalCert.src = data.certImage;
-      experienceModalCert.alt = `${data.role} certificate`;
+      experienceModalCert.alt = `${t.role} certificate`;
       experienceModalCert.onerror = () => {
         experienceModalCertBlock.style.display = 'none';
       };
@@ -711,9 +1037,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBookPosition();
 
     if (currentPageIndex === 0) {
-      pageIndicator.textContent = "Cover";
+      pageIndicator.textContent = I18N.get() === 'fr' ? "Couverture" : "Cover";
     } else if (currentPageIndex === totalPagePairs) {
-      pageIndicator.textContent = "Back Cover";
+      pageIndicator.textContent = I18N.get() === 'fr' ? "Dernière page" : "Back Cover";
     } else {
       pageIndicator.textContent = `Page ${currentPageIndex * 2 - 1} - ${currentPageIndex * 2}`;
     }
@@ -729,7 +1055,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOM order of .page-front/.page-back across page0→page2 already gives
   // the correct linear reading sequence: cover, p1, p2, p3, p4, back cover.
   const allFaces = Array.from(book.querySelectorAll('.page-front, .page-back'));
-  const mobileLabels = ['Cover', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Back Cover'];
+  const mobileLabels = {
+    en: ['Cover', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Back Cover'],
+    fr: ['Couverture', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Dernière page'],
+  };
   let mobilePageIndex = 0;
   let mobileBookInitialized = false;
   let isMobileFlipping = false;
@@ -738,7 +1067,8 @@ document.addEventListener("DOMContentLoaded", () => {
     allFaces.forEach((face, i) => {
       face.classList.toggle('mobile-active', i === index);
     });
-    pageIndicator.textContent = mobileLabels[index] || '';
+    const labels = mobileLabels[I18N.get()] || mobileLabels.en;
+    pageIndicator.textContent = labels[index] || '';
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === allFaces.length - 1;
   }
@@ -845,6 +1175,18 @@ document.addEventListener("DOMContentLoaded", () => {
   setMobileFace(mobilePageIndex);
   mobileBookInitialized = true;
 
+  // Keep the book's page indicator ("Cover", "Page 1"...) in sync when
+  // the language is switched — everything else with a data-en/data-fr
+  // pair is handled generically by I18N.apply(), but this text is
+  // generated by JS rather than sitting in the DOM already.
+  document.addEventListener('languagechange', () => {
+    if (isMobileLayout()) {
+      setMobileFace(mobilePageIndex);
+    } else {
+      updateBook();
+    }
+  });
+
   // Terminal Deck Scroll & Dock Animation
   const stage = document.querySelector(".terminal-scroll-stage");
   const stickyContainer = document.querySelector(".terminal-sticky");
@@ -895,6 +1237,16 @@ document.addEventListener("DOMContentLoaded", () => {
         windowEl.style.transform = '';
         windowEl.style.opacity = '';
         card.style.pointerEvents = '';
+        // The desktop stacking-deck illusion needs each card's z-index
+        // set very high (98-100, from the one-time setup above) so they
+        // layer correctly during the scroll-jacked flip animation. On
+        // mobile the cards are just a plain static list, so that same
+        // z-index instead outranks the fixed navbar (z-index: 100) and
+        // its mobile dropdown menu (z-index: 95) — meaning the cards
+        // rendered on top of the nav whenever it was open near the
+        // Skills section, blocking clicks/reading. Clear it back to the
+        // normal stacking order here.
+        card.style.zIndex = '';
       });
       return;
     }
@@ -1133,6 +1485,31 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTerminals();
   updateExperienceScroll();
   updateLeadershipScroll();
+
+  // ---- Lazy-play project/TV videos ----
+  // These autoplay-loop-muted videos are decorative and heavy: only play
+  // them once they're actually visible (pausing again once scrolled out),
+  // and skip autoplay entirely for visitors who prefer reduced motion —
+  // they'll still see the first frame once it loads, just not moving.
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
+  if (lazyVideos.length && !prefersReducedMotion) {
+    if ('IntersectionObserver' in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.play().catch(() => { /* autoplay can be blocked — ignore */ });
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+      lazyVideos.forEach((video) => videoObserver.observe(video));
+    } else {
+      // No IntersectionObserver support — fall back to normal autoplay.
+      lazyVideos.forEach((video) => video.play().catch(() => {}));
+    }
+  }
 
   // ---- General click sound for ordinary interactive elements ----
   // The book handles its own richer page-turn/open sounds at the sites

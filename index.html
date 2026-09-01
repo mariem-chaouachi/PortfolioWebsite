@@ -271,6 +271,47 @@
     </div>
   </div>
 
+  <!-- Award Detail Modal -->
+  <div class="skill-modal-overlay" id="awardModalOverlay" role="dialog" aria-modal="true" aria-label="Award details">
+    <div class="skill-modal-content">
+      <div class="skill-modal-window">
+        <div class="terminal-titlebar">
+          <button class="dot dot-red terminal-dot-close" id="awardModalCloseBtn" aria-label="Close"></button><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename" id="awardModalFilename">award.md</span>
+        </div>
+        <div class="skill-modal-body">
+          <div class="skill-modal-heading exp-modal-heading">
+            <div>
+              <h3 id="awardModalTitle">Award</h3>
+              <a class="exp-modal-org" id="awardModalOrg" href="" target="_blank" rel="noopener"></a>
+            </div>
+            <span class="exp-modal-date" id="awardModalDate"></span>
+          </div>
+
+          <div class="skill-modal-block">
+            <span class="skill-modal-label" data-en="&gt; about" data-fr="&gt; à propos">&gt; about</span>
+            <p id="awardModalDescription"></p>
+          </div>
+
+          <div class="skill-modal-block" id="awardModalVideoBlock">
+            <span class="skill-modal-label" data-en="&gt; video" data-fr="&gt; vidéo">&gt; video</span>
+            <div class="project-modal-video-box">
+              <video id="awardModalVideo" autoplay loop muted playsinline controls>
+                <source id="awardModalVideoSource" src="" type="video/mp4" />
+                Your browser does not support video playback.
+              </video>
+            </div>
+          </div>
+
+          <div class="skill-modal-block" id="awardModalCertBlock">
+            <span class="skill-modal-label" data-en="&gt; certificates" data-fr="&gt; certificats">&gt; certificates</span>
+            <div class="award-modal-cert-gallery" id="awardModalCertGallery"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- About Me - 3D Page Flip Book Section -->
   <section class="about-section" id="about">
     <h2 class="about-title" data-en="About Me" data-fr="À propos de moi">About Me</h2>
@@ -797,7 +838,7 @@
     <h2 class="about-title" data-en="Awards &amp; Honors" data-fr="Distinctions &amp; Récompenses">Awards &amp; Honors</h2>
 
     <div class="awards-grid">
-      <div class="award-card project-terminal-window">
+      <div class="award-card project-terminal-window" data-award="mindhack" role="button" tabindex="0" data-bee-msg="See the full award!" data-bee-msg-fr="Voir la distinction complète !">
         <div class="terminal-titlebar">
           <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
           <span class="terminal-filename">mindhack.md</span>
@@ -812,6 +853,23 @@
           </div>
           <p data-en="Competed as a challenger, developing a project under hackathon time constraints." data-fr="J'ai participé en tant que candidate, développant un projet dans les délais imposés par le hackathon.">Competed as a challenger, developing a project under hackathon time constraints.</p>
           <img class="award-cert" src="certs/award-mindhack.png" alt="MindHack 1.0 certificate" onerror="this.remove()" />
+        </div>
+      </div>
+
+      <div class="award-card project-terminal-window" data-award="little-archaeologist" role="button" tabindex="0" data-bee-msg="See the full award!" data-bee-msg-fr="Voir la distinction complète !">
+        <div class="terminal-titlebar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-filename">little-archaeologist.md</span>
+        </div>
+        <div class="award-card-body">
+          <div class="award-header">
+            <div class="award-header-text">
+              <h3 data-en="First Place – &quot;Little Archaeologist&quot; Art Competition" data-fr="1ère place – Concours d'art « Petit Archéologue »">First Place – "Little Archaeologist" Art Competition</h3>
+              <span class="award-org-link" data-en="Hippo Museum (Musée d'Hippone), Annaba, Algeria · 2017" data-fr="Musée d'Hippone, Annaba, Algérie · 2017">Hippo Museum (Musée d'Hippone), Annaba, Algeria · 2017</span>
+            </div>
+          </div>
+          <p data-en="Awarded first place in the &quot;Little Archaeologist&quot; art competition organized by the Hippo Museum in Annaba, Algeria. As a young participant, I created an artwork inspired by Annaba's archaeological heritage, featuring the Gorgon sculpture and the Basilica of Saint Augustine. The first-place prize included a personal computer." data-fr="1ère place au concours d'art « Petit Archéologue » organisé par le Musée d'Hippone à Annaba, en Algérie. En tant que jeune participante, j'ai réalisé une œuvre inspirée du patrimoine archéologique d'Annaba, mettant en scène la sculpture de la Gorgone et la basilique de Saint-Augustin. Le prix de la première place incluait un ordinateur personnel.">Awarded first place in the "Little Archaeologist" art competition organized by the Hippo Museum in Annaba, Algeria. As a young participant, I created an artwork inspired by Annaba's archaeological heritage, featuring the Gorgon sculpture and the Basilica of Saint Augustine. The first-place prize included a personal computer.</p>
+          <img class="award-cert" src="certs/award-little-archaeologist.jpg" alt="Little Archaeologist certificate" onerror="this.remove()" />
         </div>
       </div>
     </div>

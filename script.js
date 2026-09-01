@@ -942,6 +942,145 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // ---- Award Detail Modal ----
+  const awardDetails = {
+    'mindhack': {
+      title: 'MindHack 1.0 Hackathon',
+      org: 'ieee.tn/event/mind-hack-1-0',
+      orgUrl: 'https://ieee.tn/event/mind-hack-1-0/',
+      date: '',
+      description: 'Competed as a challenger, developing a project under hackathon time constraints.',
+      certs: ['certs/award-mindhack.png'],
+      video: null
+    },
+    'little-archaeologist': {
+      title: 'First Place – "Little Archaeologist" Art Competition',
+      org: "Hippo Museum (Musée d'Hippone), Annaba, Algeria",
+      orgUrl: null,
+      date: '2017',
+      description: "Awarded first place in the \"Little Archaeologist\" art competition organized by the Hippo Museum in Annaba, Algeria. As a young participant, I created an artwork inspired by Annaba's archaeological heritage, featuring the Gorgon sculpture and the Basilica of Saint Augustine. The first-place prize included a personal computer.",
+      // Two certificate images for this one — drop the second file in
+      // alongside the first with this exact name and it'll show up here
+      // automatically; until then it's simply skipped (same
+      // fail-gracefully pattern used for every other cert image on the
+      // site), same for the video below.
+      certs: ['certs/award-little-archaeologist.jpg', 'certs/award-little-archaeologist-2.jpg'],
+      video: 'videos/award-little-archaeologist.mp4'
+    }
+  };
+
+  const awardDetailsFR = {
+    'mindhack': {
+      title: 'Hackathon MindHack 1.0',
+      org: 'ieee.tn/event/mind-hack-1-0',
+      date: '',
+      description: "J'ai participé en tant que candidate, développant un projet dans les délais imposés par le hackathon."
+    },
+    'little-archaeologist': {
+      title: '1ère place – Concours d\'art « Petit Archéologue »',
+      org: "Musée d'Hippone, Annaba, Algérie",
+      date: '2017',
+      description: "1ère place au concours d'art « Petit Archéologue » organisé par le Musée d'Hippone à Annaba, en Algérie. En tant que jeune participante, j'ai réalisé une œuvre inspirée du patrimoine archéologique d'Annaba, mettant en scène la sculpture de la Gorgone et la basilique de Saint-Augustin. Le prix de la première place incluait un ordinateur personnel."
+    }
+  };
+
+  const awardModalOverlay = document.getElementById('awardModalOverlay');
+  const awardModalCloseBtn = document.getElementById('awardModalCloseBtn');
+  const awardModalFilename = document.getElementById('awardModalFilename');
+  const awardModalTitle = document.getElementById('awardModalTitle');
+  const awardModalOrg = document.getElementById('awardModalOrg');
+  const awardModalDate = document.getElementById('awardModalDate');
+  const awardModalDescription = document.getElementById('awardModalDescription');
+  const awardModalVideoBlock = document.getElementById('awardModalVideoBlock');
+  const awardModalVideo = document.getElementById('awardModalVideo');
+  const awardModalVideoSource = document.getElementById('awardModalVideoSource');
+  const awardModalCertBlock = document.getElementById('awardModalCertBlock');
+  const awardModalCertGallery = document.getElementById('awardModalCertGallery');
+
+  function openAwardModal(slug) {
+    const data = awardDetails[slug];
+    if (!data) return;
+    const fr = awardDetailsFR[slug];
+    const t = (I18N.get() === 'fr' && fr) ? fr : data;
+
+    awardModalFilename.textContent = `${slug}.md`;
+    awardModalTitle.textContent = t.title;
+    awardModalOrg.textContent = t.org;
+    if (data.orgUrl) {
+      awardModalOrg.href = data.orgUrl;
+      awardModalOrg.setAttribute('target', '_blank');
+    } else {
+      awardModalOrg.href = '#';
+      awardModalOrg.removeAttribute('target');
+    }
+    awardModalDate.textContent = t.date || '';
+    awardModalDate.style.display = t.date ? '' : 'none';
+    awardModalDescription.textContent = t.description;
+
+    if (data.video) {
+      awardModalVideoBlock.style.display = '';
+      awardModalVideoSource.src = data.video;
+      awardModalVideo.load();
+      awardModalVideo.onerror = () => {
+        awardModalVideoBlock.style.display = 'none';
+      };
+    } else {
+      awardModalVideoBlock.style.display = 'none';
+    }
+
+    awardModalCertGallery.innerHTML = '';
+    (data.certs || []).forEach((certSrc, i) => {
+      const img = document.createElement('img');
+      img.src = certSrc;
+      img.alt = `${t.title} — certificate ${i + 1}`;
+      img.className = 'award-modal-cert-image';
+      img.onerror = () => {
+        img.remove();
+        if (!awardModalCertGallery.children.length) {
+          awardModalCertBlock.style.display = 'none';
+        }
+      };
+      awardModalCertGallery.appendChild(img);
+    });
+    awardModalCertBlock.style.display = (data.certs && data.certs.length) ? '' : 'none';
+
+    awardModalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAwardModal() {
+    awardModalOverlay.classList.remove('active');
+    awardModalVideo.pause();
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.award-card[data-award]').forEach((card) => {
+    card.addEventListener('click', () => openAwardModal(card.dataset.award));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openAwardModal(card.dataset.award);
+      }
+    });
+
+    const orgLink = card.querySelector('.award-org-link');
+    if (orgLink && orgLink.tagName === 'A') {
+      orgLink.addEventListener('click', (e) => e.stopPropagation());
+    }
+  });
+
+  awardModalCloseBtn.addEventListener('click', closeAwardModal);
+
+  awardModalOverlay.addEventListener('click', (e) => {
+    if (e.target === awardModalOverlay) closeAwardModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && awardModalOverlay.classList.contains('active')) {
+      closeAwardModal();
+    }
+  });
+
   // Mobile hamburger nav
   const navbarEl = document.getElementById('navbar');
   const navHamburger = document.getElementById('navHamburger');

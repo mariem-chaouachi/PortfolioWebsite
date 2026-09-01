@@ -774,6 +774,20 @@ body {
   display: block;
 }
 
+.award-modal-cert-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.award-modal-cert-image {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #e2ddd3;
+  display: block;
+  object-fit: cover;
+}
+
 .project-modal-tag {
   display: inline-block;
   font-family: 'Pixelify Sans', sans-serif;
@@ -1813,6 +1827,20 @@ h2.skills-fixed-title {
 .award-card {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.award-card:hover,
+.award-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+  outline: none;
+}
+
+.award-card:focus-visible {
+  outline: 2px solid #6b3c2e;
+  outline-offset: 3px;
 }
 
 .award-card-body {

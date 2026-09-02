@@ -1327,235 +1327,37 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Terminal Deck Scroll & Dock Animation
-  const stage = document.querySelector(".terminal-scroll-stage");
-  const stickyContainer = document.querySelector(".terminal-sticky");
+  // (Scroll-jacking removed — Skills is now a plain static list at every
+  // width. Kept the function name and call sites below so the
+  // scroll/resize listeners further down don't need to change; it just
+  // makes sure no stray inline styles are left over from a card that was
+  // mid-animation before a resize.)
   const cards = Array.from(document.querySelectorAll(".terminal-card"));
 
-  if (!stage || !cards.length || !stickyContainer) return;
-
-  const total = cards.length;
-
-  const dock = document.createElement("div");
-  dock.className = "terminal-dock";
-
-  cards.forEach((card, index) => {
-    const icon = document.createElement("div");
-    icon.className = "terminal-dock-item";
-    icon.textContent = `>_${index + 1}`;
-    dock.appendChild(icon);
-  });
-
-  document.body.appendChild(dock);
-  const dockItems = Array.from(dock.querySelectorAll(".terminal-dock-item"));
-
-  cards.forEach((card, index) => {
-    card.style.zIndex = String(100 - index);
-  });
-
-  function getProgress() {
-    const rect = stage.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const scrollDistance = stage.offsetHeight - viewportHeight;
-
-    const inSection = rect.top <= 0 && rect.bottom >= viewportHeight;
-    const scrollPosition = Math.min(Math.max(-rect.top, 0), scrollDistance);
-
-    if (scrollDistance <= 0) return { progress: 0, inSection: false };
-
-    const buffer = 0.35;
-    const adjustedProgress = Math.max(0, (scrollPosition / scrollDistance) * (total + buffer) - buffer);
-
-    return { progress: adjustedProgress, inSection };
-  }
-
   function updateTerminals() {
-    if (isMobileLayout()) {
-      dock.classList.remove("is-visible");
-      cards.forEach((card) => {
-        const windowEl = card.querySelector(".terminal-window");
-        windowEl.style.transform = '';
-        windowEl.style.opacity = '';
-        card.style.pointerEvents = '';
-        // The desktop stacking-deck illusion needs each card's z-index
-        // set very high (98-100, from the one-time setup above) so they
-        // layer correctly during the scroll-jacked flip animation. On
-        // mobile the cards are just a plain static list, so that same
-        // z-index instead outranks the fixed navbar (z-index: 100) and
-        // its mobile dropdown menu (z-index: 95) — meaning the cards
-        // rendered on top of the nav whenever it was open near the
-        // Skills section, blocking clicks/reading. Clear it back to the
-        // normal stacking order here.
-        card.style.zIndex = '';
-      });
-      return;
-    }
-
-    const { progress, inSection } = getProgress();
-
-    if (inSection) {
-      dock.classList.add("is-visible");
-    } else {
-      dock.classList.remove("is-visible");
-    }
-
-    // Whichever card is currently "at rest" on top of the stack (the next
-    // one due to animate away) is the one the user can actually see and
-    // click — not just card 0.
-    let activeCardIndex = -1;
-    for (let i = 0; i < cards.length; i++) {
-      if (progress <= i) {
-        activeCardIndex = i;
-        break;
-      }
-    }
-
-    cards.forEach((card, index) => {
+    cards.forEach((card) => {
       const windowEl = card.querySelector(".terminal-window");
-      const dockItem = dockItems[index];
-
-      windowEl.style.transformOrigin = "bottom center";
-
-      const initialWidth = windowEl.offsetWidth || 950;
-      const minScale = 1 / initialWidth;
-
-      const initialDeckOffsetY = (cards.length - 1 - index) * 10;
-
-      const currentTransform = windowEl.style.transform;
-      windowEl.style.transform = "none";
-      const baseRect = windowEl.getBoundingClientRect();
-      windowEl.style.transform = currentTransform;
-
-      const baseBottomY = baseRect.bottom;
-      const baseCenterX = baseRect.left + baseRect.width / 2;
-
-      const targetBottomY = window.innerHeight - 50;
-      const dockRect = dockItem.getBoundingClientRect();
-      const targetCenterX = dockRect.left + dockRect.width / 2;
-
-      const deltaX = targetCenterX - baseCenterX;
-      const deltaY = targetBottomY - baseBottomY;
-
-      if (progress <= index) {
-        windowEl.style.transform = `translate(0px, ${initialDeckOffsetY}px) scale(1)`;
-        windowEl.style.opacity = "1";
-        card.style.pointerEvents = index === activeCardIndex ? "auto" : "none";
-        dockItem.classList.remove("minimized");
-      } else if (progress > index && progress < index + 1) {
-        const p = progress - index;
-        const currentX = deltaX * p;
-        const currentY = initialDeckOffsetY + (deltaY - initialDeckOffsetY) * p;
-        const currentScale = 1 - p * (1 - minScale);
-
-        windowEl.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
-        card.style.pointerEvents = "none";
-
-        if (p > 0.50) {
-          const fadeP = Math.min(1, (p - 0.50) / 0.20);
-          windowEl.style.opacity = String(Math.max(0, 1 - fadeP));
-        } else {
-          windowEl.style.opacity = "1";
-        }
-
-        if (p > 0.4) {
-          dockItem.classList.add("minimized");
-        } else {
-          dockItem.classList.remove("minimized");
-        }
-      } else {
-        windowEl.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${minScale})`;
-        windowEl.style.opacity = "0";
-        card.style.pointerEvents = "none";
-        dockItem.classList.add("minimized");
-      }
-    });
-
-    const activeIndex = Math.min(total - 1, Math.max(0, Math.floor(progress)));
-    dockItems.forEach((icon, index) => {
-      icon.classList.toggle("active", index === activeIndex);
+      windowEl.style.transform = '';
+      windowEl.style.opacity = '';
+      card.style.pointerEvents = '';
+      card.style.zIndex = '';
     });
   }
 
   // Pinned Horizontal Gallery Scroll Handler
   // Reusable for both Experience and Leadership. `reverse: true` makes the
   // gallery reveal its cards in the opposite order/direction.
-  function createGalleryScroller(sectionSelector, trackSelector, cardSelector, options = {}) {
-    const section = document.querySelector(sectionSelector);
+  // Pinned Horizontal Gallery Scroll Handler
+  // (Scroll-jacking removed — Experience/Leadership are now plain static
+  // stacks at every width, so this just clears any leftover inline
+  // transform. Kept as a function returning an `update` callback so the
+  // scroll/resize listeners further down don't need to change.)
+  function createGalleryScroller(sectionSelector, trackSelector, cardSelector) {
     const track = document.querySelector(trackSelector);
-    const cardsNodeList = document.querySelectorAll(cardSelector);
-
-    if (!section || !track || !cardsNodeList.length) {
-      return () => {};
-    }
-
-    const cards = options.reverse
-      ? Array.from(cardsNodeList).slice().reverse()
-      : Array.from(cardsNodeList);
-
-    function getCenteredTranslateX(card, screenWidth, cardWidth) {
-      return (screenWidth / 2) - (cardWidth / 2) - card.offsetLeft;
-    }
+    if (!track) return () => {};
 
     return function update() {
-      if (isMobileLayout()) {
-        track.style.transform = '';
-        return;
-      }
-
-      const rect = section.getBoundingClientRect();
-      const sectionHeight = section.offsetHeight;
-      const viewportHeight = window.innerHeight;
-
-      const totalScrollable = sectionHeight - viewportHeight;
-      const currentScroll = -rect.top;
-
-      const screenWidth = window.innerWidth;
-      const firstCard = cards[0];
-      const midCard = cards[Math.min(1, cards.length - 1)];
-      const lastCard = cards[cards.length - 1];
-
-      const cardWidth = firstCard.offsetWidth || 700;
-
-      const xFirst = getCenteredTranslateX(firstCard, screenWidth, cardWidth);
-      const xMid = getCenteredTranslateX(midCard, screenWidth, cardWidth);
-      const xLast = getCenteredTranslateX(lastCard, screenWidth, cardWidth);
-
-      if (currentScroll <= 0) {
-        track.style.transform = `translateX(${xFirst}px)`;
-        return;
-      }
-      if (currentScroll >= totalScrollable || totalScrollable <= 0) {
-        track.style.transform = `translateX(${xLast}px)`;
-        return;
-      }
-
-      const rawProgress = currentScroll / totalScrollable;
-
-      // Piecewise timeline: brief pause on card 1 (start), slide, brief pause
-      // on card 2, slide, brief pause on the last card (end).
-      const pauseWidth = 0.12;
-      const transitionWidth = (1 - pauseWidth * 3) / 2;
-
-      const z1End = pauseWidth;
-      const z2End = z1End + transitionWidth;
-      const z3End = z2End + pauseWidth;
-      const z4End = z3End + transitionWidth;
-
-      let x;
-      if (rawProgress <= z1End) {
-        x = xFirst;
-      } else if (rawProgress <= z2End) {
-        const p = (rawProgress - z1End) / transitionWidth;
-        x = xFirst + (xMid - xFirst) * p;
-      } else if (rawProgress <= z3End) {
-        x = xMid;
-      } else if (rawProgress <= z4End) {
-        const p = (rawProgress - z3End) / transitionWidth;
-        x = xMid + (xLast - xMid) * p;
-      } else {
-        x = xLast;
-      }
-
-      track.style.transform = `translateX(${x}px)`;
+      track.style.transform = '';
     };
   }
 
@@ -1563,8 +1365,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ".experience-section", ".experience-gallery-track", ".experience-card:not(.leadership-card)"
   );
   const updateLeadershipScroll = createGalleryScroller(
-    ".leadership-section", ".leadership-gallery-track", ".leadership-card",
-    { reverse: true }
+    ".leadership-section", ".leadership-gallery-track", ".leadership-card"
   );
 
   // Projects folder tabs (Main / Software / Hardware)

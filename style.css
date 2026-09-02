@@ -1162,21 +1162,20 @@ body {
 
 .terminal-scroll-stage {
   position: relative;
-  height: 350vh;
+  height: auto;
   width: 100%;
 }
 
 .terminal-sticky {
-  position: sticky;
-  top: 0;
+  position: static;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 14vh;
+  padding: 14vh 5vw 40px;
   box-sizing: border-box;
   z-index: 80;
 }
@@ -1240,25 +1239,24 @@ h2.skills-fixed-title {
 }
 
 .terminal-deck {
-  position: relative;
-  width: min(950px, 94vw);
-  height: 440px;
+  position: static;
+  width: 100%;
+  height: auto;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
 .terminal-card {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: static;
   width: 100%;
   height: auto;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  opacity: 1 !important;
-  transition: transform 0.1s ease-out;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .terminal-window {
@@ -1521,29 +1519,27 @@ h2.skills-fixed-title {
 .experience-section {
   position: relative;
   width: 100%;
-  height: 350vh;
+  height: auto;
   background-color: #ffffff;
 }
 
 .leadership-section {
   position: relative;
   width: 100%;
-  height: 420vh;
+  height: auto;
   background-color: #ffffff;
 }
 
 .experience-pinned-container,
 .leadership-pinned-container {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+  position: static;
+  height: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 14vh;
+  padding: 14vh 5vw 0;
   box-sizing: border-box;
 }
 
@@ -1556,56 +1552,32 @@ h2.skills-fixed-title {
 
 .experience-gallery-wrapper,
 .leadership-gallery-wrapper {
-  position: relative;
-  left: 0;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  overflow: visible;
-  flex-shrink: 0;
+  position: static;
+  width: 100%;
 }
 
 .experience-gallery-track,
 .leadership-gallery-track {
   display: flex;
-  flex-direction: row;
-  /* Cards size to their own content now — "stretch" was forcing every
-     card in a row to match the tallest neighbor's height, which left
-     visible empty space below the text in any card with a shorter
-     description or no certificate image. */
-  align-items: flex-start;
-  gap: 80px;
-  width: max-content;
-  padding: 0 10vw;
-  will-change: transform;
-  transition: transform 0.05s linear;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding: 0;
   position: relative;
   z-index: 2;
 }
 
-/* Connects the cards to each other along the horizontal scroll */
+/* Was a dashed line connecting cards along the horizontal scroll —
+   there's no horizontal scroll anymore, so it has nothing to connect. */
 .gallery-connector-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  transform: translateY(-50%);
-  background: repeating-linear-gradient(
-    90deg,
-    #fff3a3 0,
-    #fff3a3 10px,
-    transparent 10px,
-    transparent 20px
-  );
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .experience-card {
   position: relative;
-  width: 700px;
-  max-width: 85vw;
+  width: 100%;
+  max-width: 700px;
   background-color: #faf8f0;
   border: 1px solid #e2ddd3;
   border-radius: 20px;
@@ -1628,22 +1600,24 @@ h2.skills-fixed-title {
 
 .exp-card-inner {
   display: flex;
-  align-items: flex-start;
-  gap: 20px;
+  flex-direction: column;
+  gap: 14px;
   width: 100%;
 }
 
-/* Certificate now sits on the right, sized to its own content rather than
-   a forced crop — capped so it can't dominate the card. */
+/* Certificate now sits below the text, sized to its own content rather
+   than a forced crop — capped so it can't dominate the card, and
+   centered rather than flush against the card's left edge. */
 .exp-cert-thumb {
-  max-width: 130px;
-  max-height: 160px;
+  max-width: 60%;
+  max-height: 220px;
   width: auto;
   height: auto;
   border-radius: 10px;
   border: 1px solid #e2ddd3;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   flex-shrink: 0;
+  align-self: center;
 }
 
 .exp-card-header {
@@ -1653,6 +1627,19 @@ h2.skills-fixed-title {
   width: 100%;
   margin-bottom: 10px;
   flex-wrap: wrap;
+}
+
+/* Date pill always drops to its own line under the logo/title/org
+   group. The line-break is forced with a zero-size flex spacer
+   (::after, ordered between the heading text and the pill) rather than
+   by giving the pill itself flex-basis: 100% — that would stretch the
+   pill's own background to the full card width instead of letting it
+   hug just its text. */
+.exp-card-header::after {
+  content: '';
+  flex-basis: 100%;
+  width: 0;
+  order: 1;
 }
 
 .exp-card-logo {
@@ -1675,6 +1662,7 @@ h2.skills-fixed-title {
   align-items: flex-start;
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 /* Moving photo stripe — lives inside the pinned viewport itself (not after
@@ -1759,6 +1747,11 @@ h2.skills-fixed-title {
   padding: 3px 12px;
   border-radius: 20px;
   margin-bottom: 12px;
+  flex: 0 0 auto;
+  width: fit-content;
+  order: 2;
+  align-self: flex-start;
+  margin-top: 6px;
 }
 
 .timeline-role {
@@ -3035,127 +3028,6 @@ a.contact-detail-row:hover {
 
   .cv-widget-container.docked-bottom-right {
     bottom: 16px;
-  }
-
-  /* ---- Skills: drop the pinned scroll-jack for a plain stacked list ---- */
-  .terminal-scroll-stage {
-    height: auto !important;
-  }
-
-  .terminal-sticky {
-    position: static;
-    height: auto;
-    /* Matches the 14vh top padding used by Projects/Awards/Contact —
-       60px wasn't enough clearance below the fixed mobile navbar, so
-       the "Skills" heading was landing right up against it when jumped
-       to via the nav link. */
-    padding: 14vh 5vw 40px;
-  }
-
-  .terminal-deck {
-    position: static;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .terminal-card {
-    position: static !important;
-    width: 100% !important;
-    pointer-events: auto !important;
-  }
-
-  .terminal-window {
-    max-width: 100%;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .terminal-dock {
-    display: none;
-  }
-
-  /* ---- Experience & Leadership: same static-stack treatment ---- */
-  .experience-section,
-  .leadership-section {
-    height: auto !important;
-  }
-
-  .experience-pinned-container,
-  .leadership-pinned-container {
-    position: static;
-    height: auto;
-    width: 100%;
-    /* Same reasoning as .terminal-sticky above — match the 14vh top
-       clearance the other sections already use below the navbar. */
-    padding: 14vh 5vw 0;
-  }
-
-  .experience-gallery-wrapper,
-  .leadership-gallery-wrapper {
-    position: static;
-    width: 100%;
-  }
-
-  .experience-gallery-track,
-  .leadership-gallery-track {
-    flex-direction: column;
-    width: 100%;
-    padding: 0;
-    gap: 24px;
-    transform: none !important;
-  }
-
-  .gallery-connector-line {
-    display: none;
-  }
-
-  .experience-card {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .exp-card-inner {
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .exp-content {
-    width: 100%;
-  }
-
-  .exp-cert-thumb {
-    max-width: 60%;
-    max-height: 220px;
-    width: auto;
-    height: auto;
-    /* Center the certificate under the text instead of it sitting flush
-       against the card's left edge (leftover from the desktop row
-       layout's flex-start alignment). */
-    align-self: center;
-  }
-
-  /* Date pill always drops to its own line under the logo/title/org
-     group. The line-break is forced with a zero-size flex spacer
-     (::after, ordered between the heading text and the pill) rather
-     than by giving the pill itself flex-basis: 100% — that was
-     stretching the pill's own background to the full card width
-     instead of letting it hug just its text. */
-  .exp-card-header::after {
-    content: '';
-    flex-basis: 100%;
-    width: 0;
-    order: 1;
-  }
-
-  .timeline-date {
-    flex: 0 0 auto;
-    width: fit-content;
-    order: 2;
-    align-self: flex-start;
-    margin-top: 6px;
   }
 
   .photo-stripe-bar {

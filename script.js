@@ -703,6 +703,13 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "A pixel-art Unity farm game connected to an Arduino MAX30100 heart-rate sensor, with a Python stress-scoring layer, guided breathing triggers, and a weekly wellness review for parents.",
       stack: ['Unity', 'Arduino', 'Python'],
       videoSrc: 'videos/biofarm.mp4'
+    },
+    'portfolio': {
+      name: 'Portfolio Website',
+      tag: 'Personal Project',
+      description: "This very site — an interactive portfolio with a flip-book About Me section, terminal-styled skill cards, a cursor-following bee companion, synthesized sound effects, and full English/French bilingual support.",
+      stack: ['HTML', 'CSS', 'JavaScript'],
+      videoSrc: 'videos/portfolio-demo.mp4'
     }
   };
 
@@ -726,6 +733,12 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: 'Hackathon',
       description: "Un jeu de ferme en pixel art sous Unity connecté à un capteur cardiaque Arduino MAX30100, avec un calcul du stress en Python, des exercices de respiration guidée et un bilan de bien-être hebdomadaire pour les parents.",
       stack: ['Unity', 'Arduino', 'Python']
+    },
+    'portfolio': {
+      name: 'Site portfolio',
+      tag: 'Projet personnel',
+      description: "Ce site lui-même — un portfolio interactif avec une section « À propos » façon carnet à feuilleter, des cartes de compétences façon terminal, une abeille compagne qui suit le curseur, des effets sonores synthétisés, et un support bilingue complet anglais/français.",
+      stack: ['HTML', 'CSS', 'JavaScript']
     }
   };
 
@@ -788,14 +801,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Experience / Leadership Detail Modal
   const experienceDetails = {
-    'external-relations': {
-      role: 'Head of External Relations',
-      org: 'Club Biomed Innov · ISTMT',
-      orgUrl: 'https://www.instagram.com/club_biomed_innov/',
-      date: 'Present',
-      description: "Leading outreach and partnerships for the biomedical innovation club, connecting student projects with industry professionals and academic collaborators.",
-      certImage: 'certs/external-relations.png'
-    },
     'stiet-internship': {
       role: 'Observation Internship',
       org: 'STIET — Philips Distributor, Tunisia',
@@ -840,11 +845,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Same French copy already used on the visible experience/leadership cards.
   const experienceDetailsFR = {
-    'external-relations': {
-      role: 'Responsable des relations extérieures',
-      date: 'Actuel',
-      description: "Je pilote la prospection et les partenariats du club d'innovation biomédicale, en connectant les projets étudiants avec des professionnels du secteur et des collaborateurs académiques."
-    },
     'stiet-internship': {
       role: "Stage d'observation",
       date: 'Juillet 2026',
@@ -1607,7 +1607,6 @@ document.querySelectorAll('.faq-item').forEach((item) => {
   };
 
   const cardMessages = {
-    'external-relations': 'see more of my experience at Biomed Innov!',
     'stiet-internship': 'explore my STIET internship!',
     'clinical-internship': 'discover my clinical internship!',
     'sponsorship': 'see how I led sponsorships!',

@@ -204,7 +204,6 @@ body {
 }
 
 /* Visible keyboard-focus states (site previously suppressed outline with no replacement) */
-.book-btn:focus-visible,
 .faq-question:focus-visible,
 .cv-widget-btn:focus-visible,
 .nav-links a:focus-visible,
@@ -733,7 +732,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(107, 60, 46, 0.1);
+  color: #6b3c2e;
+  font-family: 'Roboto Mono', 'Roboto', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 
@@ -786,6 +793,30 @@ body {
   border: 1px solid #e2ddd3;
   display: block;
   object-fit: cover;
+}
+
+.award-modal-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #2b1f1d;
+  background: rgba(107, 60, 46, 0.08);
+  border: 1px solid rgba(107, 60, 46, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.award-modal-project-link:hover {
+  background: rgba(107, 60, 46, 0.16);
+  transform: translateX(3px);
+}
+
+.award-modal-project-link::after {
+  content: '↗';
 }
 
 .project-modal-tag {
@@ -894,49 +925,30 @@ body {
 
 .book-stage {
   position: relative;
-  width: 100vw;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  padding: 20px 0 60px;
 }
 
-.tv-screen-terminal {
-  position: absolute;
-  /* .book-controls wraps onto its own row below the book (order: 2,
-     flex-basis: 100%) and adds height to .book-stage that the book itself
-     doesn't visually occupy, which pushes a plain 50% vertical center down
-     too low relative to the book. Offset it back up to re-center against
-     the book itself. */
-  top: calc(50% - 40px);
-  transform: translateY(-50%);
+.tv-screen-terminal.tv-intro {
+  position: relative;
+  width: min(720px, 90vw);
   background: rgba(250, 248, 240, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 221, 211, 0.85);
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-  z-index: 5;
-  transition: width 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), right 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
 }
-
-.book-stage:has(.book.closed-front) .tv-screen-terminal,
-.book-stage:has(.book.closed-back) .tv-screen-terminal {
-  width: calc(42.5vw - 155px);
-}
-
-.book-stage:has(.book.open) .tv-screen-terminal {
-  width: calc(42.5vw - 310px);
-}
-
-.tv-left { left: 5vw; }
-.tv-right { right: 5vw; }
 
 .tv-screen-body {
   position: relative;
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
   background-color: #000000;
   overflow: hidden;
   line-height: 0;
@@ -944,211 +956,9 @@ body {
 
 .tv-video {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-}
-
-.book-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1200px;
-  padding: 0 0 40px;
-  z-index: 10;
-}
-
-.book {
-  position: relative;
-  width: 310px;
-  height: 450px;
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
-  flex-shrink: 0;
-}
-
-.book.closed-front { transform: translateX(0); }
-.book.open { transform: translateX(50%); }
-.book.closed-back { transform: translateX(100%); }
-
-.page {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  cursor: pointer;
-  user-select: none;
-}
-
-.page.flipped {
-  transform: rotateY(-180deg);
-}
-
-.page-front,
-.page-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  padding: 40px 36px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: 0 8px 8px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  border: 1px solid #e2ddd3;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
-}
-
-.page-front {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.07) 0%, rgba(0, 0, 0, 0) 10%);
-}
-
-.page-back {
-  transform: rotateY(180deg);
-  border-radius: 8px 0 0 8px;
-  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.07) 0%, rgba(0, 0, 0, 0) 10%);
-}
-
-.page-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  color: #1a1a1a;
-}
-
-.page-content h3 {
-  font-family: 'Pinyon Script', cursive;
-  font-size: 2.4rem;
-  color: #2b1f1d;
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  padding-bottom: 6px;
-}
-
-.page-content p {
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #333333;
-  margin-bottom: 14px;
-}
-
-.page-number {
-  margin-top: auto;
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.85rem;
-  color: #777777;
-  text-align: center;
-}
-
-.cover-front,
-.cover-back {
-  background-color: #d7d4b1;
-  border: 2px solid #b8b58f;
-  color: #2b1f1d;
-}
-
-.cover-design {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-.cover-design h3 {
-  font-family: 'Pinyon Script', cursive;
-  font-size: 3rem;
-  color: #2b1f1d;
-  margin-bottom: 8px;
-  border: none;
-}
-
-.cover-design p {
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.95rem;
-  color: #4f4b3d;
-}
-
-.click-hint {
-  margin-top: 30px;
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.85rem;
-  color: #6b6650;
-  letter-spacing: 1px;
-}
-
-.book-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 40px;
-  flex-basis: 100%;
-  order: 2;
-}
-
-/* Quiet escape hatch for visitors who don't want to click through the
-   whole book — jumps straight to Skills. */
-.book-skip-link {
-  display: block;
-  width: 100%;
-  text-align: center;
-  order: 5;
-  flex-basis: 100%;
-  margin-top: 14px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: #6b3c2e;
-  opacity: 0.7;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.2s ease;
-}
-
-.book-skip-link:hover {
-  opacity: 1;
-}
-
-.book-btn {
-  padding: 10px 22px;
-  border-radius: 8px;
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.95rem;
-  color: #2b1f1d;
-  background-color: #d7d4b1;
-  border: 1px solid #b8b58f;
-  cursor: pointer;
-  outline: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.book-btn:hover:not(:disabled) {
-  background-color: #c9c69f;
-  transform: translateY(-2px);
-}
-
-.book-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.page-indicator {
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 1rem;
-  color: #2b1f1d;
-  letter-spacing: 1px;
 }
 
 /* TERMINAL SKILLS SECTION & SMOOTH TRANSITION */
@@ -1592,7 +1402,13 @@ h2.skills-fixed-title {
   width: 14px;
   align-self: stretch;
   flex-shrink: 0;
-  padding-top: 34px;
+  /* Centers the dot with the card's logo: card has 28px top padding,
+     the logo is 56px tall, so the logo's own vertical center sits at
+     28 + 28 = 56px from the card's top edge. The dot is 14px tall, so
+     its top edge needs to start 7px above that center line. Was 34px,
+     which put the dot noticeably above the logo instead of level
+     with it. */
+  padding-top: 49px;
 }
 
 .timeline-dot {
@@ -1625,7 +1441,10 @@ h2.skills-fixed-title {
 @media (max-width: 560px) {
   .timeline-marker {
     width: 10px;
-    padding-top: 26px;
+    /* Logo is still 56px tall in this range (it only shrinks to 32px
+       below 480px, handled separately below), so the same 49px offset
+       used on desktop still centers the dot on it. */
+    padding-top: 49px;
   }
 
   .timeline-dot {
@@ -1746,7 +1565,11 @@ h2.skills-fixed-title {
      "zoomed in" and, since the crop window kept changing, made the
      marquee read as too fast. A plain definite height fixes the whole
      chain at once. */
-  width: 100%;
+  /* Breaks out of the parent's 5vw side padding so the strip touches
+     both edges of the screen instead of sitting inset with the cards. */
+  width: calc(100% + 10vw);
+  margin-left: -5vw;
+  margin-right: -5vw;
   height: 190px;
   margin-top: 40px;
   margin-bottom: 24px;
@@ -2470,55 +2293,8 @@ a.contact-detail-row:hover {
 }
 
 /* RESPONSIVE MEDIA QUERIES */
-@media (max-width: 1180px) {
-  .tv-screen-terminal {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    transform: none;
-    width: 220px !important;
-    margin: 0;
-  }
-
-  .book-stage {
-    gap: 20px;
-  }
-
-  .tv-left { order: 1; }
-  .book-container { order: 2; }
-  .book-controls { order: 3; }
-  .tv-right { order: 4; }
-
-  .book {
-    width: 260px;
-    height: 377px;
-  }
-}
-
-@media (max-width: 480px) {
-  .cover-design h3 {
-    font-size: 2.2rem;
-  }
-
-  .cover-design p {
-    font-size: 0.8rem;
-  }
-
-  .book-btn {
-    padding: 8px 14px;
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 900px) {
-  .book-container { max-width: 95vw; }
-}
-
 @media (max-width: 768px) {
   .about-title, .section-title-dark { font-size: 2.8rem; }
-  .page-content h3 { font-size: 1.8rem; }
-  .page-content p { font-size: 0.88rem; }
 
   .skill-chip span { font-size: 0.95rem; }
   .skill-icon { width: 18px; height: 18px; }
@@ -2850,236 +2626,6 @@ a.contact-detail-row:hover {
     height: 58vh;
   }
 
-  /* ---- About: TVs a touch bigger, tighter book-to-controls gap,
-     bigger controls-to-TV gap, and book/pages fully readable ---- */
-  .tv-screen-terminal {
-    width: 250px !important;
-  }
-
-  .book-stage {
-    /* Explicit column direction (rather than relying on flex-wrap to
-       naturally stack narrow items) makes the tv → book → buttons → tv
-       order deterministic regardless of viewport width. */
-    flex-direction: column;
-    row-gap: 14px;
-  }
-
-  .book-controls {
-    margin-top: 4px;
-    /* .book-stage switches to flex-direction: column above (for a
-       deterministic tv → book → buttons → tv stack order), and the base
-       rule's flex-basis: 100% is a main-axis size — in row mode that
-       meant "full width", but in column mode the main axis is vertical,
-       so left as-is it would try to stretch this to the full height of
-       the stage. Reset it back to auto here. */
-    flex-basis: auto;
-  }
-
-  .tv-right {
-    margin-top: 36px;
-  }
-
-  .book-container {
-    perspective: 1400px;
-    max-width: 95vw;
-    padding-bottom: 0;
-  }
-
-  .book {
-    position: relative;
-    width: min(76vw, 300px);
-    height: auto;
-    transform: none !important;
-    transition: none;
-    /* Room for the notebook binding strip added below, so it doesn't
-       overlap the top of the page content. */
-    margin-top: 14px;
-  }
-
-  /* Notebook binding cue: pages now flip up from the top edge instead of
-     turning like a book, so a plain rectangle could read as an
-     unexplained pivot. This strip + row of ring "holes" makes the top
-     edge look like an actual spiral-bound notepad, telling the user at a
-     glance where the pages are anchored and which way they'll flip.
-     Kept deliberately muted/small — it's a hint, not a decoration that
-     competes with the page content below it. */
-  .book::before {
-    content: '';
-    position: absolute;
-    top: -9px;
-    left: 6%;
-    width: 88%;
-    height: 13px;
-    background: linear-gradient(180deg, #ded7c4 0%, #c9bfa0 100%);
-    border-radius: 6px 6px 0 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
-    z-index: 20;
-    pointer-events: none;
-  }
-
-  .book::after {
-    content: '';
-    position: absolute;
-    top: -6px;
-    left: 6%;
-    width: 88%;
-    height: 6px;
-    background-image: radial-gradient(circle, rgba(107, 60, 46, 0.4) 1.8px, transparent 2.2px);
-    background-size: 18px 6px;
-    background-repeat: repeat-x;
-    background-position: 8px center;
-    z-index: 21;
-    pointer-events: none;
-  }
-
-  .page {
-    position: static;
-    width: 100%;
-    height: auto;
-    transform: none !important;
-    /* preserve-3d (not flat) so perspective from .book-container actually
-       passes through to .page-front/.page-back's own rotateY transforms
-       below — without it the flip renders as a flat squish instead of a
-       proper 3D turn. */
-    transform-style: preserve-3d;
-  }
-
-  .page-front,
-  .page-back {
-    position: static;
-    width: 100%;
-    /* Fixed height (not auto/min-height) so every page — cover, content
-       pages, back cover — is the exact same A4-ratio box regardless of
-       how much text it holds. Content that doesn't fit just scrolls
-       inside it instead of changing the page's own size. */
-    height: calc(min(76vw, 300px) * 1.414);
-    max-height: 78vh;
-    overflow-y: auto;
-    /* No !important here (unlike .book/.page above) — the flip classes
-       below need to be able to apply their own rotateY transform during
-       a transition, and !important would block a CSS animation from
-       ever overriding it. */
-    transform: none;
-    transform-origin: top center;
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
-    border-radius: 12px;
-    display: none;
-  }
-
-  .page-front.mobile-active,
-  .page-back.mobile-active {
-    display: flex;
-  }
-
-  /* Cover page: percentage height can't resolve against the page's auto
-     height above, which breaks vertical centering — stretch via flex
-     instead, and reinforce horizontal centering explicitly. */
-  .cover-design {
-    flex: 1;
-    width: 100%;
-    text-align: center;
-  }
-
-  .cover-design h3,
-  .cover-design p,
-  .cover-design .click-hint {
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Notebook-style page flip: pages turn up and over the top edge (like
-     a flip-pad), not side-to-side like a book. JS (goToMobilePage in
-     script.js) briefly stacks the outgoing and incoming faces on top of
-     each other and animates both at once, then settles back into the
-     normal single-face layout above once the transition finishes.
-     Direction-aware: "next page" flips up and away over the top,
-     "previous page" flips back down from the top, matching the way
-     flipping a notepad forward vs. backward actually looks. */
-  .page-front.mobile-flip-out-forward,
-  .page-back.mobile-flip-out-forward,
-  .page-front.mobile-flip-out-backward,
-  .page-back.mobile-flip-out-backward {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    display: flex !important;
-    z-index: 3;
-    pointer-events: none;
-    /* Hide the mirrored backface past 90° instead of showing garbled
-       upside-down content as the page rotates away. */
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  .page-front.mobile-flip-in-forward,
-  .page-back.mobile-flip-in-forward,
-  .page-front.mobile-flip-in-backward,
-  .page-back.mobile-flip-in-backward {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    display: flex !important;
-    z-index: 2;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  .page-front.mobile-flip-out-forward,
-  .page-back.mobile-flip-out-forward {
-    animation: mobileFlipOutForward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-
-  .page-front.mobile-flip-in-forward,
-  .page-back.mobile-flip-in-forward {
-    animation: mobileFlipInForward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-
-  .page-front.mobile-flip-out-backward,
-  .page-back.mobile-flip-out-backward {
-    animation: mobileFlipOutBackward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-
-  .page-front.mobile-flip-in-backward,
-  .page-back.mobile-flip-in-backward {
-    animation: mobileFlipInBackward 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-
-  /* Next page: current page lifts and flips up and away over the top.
-     The shadow it casts grows and drops onto the page underneath as it
-     lifts (deepest at the midpoint, when it's furthest from the stack),
-     then fades out with it as it rotates out of view. */
-  @keyframes mobileFlipOutForward {
-    0%   { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
-    50%  { box-shadow: 0 30px 46px rgba(0, 0, 0, 0.32); }
-    100% { transform: rotateX(-150deg); opacity: 0.2; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); }
-  }
-
-  /* The next page rises up from underneath (as if it was tucked behind
-     the one that just flipped away) and settles flat — its shadow starts
-     above it (still in the departing page's shadow) and settles down to
-     the normal resting shadow as it lands flat. */
-  @keyframes mobileFlipInForward {
-    0%   { transform: rotateX(130deg); opacity: 0.25; box-shadow: 0 -18px 28px rgba(0, 0, 0, 0.22); }
-    55%  { opacity: 0.85; }
-    100% { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
-  }
-
-  /* Previous page: current page flips back down from the top — mirror
-     of the forward-out shadow, gathering above it as it tucks away. */
-  @keyframes mobileFlipOutBackward {
-    0%   { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
-    50%  { box-shadow: 0 -26px 42px rgba(0, 0, 0, 0.3); }
-    100% { transform: rotateX(150deg); opacity: 0.2; box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.05); }
-  }
-
-  /* The previous page settles back down from above into place. */
-  @keyframes mobileFlipInBackward {
-    0%   { transform: rotateX(-130deg); opacity: 0.25; box-shadow: 0 18px 28px rgba(0, 0, 0, 0.22); }
-    55%  { opacity: 0.85; }
-    100% { transform: rotateX(0deg); opacity: 1; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
-  }
-
   /* ---- Floating widget (CV) ---- */
   .cv-widget-container {
     top: auto;
@@ -3214,6 +2760,13 @@ a.contact-detail-row:hover {
   .exp-card-logo {
     width: 32px;
     height: 32px;
+  }
+
+  /* Logo shrinks to 32px at this width, so the dot's center moves from
+     56px to 28 (card padding) + 16 (half of 32px) = 44px. Dot is 10px
+     here, so its top edge needs to sit 5px above that. */
+  .timeline-marker {
+    padding-top: 39px;
   }
 
   .timeline-role {

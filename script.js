@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'html-css': {
       name: 'HTML / CSS',
       icon: 'Skills/html.png',
-      learned: "Learned by building and iterating on this portfolio site from scratch — structuring layouts, then refining them section by section.",
+      learned: "Learned by building and iterating on this portfolio site from scratch, structuring layouts, then refining them section by section.",
       used: "Used across this portfolio website and in NeuroBalance, a single-file HTML/CSS/JS game prototype.",
       certImage: 'certs/html-css.png'
     },
@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: 'MAX30100 Sensor',
       icon: 'Skills/sensor.png',
       learned: "Learned while integrating a heart rate sensor into a hardware prototype.",
-      used: "Central to BioFarm — reads heart rate data to drive in-game stress scoring and breathing exercise triggers.",
+      used: "Central to BioFarm, reading heart rate data to drive in-game stress scoring and breathing exercise triggers.",
       certImage: 'certs/sensor.png'
     },
     'circuit': {
@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: 'React Native',
       icon: 'Skills/react.png',
       learned: "Learned while building a cross-platform mobile app from the ground up.",
-      used: "Built RadConnect's frontend — role-based views, real-time messaging, localization, and notifications.",
+      used: "Built RadConnect's frontend: role-based views, real-time messaging, localization, and notifications.",
       certImage: 'certs/react-native.png'
     },
     'nodejs': {
@@ -461,26 +461,26 @@ document.addEventListener("DOMContentLoaded", () => {
       name: 'Healthcare Innovation',
       icon: 'Skills/healthcare.png',
       learned: "Developed through biomedical engineering studies and club leadership.",
-      used: "Drives project choices — from BioFarm to the homeostasis diagnostic tool — and club work as Head of External Relations at Club Biomed Innov.",
+      used: "Drives project choices, from BioFarm to the homeostasis diagnostic tool, and club work as Head of External Relations at Club Biomed Innov.",
       certImage: 'certs/healthcare.png'
     },
     'english': {
       name: 'English',
-      iconEmoji: '🇬🇧',
+      iconEmoji: 'EN',
       learned: "Developed through years of academic study and regular use in technical work.",
       used: "Used for coursework, technical documentation, and this portfolio.",
       certImage: 'certs/english.png'
     },
     'french': {
       name: 'French',
-      iconEmoji: '🇫🇷',
+      iconEmoji: 'FR',
       learned: "Learned through Tunisia's bilingual education system.",
       used: "Used daily in academic and professional settings.",
       certImage: 'certs/french.png'
     },
     'arabic': {
       name: 'Arabic',
-      iconEmoji: '🇹🇳',
+      iconEmoji: 'AR',
       learned: "Native language.",
       used: "Used for everyday communication.",
       certImage: 'certs/arabic.png'
@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const skillDetailsFR = {
     'html-css': {
       name: 'HTML / CSS',
-      learned: "Appris en construisant et en itérant sur ce portfolio depuis zéro — en structurant les mises en page, puis en les affinant section par section.",
+      learned: "Appris en construisant et en itérant sur ce portfolio depuis zéro, en structurant les mises en page, puis en les affinant section par section.",
       used: "Utilisé sur l'ensemble de ce portfolio et dans NeuroBalance, un prototype de jeu HTML/CSS/JS en un seul fichier."
     },
     'javascript': {
@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'sensor': {
       name: 'Capteur MAX30100',
       learned: "Appris en intégrant un capteur cardiaque dans un prototype matériel.",
-      used: "Central à BioFarm — lit les données cardiaques pour piloter le calcul du stress en jeu et déclencher des exercices de respiration."
+      used: "Central à BioFarm, il lit les données cardiaques pour piloter le calcul du stress en jeu et déclencher des exercices de respiration."
     },
     'circuit': {
       name: 'Conception de circuits',
@@ -551,7 +551,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'react-native': {
       name: 'React Native',
       learned: "Appris en développant une application mobile multiplateforme depuis zéro.",
-      used: "A servi à construire le frontend de RadConnect — vues selon le rôle, messagerie en temps réel, localisation et notifications."
+      used: "A servi à construire le frontend de RadConnect : vues selon le rôle, messagerie en temps réel, localisation et notifications."
     },
     'nodejs': {
       name: 'Node.js',
@@ -586,7 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
     'healthcare': {
       name: 'Innovation en santé',
       learned: "Développé à travers des études de génie biomédical et un rôle de direction au sein du club.",
-      used: "Guide mes choix de projets — de BioFarm à l'outil de diagnostic Homéostasie — ainsi que mon rôle de responsable des relations extérieures au Club Biomed Innov."
+      used: "Guide mes choix de projets, de BioFarm à l'outil de diagnostic Homéostasie, ainsi que mon rôle de responsable des relations extérieures au Club Biomed Innov."
     },
     'english': {
       name: 'Anglais',
@@ -707,9 +707,16 @@ document.addEventListener("DOMContentLoaded", () => {
     'portfolio': {
       name: 'Portfolio Website',
       tag: 'Personal Project',
-      description: "This very site — an interactive portfolio with a flip-book About Me section, terminal-styled skill cards, a cursor-following bee companion, synthesized sound effects, and full English/French bilingual support.",
+      description: "This very site, an interactive portfolio with a flip-book About Me section, terminal-styled skill cards, a cursor-following bee companion, synthesized sound effects, and full English/French bilingual support.",
       stack: ['HTML', 'CSS', 'JavaScript'],
       videoSrc: 'videos/portfolio-demo.mp4'
+    },
+    'dyslexia-app': {
+      name: 'Dyslexia Companion App',
+      tag: 'Ideathon',
+      description: "An assistive app concept for children with dyslexia, pitched at the National Robotics Week 8.0 Biomed Day Ideathon under the \"open biomedical innovation\" theme. Structured around the full pitch: healthcare need, problem identification, user understanding, solution design, demonstration, and entrepreneurial perspective.",
+      stack: ['Concept', 'UX Design', 'Pitch'],
+      videoSrc: 'videos/dyslexia-app.mp4'
     }
   };
 
@@ -737,8 +744,14 @@ document.addEventListener("DOMContentLoaded", () => {
     'portfolio': {
       name: 'Site portfolio',
       tag: 'Projet personnel',
-      description: "Ce site lui-même — un portfolio interactif avec une section « À propos » façon carnet à feuilleter, des cartes de compétences façon terminal, une abeille compagne qui suit le curseur, des effets sonores synthétisés, et un support bilingue complet anglais/français.",
+      description: "Ce site lui-même, un portfolio interactif avec une section « À propos » façon carnet à feuilleter, des cartes de compétences façon terminal, une abeille compagne qui suit le curseur, des effets sonores synthétisés, et un support bilingue complet anglais/français.",
       stack: ['HTML', 'CSS', 'JavaScript']
+    },
+    'dyslexia-app': {
+      name: 'Application compagnon pour la dyslexie',
+      tag: 'Ideathon',
+      description: "Un concept d'application d'assistance pour les enfants dyslexiques, présenté à l'Ideathon Biomed Day du National Robotics Week 8.0, sous le thème « open biomedical innovation ». Structuré autour du pitch complet : besoin de santé, identification du problème, compréhension des utilisateurs, conception de la solution, démonstration et perspective entrepreneuriale.",
+      stack: ['Concept', 'Design UX', 'Pitch']
     }
   };
 
@@ -803,7 +816,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const experienceDetails = {
     'stiet-internship': {
       role: 'Observation Internship',
-      org: 'STIET — Philips Distributor, Tunisia',
+      org: 'STIET (Philips Distributor, Tunisia)',
       orgUrl: 'https://stiet.com.tn/',
       date: 'July 2026',
       description: "Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.",
@@ -951,7 +964,8 @@ document.addEventListener("DOMContentLoaded", () => {
       date: '',
       description: 'Competed as a challenger, developing a project under hackathon time constraints.',
       certs: ['certs/award-mindhack.png'],
-      video: null
+      video: null,
+      relatedProject: 'biofarm'
     },
     'little-archaeologist': {
       title: 'First Place – "Little Archaeologist" Art Competition',
@@ -966,6 +980,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // site), same for the video below.
       certs: ['certs/award-little-archaeologist.jpg', 'certs/award-little-archaeologist-2.jpg'],
       video: 'videos/award-little-archaeologist.mp4'
+    },
+    'robotics-week-ideathon': {
+      title: 'Second Place – National Robotics Week 8.0 Biomed Day Ideathon',
+      org: 'National Robotics Week 8.0 · Biomed Day',
+      orgUrl: null,
+      date: '2026',
+      description: "Won second place at the Biomed Day Ideathon, part of National Robotics Week 8.0, held under the \"open biomedical innovation\" theme. Pitched an assistive robotics concept across the full ideathon structure: healthcare need, problem identification, user understanding, solution design, demonstration, and entrepreneurial perspective.",
+      certs: ['certs/award-robotics-week-ideathon.png'],
+      video: null,
+      relatedProject: 'dyslexia-app'
     }
   };
 
@@ -981,6 +1005,12 @@ document.addEventListener("DOMContentLoaded", () => {
       org: "Musée d'Hippone, Annaba, Algérie",
       date: '2017',
       description: "1ère place au concours d'art « Petit Archéologue » organisé par le Musée d'Hippone à Annaba, en Algérie. En tant que jeune participante, j'ai réalisé une œuvre inspirée du patrimoine archéologique d'Annaba, mettant en scène la sculpture de la Gorgone et la basilique de Saint-Augustin. Le prix de la première place incluait un ordinateur personnel."
+    },
+    'robotics-week-ideathon': {
+      title: 'Deuxième place – Ideathon Biomed Day, National Robotics Week 8.0',
+      org: 'National Robotics Week 8.0 · Biomed Day',
+      date: '2026',
+      description: "2ème place à l'Ideathon Biomed Day, organisé dans le cadre du National Robotics Week 8.0, sous le thème « open biomedical innovation ». Présentation d'un concept de robotique assistive à travers toute la structure de l'ideathon : besoin de santé, identification du problème, compréhension des utilisateurs, conception de la solution, démonstration et perspective entrepreneuriale."
     }
   };
 
@@ -996,6 +1026,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const awardModalVideoSource = document.getElementById('awardModalVideoSource');
   const awardModalCertBlock = document.getElementById('awardModalCertBlock');
   const awardModalCertGallery = document.getElementById('awardModalCertGallery');
+  const awardModalProjectBlock = document.getElementById('awardModalProjectBlock');
+  const awardModalProjectLink = document.getElementById('awardModalProjectLink');
 
   function openAwardModal(slug) {
     const data = awardDetails[slug];
@@ -1032,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
     (data.certs || []).forEach((certSrc, i) => {
       const img = document.createElement('img');
       img.src = certSrc;
-      img.alt = `${t.title} — certificate ${i + 1}`;
+      img.alt = `${t.title} certificate ${i + 1}`;
       img.className = 'award-modal-cert-image';
       img.onerror = () => {
         img.remove();
@@ -1043,6 +1075,24 @@ document.addEventListener("DOMContentLoaded", () => {
       awardModalCertGallery.appendChild(img);
     });
     awardModalCertBlock.style.display = (data.certs && data.certs.length) ? '' : 'none';
+
+    // Related project — jumps straight from the award to the project it
+    // was built for, closing this modal and opening that one.
+    const relatedProject = data.relatedProject && projectDetails[data.relatedProject];
+    if (relatedProject) {
+      awardModalProjectBlock.style.display = '';
+      const relatedT = (I18N.get() === 'fr' && projectDetailsFR[data.relatedProject])
+        ? projectDetailsFR[data.relatedProject]
+        : relatedProject;
+      awardModalProjectLink.textContent = relatedT.name;
+      awardModalProjectLink.onclick = () => {
+        closeAwardModal();
+        openProjectModal(data.relatedProject);
+      };
+    } else {
+      awardModalProjectBlock.style.display = 'none';
+      awardModalProjectLink.onclick = null;
+    }
 
     awardModalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -1136,196 +1186,6 @@ document.addEventListener("DOMContentLoaded", () => {
     spySections.forEach(section => spyObserver.observe(section));
   }
 
-  // 3D Flip Book Handler
-  const book = document.getElementById('flipBook');
-  const pages = [
-    document.getElementById('page0'),
-    document.getElementById('page1'),
-    document.getElementById('page2')
-  ];
-  let currentPageIndex = 0;
-  const totalPagePairs = pages.length;
-
-  const prevBtn = document.getElementById('prevPageBtn');
-  const nextBtn = document.getElementById('nextPageBtn');
-  const pageIndicator = document.getElementById('pageIndicator');
-
-  function updateBookPosition() {
-    book.classList.remove('closed-front', 'open', 'closed-back');
-
-    if (currentPageIndex === 0) {
-      book.classList.add('closed-front');
-    } else if (currentPageIndex === totalPagePairs) {
-      book.classList.add('closed-back');
-    } else {
-      book.classList.add('open');
-    }
-  }
-
-  function updateBook() {
-    pages.forEach((page, index) => {
-      if (index < currentPageIndex) {
-        page.classList.add('flipped');
-        page.style.zIndex = index + 1;
-      } else {
-        page.classList.remove('flipped');
-        page.style.zIndex = totalPagePairs - index;
-      }
-    });
-
-    updateBookPosition();
-
-    if (currentPageIndex === 0) {
-      pageIndicator.textContent = I18N.get() === 'fr' ? "Couverture" : "Cover";
-    } else if (currentPageIndex === totalPagePairs) {
-      pageIndicator.textContent = I18N.get() === 'fr' ? "Dernière page" : "Back Cover";
-    } else {
-      pageIndicator.textContent = `Page ${currentPageIndex * 2 - 1} - ${currentPageIndex * 2}`;
-    }
-
-    prevBtn.disabled = currentPageIndex === 0;
-    nextBtn.disabled = currentPageIndex === totalPagePairs;
-  }
-
-  // Mobile: one readable page/face at a time (screen's too narrow for the
-  // desktop two-page spread), but the transition between faces uses the
-  // same notebook-style flip-up glide, not the desktop's side-flip — see
-  // goToMobilePage() and the .mobile-flip-* rotateX keyframes in style.css.
-  // DOM order of .page-front/.page-back across page0→page2 already gives
-  // the correct linear reading sequence: cover, p1, p2, p3, p4, back cover.
-  const allFaces = Array.from(book.querySelectorAll('.page-front, .page-back'));
-  const mobileLabels = {
-    en: ['Cover', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Back Cover'],
-    fr: ['Couverture', 'Page 1', 'Page 2', 'Page 3', 'Page 4', 'Dernière page'],
-  };
-  let mobilePageIndex = 0;
-  let mobileBookInitialized = false;
-  let isMobileFlipping = false;
-
-  function setMobileFace(index) {
-    allFaces.forEach((face, i) => {
-      face.classList.toggle('mobile-active', i === index);
-    });
-    const labels = mobileLabels[I18N.get()] || mobileLabels.en;
-    pageIndicator.textContent = labels[index] || '';
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = index === allFaces.length - 1;
-  }
-
-  function goToMobilePage(newIndex) {
-    if (newIndex < 0 || newIndex >= allFaces.length || newIndex === mobilePageIndex) return;
-
-    // Before the book has finished its first render, or during an
-    // in-progress flip, just jump straight there — no animation to glide.
-    if (!mobileBookInitialized) {
-      mobilePageIndex = newIndex;
-      setMobileFace(mobilePageIndex);
-      return;
-    }
-    if (isMobileFlipping) return;
-
-    const forward = newIndex > mobilePageIndex;
-    const outgoing = allFaces[mobilePageIndex];
-    const incoming = allFaces[newIndex];
-    isMobileFlipping = true;
-
-    // Lock the book's height for the duration of the flip: both faces sit
-    // position:absolute mid-transition and don't contribute to the
-    // container's normal-flow height, which would otherwise collapse it.
-    const bookRect = book.getBoundingClientRect();
-    book.style.height = `${bookRect.height}px`;
-
-    // The very first flip off the cover reads as the book opening; every
-    // other transition is a regular page turn.
-    if (mobilePageIndex === 0 || newIndex === 0) {
-      SoundFX.bookOpen();
-    } else {
-      SoundFX.pageTurn();
-    }
-
-    outgoing.classList.add(forward ? 'mobile-flip-out-forward' : 'mobile-flip-out-backward');
-    incoming.classList.add('mobile-active', forward ? 'mobile-flip-in-forward' : 'mobile-flip-in-backward');
-
-    let settled = false;
-    const settle = () => {
-      if (settled) return;
-      settled = true;
-      outgoing.classList.remove(
-        'mobile-flip-out-forward', 'mobile-flip-out-backward', 'mobile-active'
-      );
-      incoming.classList.remove('mobile-flip-in-forward', 'mobile-flip-in-backward');
-      book.style.height = '';
-      mobilePageIndex = newIndex;
-      setMobileFace(mobilePageIndex);
-      isMobileFlipping = false;
-    };
-
-    outgoing.addEventListener('animationend', settle, { once: true });
-    setTimeout(settle, 780); // safety net in case animationend doesn't fire
-  }
-
-  nextBtn.addEventListener('click', () => {
-    if (isMobileLayout()) {
-      goToMobilePage(mobilePageIndex + 1);
-      return;
-    }
-    if (currentPageIndex < totalPagePairs) {
-      SoundFX[currentPageIndex === 0 ? 'bookOpen' : 'pageTurn']();
-      currentPageIndex++;
-      updateBook();
-    }
-  });
-
-  prevBtn.addEventListener('click', () => {
-    if (isMobileLayout()) {
-      goToMobilePage(mobilePageIndex - 1);
-      return;
-    }
-    if (currentPageIndex > 0) {
-      SoundFX[currentPageIndex === 1 ? 'bookOpen' : 'pageTurn']();
-      currentPageIndex--;
-      updateBook();
-    }
-  });
-
-  pages.forEach((page, idx) => {
-    page.addEventListener('click', () => {
-      if (isMobileLayout()) return;
-      if (idx === currentPageIndex) {
-        SoundFX[currentPageIndex === 0 ? 'bookOpen' : 'pageTurn']();
-        currentPageIndex++;
-        updateBook();
-      } else if (idx === currentPageIndex - 1) {
-        SoundFX[currentPageIndex === 1 ? 'bookOpen' : 'pageTurn']();
-        currentPageIndex--;
-        updateBook();
-      }
-    });
-  });
-
-  // Mobile: tapping anywhere on the book advances to the next page/face,
-  // the same way tapping a real book page turns it.
-  book.addEventListener('click', () => {
-    if (!isMobileLayout()) return;
-    goToMobilePage(mobilePageIndex + 1);
-  });
-
-  updateBook();
-  setMobileFace(mobilePageIndex);
-  mobileBookInitialized = true;
-
-  // Keep the book's page indicator ("Cover", "Page 1"...) in sync when
-  // the language is switched — everything else with a data-en/data-fr
-  // pair is handled generically by I18N.apply(), but this text is
-  // generated by JS rather than sitting in the DOM already.
-  document.addEventListener('languagechange', () => {
-    if (isMobileLayout()) {
-      setMobileFace(mobilePageIndex);
-    } else {
-      updateBook();
-    }
-  });
-
   // Terminal Deck Scroll & Dock Animation
   // (Scroll-jacking removed — Skills is now a plain static list at every
   // width. Kept the function name and call sites below so the
@@ -1418,8 +1278,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTerminals();
     updateExperienceScroll();
     updateLeadershipScroll();
-    updateBook();
-    setMobileFace(mobilePageIndex);
   });
 
   updateTerminals();
@@ -1452,15 +1310,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---- General click sound for ordinary interactive elements ----
-  // The book handles its own richer page-turn/open sounds at the sites
-  // where those transitions actually happen, so it's excluded here to
-  // avoid layering two sounds on the same tap.
   document.addEventListener('click', (e) => {
-    const bookRelated = e.target.closest(
-      '#flipBook, .page, .page-front, .page-back, #nextPageBtn, #prevPageBtn'
-    );
-    if (bookRelated) return;
-
     const interactive = e.target.closest(
       'a, button, [role="button"], .skill-chip, .faq-question, .projects-tab, .contact-link, .terminal-dot-close'
     );
@@ -1666,9 +1516,6 @@ document.querySelectorAll('.faq-item').forEach((item) => {
     if (el.closest('#cvWidgetBtn')) return 'check out my CV!';
     if (el.closest('.cv-download-btn')) return 'download my CV!';
     if (el.closest('#projectsAllBtn')) return 'see all my projects!';
-    if (el.closest('#prevPageBtn')) return 'flip to the previous page!';
-    if (el.closest('#nextPageBtn')) return 'turn the page!';
-    if (el.closest('.book')) return 'open the book!';
     if (el.closest('.faq-question')) return 'curious? click to find out!';
     if (el.closest('.award-card')) return 'see my hackathon award!';
     if (el.closest('.contact-link-linkedin')) return 'connect with me on LinkedIn!';
@@ -1684,7 +1531,7 @@ document.querySelectorAll('.faq-item').forEach((item) => {
   }
 
   const HOVER_SELECTOR =
-    'a, button, [role="button"], .skill-chip, .experience-card, .book, [data-bee-msg]';
+    'a, button, [role="button"], .skill-chip, .experience-card, [data-bee-msg]';
 
   let currentTarget = null;
 

@@ -235,6 +235,11 @@
             <span class="skill-modal-label" data-en="&gt; built with" data-fr="&gt; réalisé avec">&gt; built with</span>
             <div class="project-modal-stack" id="projectModalStack"></div>
           </div>
+
+          <div class="skill-modal-block" id="projectModalRepoBlock">
+            <span class="skill-modal-label" data-en="&gt; repository" data-fr="&gt; dépôt">&gt; repository</span>
+            <a class="award-modal-project-link" id="projectModalRepoLink" href="" target="_blank" rel="noopener"></a>
+          </div>
         </div>
       </div>
     </div>
@@ -259,7 +264,12 @@
 
           <div class="skill-modal-block">
             <span class="skill-modal-label" data-en="&gt; about" data-fr="&gt; à propos">&gt; about</span>
-            <p id="experienceModalDescription"></p>
+            <div id="experienceModalDescription"></div>
+          </div>
+
+          <div class="skill-modal-block" id="experienceModalSkillsBlock">
+            <span class="skill-modal-label" data-en="&gt; skills learned" data-fr="&gt; compétences acquises">&gt; skills learned</span>
+            <div class="exp-modal-skills" id="experienceModalSkills"></div>
           </div>
 
           <div class="skill-modal-block" id="experienceModalCertBlock">
@@ -798,9 +808,9 @@
           <div class="project-stack">
             <span>React Native</span><span>Expo</span><span>Node.js</span><span>PostgreSQL</span>
           </div>
-          <a href="https://github.com/mariem-chaouachi/RadConnect-App" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the RadConnect repo!" data-bee-msg-fr="Ouvrir le dépôt RadConnect !">
+          <button type="button" class="project-link" data-project="radconnect" data-bee-msg="Open the RadConnect repo!" data-bee-msg-fr="Ouvrir le dépôt RadConnect !">
             <span data-en="open project" data-fr="voir le projet">open project</span> <span class="arrow">↗</span>
-          </a>
+          </button>
         </div>
 
         <div class="project-media">
@@ -832,9 +842,9 @@
           <div class="project-stack">
             <span>Web</span><span>Claude API</span><span data-en="Clinical Data" data-fr="Données cliniques">Clinical Data</span>
           </div>
-          <a href="https://github.com/mariem-chaouachi/Homeostasis-Diagnostic-Panel" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the Homeostasis tool repo!" data-bee-msg-fr="Ouvrir le dépôt de l'outil Homéostasie !">
+          <button type="button" class="project-link" data-project="homeostasis" data-bee-msg="Open the Homeostasis tool repo!" data-bee-msg-fr="Ouvrir le dépôt de l'outil Homéostasie !">
             <span data-en="open project" data-fr="voir le projet">open project</span> <span class="arrow">↗</span>
-          </a>
+          </button>
         </div>
 
         <div class="project-media">
@@ -866,9 +876,9 @@
           <div class="project-stack">
             <span>Unity</span><span>Arduino</span><span>Python</span>
           </div>
-          <a href="https://github.com/mariem-chaouachi/BioFarm" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the BioFarm repo!" data-bee-msg-fr="Ouvrir le dépôt BioFarm !">
+          <button type="button" class="project-link" data-project="biofarm" data-bee-msg="Open the BioFarm repo!" data-bee-msg-fr="Ouvrir le dépôt BioFarm !">
             <span data-en="open project" data-fr="voir le projet">open project</span> <span class="arrow">↗</span>
-          </a>
+          </button>
         </div>
 
         <div class="project-media">
@@ -898,9 +908,9 @@
           <div class="project-stack">
             <span>HTML</span><span>CSS</span><span>JavaScript</span>
           </div>
-          <a href="https://github.com/mariem-chaouachi/PortfolioWebsite" target="_blank" rel="noopener" class="project-link" data-bee-msg="Open the Portfolio repo!" data-bee-msg-fr="Ouvrir le dépôt du portfolio !">
+          <button type="button" class="project-link" data-project="portfolio" data-bee-msg="Open the Portfolio repo!" data-bee-msg-fr="Ouvrir le dépôt du portfolio !">
             <span data-en="open project" data-fr="voir le projet">open project</span> <span class="arrow">↗</span>
-          </a>
+          </button>
         </div>
 
         <div class="project-media">
@@ -921,7 +931,7 @@
         </div>
       </div>
 
-      <div class="project-row" data-category="hardware" id="project-dyslexia-app">
+      <div class="project-row" data-category="software" id="project-dyslexia-app">
         <div class="project-info">
           <span class="project-tag" data-en="Ideathon" data-fr="Ideathon">Ideathon</span>
           <h3 class="project-title" data-en="Dyslexia Companion App" data-fr="Application compagnon pour la dyslexie">Dyslexia Companion App</h3>

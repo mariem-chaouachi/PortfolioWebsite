@@ -688,35 +688,40 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: 'Mobile App',
       description: "A React Native / Expo mobile app that streamlines communication between radiology technicians and radiologists, with role-based views, real-time messaging, and localization. Connected to a Node.js/Express backend on Neon PostgreSQL.",
       stack: ['React Native', 'Expo', 'Node.js', 'PostgreSQL'],
-      videoSrc: 'assets/videos/radconnect.mp4'
+      videoSrc: 'assets/videos/radconnect.mp4',
+      repoUrl: 'https://github.com/mariem-chaouachi/RadConnect-App'
     },
     'homeostasis': {
       name: 'Homeostasis Diagnostic Tool',
       tag: 'Web Tool',
       description: "A clinical web tool for milieu intérieur analysis, covering sodium, acid-base, potassium, calcium, and renal function panels. Uses Claude's API to extract data directly from uploaded lab files.",
       stack: ['Web', 'Claude API', 'Clinical Data'],
-      videoSrc: 'assets/videos/homeostasis.mp4'
+      videoSrc: 'assets/videos/homeostasis.mp4',
+      repoUrl: 'https://github.com/mariem-chaouachi/Homeostasis-Diagnostic-Panel'
     },
     'biofarm': {
       name: 'BioFarm',
       tag: 'Hackathon',
       description: "A pixel-art Unity farm game connected to an Arduino MAX30100 heart-rate sensor, with a Python stress-scoring layer, guided breathing triggers, and a weekly wellness review for parents.",
       stack: ['Unity', 'Arduino', 'Python'],
-      videoSrc: 'assets/videos/biofarm.mp4'
+      videoSrc: 'assets/videos/biofarm.mp4',
+      repoUrl: 'https://github.com/mariem-chaouachi/BioFarm'
     },
     'portfolio': {
       name: 'Portfolio Website',
       tag: 'Personal Project',
       description: "This very site, an interactive portfolio with a flip-book About Me section, terminal-styled skill cards, a cursor-following bee companion, synthesized sound effects, and full English/French bilingual support.",
       stack: ['HTML', 'CSS', 'JavaScript'],
-      videoSrc: 'assets/videos/portfolio-demo.mp4'
+      videoSrc: 'assets/videos/portfolio-demo.mp4',
+      repoUrl: 'https://github.com/mariem-chaouachi/PortfolioWebsite'
     },
     'dyslexia-app': {
       name: 'Dyslexia Companion App',
       tag: 'Ideathon',
       description: "An assistive app concept for children with dyslexia, pitched at the National Robotics Week 8.0 Biomed Day Ideathon under the \"open biomedical innovation\" theme. Structured around the full pitch: healthcare need, problem identification, user understanding, solution design, demonstration, and entrepreneurial perspective.",
       stack: ['Concept', 'UX Design', 'Pitch'],
-      videoSrc: 'assets/videos/dyslexia-app.mp4'
+      videoSrc: 'assets/videos/dyslexia-app.mp4',
+      repoUrl: null
     }
   };
 
@@ -764,6 +769,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const projectModalStack = document.getElementById('projectModalStack');
   const projectModalVideo = document.getElementById('projectModalVideo');
   const projectModalVideoSource = document.getElementById('projectModalVideoSource');
+  const projectModalRepoBlock = document.getElementById('projectModalRepoBlock');
+  const projectModalRepoLink = document.getElementById('projectModalRepoLink');
 
   function openProjectModal(slug) {
     const data = projectDetails[slug];
@@ -786,6 +793,14 @@ document.addEventListener("DOMContentLoaded", () => {
     projectModalVideoSource.src = data.videoSrc || '';
     projectModalVideo.load();
 
+    if (data.repoUrl) {
+      projectModalRepoBlock.style.display = '';
+      projectModalRepoLink.href = data.repoUrl;
+      projectModalRepoLink.textContent = data.repoUrl.replace('https://', '');
+    } else {
+      projectModalRepoBlock.style.display = 'none';
+    }
+
     projectModalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -798,6 +813,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll('.projects-list-item[data-project]').forEach((item) => {
     item.addEventListener('click', () => openProjectModal(item.dataset.project));
+  });
+
+  // The "open project" link on each visible project card now opens the
+  // full detail modal (with the repo link inside it) instead of jumping
+  // straight to GitHub — keeps the visitor on the page and gives them
+  // the whole picture (description, stack, demo) before they leave.
+  document.querySelectorAll('.project-link[data-project]').forEach((btn) => {
+    btn.addEventListener('click', () => openProjectModal(btn.dataset.project));
   });
 
   projectModalCloseBtn.addEventListener('click', closeProjectModal);
@@ -819,7 +842,12 @@ document.addEventListener("DOMContentLoaded", () => {
       org: 'STIET (Philips Distributor, Tunisia)',
       orgUrl: 'https://stiet.com.tn/',
       date: 'July 2026',
-      description: "Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.",
+      description: [
+        "During my one-month internship at STIET Philips, I gained valuable knowledge and practical insight into the field of medical imaging.",
+        "I learned about the principles, clinical applications, advantages, limitations, and radiation protection aspects of the main imaging modalities, including Radiography, Computed Tomography (CT), Magnetic Resonance Imaging (MRI), Ultrasound, and Nuclear Medicine. I also had the opportunity to discover the medical imaging systems commercialized by STIET Philips, such as Digital Radiography (DR) systems, mobile X-ray units and C-arms.",
+        "This internship strengthened my technical knowledge, expanded my understanding of biomedical technologies, and gave me valuable exposure to their real-world clinical applications."
+      ],
+      skills: ['Radiography', 'CT', 'MRI', 'Ultrasound', 'Nuclear Medicine', 'Radiation Protection', 'Medical Imaging Systems'],
       certImage: 'assets/certs/experience/stiet-internship.png'
     },
     'clinical-internship': {
@@ -827,7 +855,11 @@ document.addEventListener("DOMContentLoaded", () => {
       org: 'Clinique Zaghouan',
       orgUrl: 'http://www.clinique-zaghouan.com/',
       date: 'Clinical Practice',
-      description: "Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.",
+      description: [
+        "During my internship at Zaghouan Clinic, I gained hands-on experience in Computed Tomography (CT) imaging. I assisted with patient preparation and positioning, participated in CT image acquisition under the supervision of radiology professionals, and learned to apply imaging protocols while ensuring patient safety and radiation protection.",
+        "This internship allowed me to strengthen my practical skills in medical imaging, improve my understanding of CT scanner operation and workflow, and gain valuable experience in interacting with patients in a clinical environment."
+      ],
+      skills: ['CT Imaging', 'Patient Positioning', 'Radiation Safety', 'Clinical Workflow', 'Patient Care'],
       certImage: 'assets/certs/experience/clinical-internship.png'
     },
     'sponsorship': {
@@ -835,7 +867,12 @@ document.addEventListener("DOMContentLoaded", () => {
       org: 'Biomed Innov Club',
       orgUrl: 'https://www.instagram.com/club_biomed_innov/',
       date: 'Present',
-      description: "Building partnerships and securing sponsorships to support the club's biomedical engineering initiatives.",
+      description: [
+        "As Sponsorship and External Relations Manager at Biomed Innov Club, I contribute to building strategic partnerships and developing external collaborations to support the club's initiatives in biomedical engineering, technology, and innovation.",
+        "I take part in organizing and coordinating a wide range of activities, including professional workshops and training sessions led by experts, engineering competitions, hackathons, and outreach programs. Through our initiatives, we promote biomedical engineering awareness among students, introduce young learners to robotics and technology through interactive workshops, and contribute to social actions such as volunteering at many hospitals and visiting isolated elementary schools.",
+        "This experience has allowed me to strengthen my skills in communication, partnership management, event organization, teamwork, and leadership while creating meaningful educational and community-driven impact."
+      ],
+      skills: ['Partnership Management', 'Event Organization', 'Communication', 'Teamwork', 'Leadership', 'Community Outreach'],
       certImage: 'assets/certs/experience/sponsorship.png'
     },
     'notion-campus-leader': {
@@ -856,22 +893,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Same French copy already used on the visible experience/leadership cards.
+  // Same French copy already used on the visible experience/leadership cards,
+  // extended with the fuller descriptions and skill tags for the modal.
   const experienceDetailsFR = {
     'stiet-internship': {
       role: "Stage d'observation",
       date: 'Juillet 2026',
-      description: "J'ai étudié et documenté des équipements d'imagerie médicale en radiologie conventionnelle & interventionnelle, scanner, échographie, IRM et médecine nucléaire."
+      description: [
+        "Durant mon stage d'un mois chez STIET Philips, j'ai acquis des connaissances précieuses et une compréhension pratique du domaine de l'imagerie médicale.",
+        "J'ai appris les principes, les applications cliniques, les avantages, les limites et les aspects de radioprotection des principales modalités d'imagerie, notamment la radiographie, la tomodensitométrie (CT), l'imagerie par résonance magnétique (IRM), l'échographie et la médecine nucléaire. J'ai également eu l'occasion de découvrir les systèmes d'imagerie commercialisés par STIET Philips, tels que les systèmes de radiographie numérique (DR), les unités mobiles de radiographie et les arceaux mobiles (C-arms).",
+        "Ce stage a renforcé mes connaissances techniques, élargi ma compréhension des technologies biomédicales et m'a donné une exposition précieuse à leurs applications cliniques réelles."
+      ],
+      skills: ['Radiographie', 'Scanner (CT)', 'IRM', 'Échographie', 'Médecine nucléaire', 'Radioprotection', "Systèmes d'imagerie médicale"]
     },
     'clinical-internship': {
       role: 'Stage clinique',
       date: 'Pratique clinique',
-      description: "J'ai observé les flux de travail cliniques et les équipements médicaux en milieu hospitalier, développant une compréhension concrète des environnements de soins."
+      description: [
+        "Durant mon stage à la Clinique de Zaghouan, j'ai acquis une expérience pratique en imagerie par tomodensitométrie (CT). J'ai participé à la préparation et au positionnement des patients, à l'acquisition d'images CT sous la supervision de professionnels en radiologie, et j'ai appris à appliquer les protocoles d'imagerie tout en assurant la sécurité des patients et la radioprotection.",
+        "Ce stage m'a permis de renforcer mes compétences pratiques en imagerie médicale, d'améliorer ma compréhension du fonctionnement et du flux de travail du scanner CT, et d'acquérir une expérience précieuse dans l'interaction avec les patients en milieu clinique."
+      ],
+      skills: ['Imagerie CT', 'Positionnement des patients', 'Radioprotection', 'Flux de travail clinique', 'Soins aux patients']
     },
     'sponsorship': {
       role: 'Responsable relations extérieures & sponsoring',
       date: 'Actuel',
-      description: "Je développe des partenariats et obtiens des sponsors pour soutenir les initiatives du club en génie biomédical."
+      description: [
+        "En tant que Responsable Sponsoring et Relations Extérieures au Club Biomed Innov, je contribue à construire des partenariats stratégiques et à développer des collaborations externes pour soutenir les initiatives du club en génie biomédical, technologie et innovation.",
+        "Je participe à l'organisation et à la coordination d'un large éventail d'activités, notamment des ateliers professionnels et des formations animées par des experts, des compétitions d'ingénierie, des hackathons et des programmes de sensibilisation. À travers nos initiatives, nous promouvons la sensibilisation au génie biomédical auprès des étudiants, initions les jeunes à la robotique et à la technologie via des ateliers interactifs, et contribuons à des actions sociales telles que le bénévolat dans plusieurs hôpitaux et des visites à des écoles primaires isolées.",
+        "Cette expérience m'a permis de renforcer mes compétences en communication, gestion de partenariats, organisation d'événements, travail d'équipe et leadership, tout en créant un impact éducatif et communautaire significatif."
+      ],
+      skills: ['Gestion de partenariats', "Organisation d'événements", 'Communication', "Travail d'équipe", 'Leadership', 'Action communautaire']
     },
     'notion-campus-leader': {
       role: 'Ambassadrice de campus',
@@ -892,6 +944,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const experienceModalOrg = document.getElementById('experienceModalOrg');
   const experienceModalDate = document.getElementById('experienceModalDate');
   const experienceModalDescription = document.getElementById('experienceModalDescription');
+  const experienceModalSkillsBlock = document.getElementById('experienceModalSkillsBlock');
+  const experienceModalSkills = document.getElementById('experienceModalSkills');
   const experienceModalCert = document.getElementById('experienceModalCert');
   const experienceModalCertBlock = document.getElementById('experienceModalCertBlock');
 
@@ -906,7 +960,29 @@ document.addEventListener("DOMContentLoaded", () => {
     experienceModalOrg.textContent = data.org;
     experienceModalOrg.href = data.orgUrl || '#';
     experienceModalDate.textContent = t.date;
-    experienceModalDescription.textContent = t.description;
+
+    // description can be a single string or an array of paragraphs —
+    // render each paragraph as its own <p> either way.
+    experienceModalDescription.innerHTML = '';
+    const paragraphs = Array.isArray(t.description) ? t.description : [t.description];
+    paragraphs.forEach((text) => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      experienceModalDescription.appendChild(p);
+    });
+
+    const skillList = (I18N.get() === 'fr' && fr && fr.skills) ? fr.skills : data.skills;
+    experienceModalSkills.innerHTML = '';
+    if (skillList && skillList.length) {
+      experienceModalSkillsBlock.style.display = '';
+      skillList.forEach((skill) => {
+        const span = document.createElement('span');
+        span.textContent = skill;
+        experienceModalSkills.appendChild(span);
+      });
+    } else {
+      experienceModalSkillsBlock.style.display = 'none';
+    }
 
     if (data.certImage) {
       experienceModalCertBlock.style.display = '';

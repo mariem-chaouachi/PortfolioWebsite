@@ -900,6 +900,32 @@ body {
   border-radius: 20px;
 }
 
+/* Multi-paragraph experience/leadership descriptions */
+#experienceModalDescription p {
+  margin: 0 0 14px;
+}
+
+#experienceModalDescription p:last-child {
+  margin-bottom: 0;
+}
+
+.exp-modal-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exp-modal-skills span {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6b3c2e;
+  background-color: rgba(107, 60, 46, 0.08);
+  border: 1px solid rgba(107, 60, 46, 0.25);
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+
 /* ABOUT ME SECTION - 3D BOOK & DYNAMIC SCREEN PROPORTIONS */
 .about-section {
   display: flex;
@@ -1396,35 +1422,42 @@ h2.skills-fixed-title {
 }
 
 .timeline-marker {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   width: 14px;
   align-self: stretch;
   flex-shrink: 0;
-  /* Centers the dot with the card's logo: card has 28px top padding,
-     the logo is 56px tall, so the logo's own vertical center sits at
-     28 + 28 = 56px from the card's top edge. The dot is 14px tall, so
-     its top edge needs to start 7px above that center line. Was 34px,
-     which put the dot noticeably above the logo instead of level
-     with it. */
-  padding-top: 49px;
 }
 
 .timeline-dot {
+  position: absolute;
+  top: 49px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 14px;
   height: 14px;
   border-radius: 50%;
   background: #6b3c2e;
   box-shadow: 0 0 0 4px rgba(107, 60, 46, 0.15);
+  z-index: 2;
   flex-shrink: 0;
 }
 
+/* Absolutely positioned top-to-bottom (rather than flex: 1 distributing
+   leftover space in a nested flex column) so the connecting line reaches
+   the next item's dot no matter how the surrounding layout is measured —
+   the earlier flex-based version depended on .timeline-marker actually
+   being stretched to a definite height at layout time, which is more
+   fragile than anchoring directly to its own top/bottom edges. */
 .timeline-marker::after {
   content: '';
-  flex: 1;
+  position: absolute;
+  top: 56px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 2px;
-  margin-top: 8px;
   background: repeating-linear-gradient(
     180deg,
     #6b3c2e 0,
@@ -1441,13 +1474,13 @@ h2.skills-fixed-title {
 @media (max-width: 560px) {
   .timeline-marker {
     width: 10px;
-    /* Logo is still 56px tall in this range (it only shrinks to 32px
-       below 480px, handled separately below), so the same 49px offset
-       used on desktop still centers the dot on it. */
-    padding-top: 49px;
   }
 
   .timeline-dot {
+    /* Logo is still 56px tall in this range (it only shrinks to 32px
+       below 480px, handled separately below), so the same 49px offset
+       used on desktop still centers the dot on it. */
+    top: 49px;
     width: 10px;
     height: 10px;
   }
@@ -2076,8 +2109,11 @@ h2.skills-fixed-title {
   font-weight: 600;
   color: #b38f00; /* Legible yellow-gold text */
   text-decoration: none;
+  border: none;
   border-bottom: 2px solid #FFCC00;
-  padding-bottom: 2px;
+  padding: 0 0 2px;
+  background: none;
+  cursor: pointer;
   transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
@@ -2765,8 +2801,8 @@ a.contact-detail-row:hover {
   /* Logo shrinks to 32px at this width, so the dot's center moves from
      56px to 28 (card padding) + 16 (half of 32px) = 44px. Dot is 10px
      here, so its top edge needs to sit 5px above that. */
-  .timeline-marker {
-    padding-top: 39px;
+  .timeline-dot {
+    top: 39px;
   }
 
   .timeline-role {

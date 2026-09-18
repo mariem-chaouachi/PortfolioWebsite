@@ -1,118 +1,3 @@
-// ---- Sound effects (Web Audio API — synthesized, no external audio
-// files needed) ----
-const SoundFX = (function initSoundFX() {
-  let ctx = null;
-  let enabled = true;
-  const STORAGE_KEY = 'siteSoundEnabled';
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored !== null) enabled = stored === 'true';
-  } catch (e) { /* localStorage unavailable — default stays on */ }
-
-  function getCtx() {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return null;
-    if (!ctx) ctx = new AudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    return ctx;
-  }
-
-  // Soft, short blip for general UI clicks (buttons, links, chips...).
-  function click() {
-    if (!enabled) return;
-    const c = getCtx();
-    if (!c) return;
-    const t = c.currentTime;
-    const osc = c.createOscillator();
-    const gain = c.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(680, t);
-    osc.frequency.exponentialRampToValueAtTime(400, t + 0.06);
-    gain.gain.setValueAtTime(0.07, t);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
-    osc.connect(gain).connect(c.destination);
-    osc.start(t);
-    osc.stop(t + 0.09);
-  }
-
-  // Paper-rustle swish for a single page turn, built from filtered noise.
-  function pageTurn() {
-    if (!enabled) return;
-    const c = getCtx();
-    if (!c) return;
-    const t = c.currentTime;
-    const duration = 0.38;
-    const bufferSize = Math.floor(c.sampleRate * duration);
-    const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      const progress = i / bufferSize;
-      const envelope = Math.sin(progress * Math.PI);
-      data[i] = (Math.random() * 2 - 1) * envelope;
-    }
-    const noise = c.createBufferSource();
-    noise.buffer = buffer;
-    const bandpass = c.createBiquadFilter();
-    bandpass.type = 'bandpass';
-    bandpass.frequency.setValueAtTime(1700, t);
-    bandpass.frequency.linearRampToValueAtTime(2500, t + duration);
-    bandpass.Q.value = 0.65;
-    const gain = c.createGain();
-    gain.gain.setValueAtTime(0.001, t);
-    gain.gain.linearRampToValueAtTime(0.18, t + 0.04);
-    gain.gain.linearRampToValueAtTime(0.0001, t + duration);
-    noise.connect(bandpass).connect(gain).connect(c.destination);
-    noise.start(t);
-    noise.stop(t + duration);
-  }
-
-  // A slightly richer swish + soft low thud for the cover opening/closing.
-  function bookOpen() {
-    if (!enabled) return;
-    pageTurn();
-    const c = getCtx();
-    if (!c) return;
-    const t = c.currentTime + 0.06;
-    const osc = c.createOscillator();
-    const gain = c.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(170, t);
-    osc.frequency.exponentialRampToValueAtTime(85, t + 0.2);
-    gain.gain.setValueAtTime(0.09, t);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
-    osc.connect(gain).connect(c.destination);
-    osc.start(t);
-    osc.stop(t + 0.24);
-  }
-
-  function toggle() {
-    enabled = !enabled;
-    try { localStorage.setItem(STORAGE_KEY, String(enabled)); } catch (e) { /* ignore */ }
-    return enabled;
-  }
-
-  function isEnabled() {
-    return enabled;
-  }
-
-  // Browsers require a user gesture before audio can play — prime/resume
-  // the context on the very first pointer or key interaction so the
-  // first real sound effect isn't silently dropped.
-  function primeOnFirstGesture() {
-    const unlock = () => {
-      getCtx();
-      document.removeEventListener('pointerdown', unlock);
-      document.removeEventListener('keydown', unlock);
-    };
-    document.addEventListener('pointerdown', unlock, { once: true });
-    document.addEventListener('keydown', unlock, { once: true });
-  }
-  primeOnFirstGesture();
-
-  return { click, pageTurn, bookOpen, toggle, isEnabled };
-})();
-
 // ---- Language (EN/FR) ----
 const I18N = (function initI18N() {
   const STORAGE_KEY = 'siteLang';
@@ -244,27 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---- Sound effects toggle button ----
-  const soundToggleBtn = document.getElementById('soundToggleBtn');
-  if (soundToggleBtn) {
-    const syncSoundBtn = () => {
-      const muted = !SoundFX.isEnabled();
-      soundToggleBtn.classList.toggle('muted', muted);
-      soundToggleBtn.setAttribute('aria-pressed', String(muted));
-      soundToggleBtn.setAttribute('aria-label', muted ? 'Unmute sound effects' : 'Mute sound effects');
-    };
-    syncSoundBtn();
-    soundToggleBtn.addEventListener('click', () => {
-      SoundFX.toggle();
-      syncSoundBtn();
-      // No explicit SoundFX.click() here — the delegated click-sound
-      // listener further down (bound on document) will already fire
-      // naturally as this event bubbles, and by then SoundFX.isEnabled()
-      // reflects the new state, so unmuting gets its own audible
-      // confirmation for free without double-firing the sound.
-    });
-  }
-
   // Bind Mouse Glow for all Liquid Glass Containers
   if (!prefersReducedMotion) {
     const glassElements = document.querySelectorAll('.liquid-glass-container');
@@ -294,7 +158,20 @@ document.addEventListener("DOMContentLoaded", () => {
       large = rect.top < window.innerHeight * 0.65 && rect.bottom > window.innerHeight * 0.15;
     }
 
-    cvWidgetContainer.classList.toggle('docked-bottom-right', !large);
+    // Extra "pop" — bigger than even the normal large state — tied
+    // specifically to the BOTTOM edge of Let's Connect scrolling into
+    // view (i.e. you've scrolled through the whole section), not just
+    // "near the bottom of the page". Contact is a short section, so
+    // those two used to fire at nearly the same scroll position, which
+    // read as popping right at the section's start instead of its end.
+    let atSectionEnd = false;
+    if (contactSection) {
+      const rect = contactSection.getBoundingClientRect();
+      atSectionEnd = rect.bottom <= window.innerHeight + 4;
+    }
+
+    cvWidgetContainer.classList.toggle('docked-bottom-right', !large && !atSectionEnd);
+    cvWidgetContainer.classList.toggle('cv-widget-pop', atSectionEnd);
   }
 
   window.addEventListener('scroll', updateWidgetDocking, { passive: true });
@@ -854,7 +731,7 @@ document.addEventListener("DOMContentLoaded", () => {
       role: 'Clinical Internship',
       org: 'Clinique Zaghouan',
       orgUrl: 'http://www.clinique-zaghouan.com/',
-      date: 'Clinical Practice',
+      date: 'June 2025',
       description: [
         "During my internship at Zaghouan Clinic, I gained hands-on experience in Computed Tomography (CT) imaging. I assisted with patient preparation and positioning, participated in CT image acquisition under the supervision of radiology professionals, and learned to apply imaging protocols while ensuring patient safety and radiation protection.",
         "This internship allowed me to strengthen my practical skills in medical imaging, improve my understanding of CT scanner operation and workflow, and gain valuable experience in interacting with patients in a clinical environment."
@@ -908,7 +785,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     'clinical-internship': {
       role: 'Stage clinique',
-      date: 'Pratique clinique',
+      date: 'Juin 2025',
       description: [
         "Durant mon stage à la Clinique de Zaghouan, j'ai acquis une expérience pratique en imagerie par tomodensitométrie (CT). J'ai participé à la préparation et au positionnement des patients, à l'acquisition d'images CT sous la supervision de professionnels en radiologie, et j'ai appris à appliquer les protocoles d'imagerie tout en assurant la sécurité des patients et la radioprotection.",
         "Ce stage m'a permis de renforcer mes compétences pratiques en imagerie médicale, d'améliorer ma compréhension du fonctionnement et du flux de travail du scanner CT, et d'acquérir une expérience précieuse dans l'interaction avec les patients en milieu clinique."
@@ -1044,7 +921,7 @@ document.addEventListener("DOMContentLoaded", () => {
       relatedProject: 'biofarm'
     },
     'little-archaeologist': {
-      title: 'First Place – "Little Archaeologist" Art Competition',
+      title: 'First Place, "Little Archaeologist" Art Competition',
       org: "Hippo Museum (Musée d'Hippone), Annaba, Algeria",
       orgUrl: null,
       date: '2017',
@@ -1058,7 +935,7 @@ document.addEventListener("DOMContentLoaded", () => {
       video: 'assets/videos/award-little-archaeologist.mp4'
     },
     'robotics-week-ideathon': {
-      title: 'Second Place – National Robotics Week 8.0 Biomed Day Ideathon',
+      title: 'Second Place, National Robotics Week 8.0 Biomed Day Ideathon',
       org: 'National Robotics Week 8.0 · Biomed Day',
       orgUrl: null,
       date: '2026',
@@ -1077,13 +954,13 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "J'ai participé en tant que candidate, développant un projet dans les délais imposés par le hackathon."
     },
     'little-archaeologist': {
-      title: '1ère place – Concours d\'art « Petit Archéologue »',
+      title: '1ère place, Concours d\'art « Petit Archéologue »',
       org: "Musée d'Hippone, Annaba, Algérie",
       date: '2017',
       description: "1ère place au concours d'art « Petit Archéologue » organisé par le Musée d'Hippone à Annaba, en Algérie. En tant que jeune participante, j'ai réalisé une œuvre inspirée du patrimoine archéologique d'Annaba, mettant en scène la sculpture de la Gorgone et la basilique de Saint-Augustin. Le prix de la première place incluait un ordinateur personnel."
     },
     'robotics-week-ideathon': {
-      title: 'Deuxième place – Ideathon Biomed Day, National Robotics Week 8.0',
+      title: 'Deuxième place, Ideathon Biomed Day, National Robotics Week 8.0',
       org: 'National Robotics Week 8.0 · Biomed Day',
       date: '2026',
       description: "2ème place à l'Ideathon Biomed Day, organisé dans le cadre du National Robotics Week 8.0, sous le thème « open biomedical innovation ». Présentation d'un concept de robotique assistive à travers toute la structure de l'ideathon : besoin de santé, identification du problème, compréhension des utilisateurs, conception de la solution, démonstration et perspective entrepreneuriale."
@@ -1385,15 +1262,71 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ---- General click sound for ordinary interactive elements ----
-  document.addEventListener('click', (e) => {
-    const interactive = e.target.closest(
-      'a, button, [role="button"], .skill-chip, .faq-question, .projects-tab, .contact-link, .terminal-dot-close'
+  // ---- Scroll reveal: sections/cards fade + rise into place as they
+  // enter the viewport, so scrolling feels less like flipping static
+  // pages and more like the page is responding to you. Reuses the
+  // prefersReducedMotion flag already declared above (used for the
+  // mascot/video behavior).
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+    // Repeating card groups get a small stagger so they settle in one
+    // after another rather than all landing on the same frame.
+    const revealGroups = [
+      { container: '.experience-gallery-track', items: '.timeline-item' },
+      { container: '.leadership-gallery-track', items: '.leadership-card' },
+      { container: '.awards-grid', items: '.award-card' },
+      { container: '.projects-container', items: '.project-row' },
+      { container: '.faq-container', items: '.faq-item' },
+      { container: '.terminal-deck', items: '.terminal-card' },
+    ];
+
+    revealGroups.forEach(({ container, items }) => {
+      const parent = document.querySelector(container);
+      if (!parent) return;
+      Array.from(parent.querySelectorAll(items)).forEach((el, i) => {
+        el.classList.add('js-reveal');
+        el.style.transitionDelay = `${Math.min(i * 0.1, 0.4)}s`;
+      });
+    });
+
+    // One-off blocks and section titles — a plain fade + rise, no stagger.
+    document
+      .querySelectorAll(
+        '.about-title, .exp-title-centered, .leadership-title-centered, ' +
+          '.faq-heading, .contact-card, ' +
+          '.section-title-dark:not(.skills-fixed-title)'
+      )
+      .forEach((el) => el.classList.add('js-reveal'));
+
+    // Toggling is-visible both ways (instead of adding it once and
+    // unobserving) makes every reveal replay each time its element
+    // re-enters the viewport — scroll back up past something, then
+    // back down, and it fades/rises in again rather than just sitting
+    // there already visible.
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-visible', entry.isIntersecting);
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
     );
-    if (interactive) {
-      SoundFX.click();
-    }
-  });
+
+    // Double rAF before observing: elements already inside the
+    // viewport at page load (which, depending on section heights and
+    // scroll-restore-on-refresh, can include the skills terminal cards)
+    // otherwise get their very first IntersectionObserver notification
+    // before the browser has painted the initial hidden state even
+    // once — the two states collapse into a single paint and the
+    // "animation" never actually renders. Waiting two frames guarantees
+    // the hidden state has been on screen at least once first.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document
+          .querySelectorAll('.js-reveal')
+          .forEach((el) => revealObserver.observe(el));
+      });
+    });
+  }
 });
 
 document.querySelectorAll('.faq-item').forEach((item) => {

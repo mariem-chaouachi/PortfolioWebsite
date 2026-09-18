@@ -19,6 +19,59 @@ body {
   background-color: #1a1210;
 }
 
+/* Custom scrollbar — cream track matching the warm background used
+   throughout the site's cards and panels, with the same accent brown
+   used for the timeline dots/date pills as the thumb, so scrolling
+   itself feels like part of the site's theme instead of the browser's
+   default gray bar. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #6b3c2e #faf8f0;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #faf8f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #6b3c2e;
+  border-radius: 20px;
+  border: 3px solid #faf8f0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8a5342;
+}
+
+/* Scroll-reveal: elements start faded/lowered and settle into place as
+   they enter the viewport (see initScrollReveal in script.js, which
+   toggles .is-visible via IntersectionObserver). A slow, gentle
+   deceleration curve (cubic-bezier ease-out-quint-ish) keeps the
+   settle itself feeling soft, while the larger travel distance and
+   slight scale-up make the motion easy to actually notice rather than
+   a barely-there flicker. Kept as a plain CSS transition rather than a
+   keyframe animation so it can be interrupted or replayed cleanly and
+   so the global prefers-reduced-motion rule above (which zeroes out
+   all transition-durations) silences it for anyone who's asked for
+   less motion, without any extra code here. */
+.js-reveal {
+  opacity: 0;
+  transform: translateY(42px) scale(0.97);
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.js-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 /* Base Liquid Glass Rules */
 .liquid-glass-container {
   position: relative;
@@ -520,6 +573,32 @@ body {
   padding: 4px 10px;
 }
 
+/* Extra emphasis right as the bottom of the page comes into view (see
+   updateWidgetDocking in script.js) — grows past even the normal
+   "large" size, with a springy overshoot easing (rather than the usual
+   smooth ease-out used elsewhere) so it actually reads as a pop/bounce
+   instead of just another resize. */
+.cv-widget-container.cv-widget-pop .cv-widget-preview {
+  width: 190px;
+  height: 246px;
+  padding: 22px 20px;
+  gap: 9px;
+  transform: rotate(-6deg) scale(1.05);
+  transition:
+    transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    height 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    padding 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cv-widget-container.cv-widget-pop .cv-widget-btn:hover .cv-widget-preview {
+  transform: rotate(-2deg) scale(1.1);
+}
+
+.cv-widget-container.cv-widget-pop .cv-preview-heading {
+  font-size: 1.9rem;
+}
+
 /* CV Modal */
 .cv-modal-overlay {
   position: fixed;
@@ -689,6 +768,15 @@ body {
   max-height: 90vh;
   transform: scale(0.92) translateY(20px);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Experience/Leadership (they share #experienceModalOverlay) and
+   Projects get a noticeably wider popup than the base Skills modal —
+   their content (longer descriptions, skill-tag lists, embedded demo
+   video) reads cramped at the same 560px Skills uses. */
+#experienceModalOverlay .skill-modal-content,
+#projectModalOverlay .skill-modal-content {
+  width: min(920px, 92vw);
 }
 
 .skill-modal-overlay.active .skill-modal-content {
@@ -926,19 +1014,6 @@ body {
   border-radius: 20px;
 }
 
-/* ABOUT ME SECTION - 3D BOOK & DYNAMIC SCREEN PROPORTIONS */
-.about-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  padding: 14vh 0 100px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background-color: #ffffff;
-}
-
 .about-title {
   font-family: 'Pinyon Script', cursive;
   font-size: 3.8rem;
@@ -947,44 +1022,6 @@ body {
   margin-bottom: var(--section-title-gap);
   text-align: center;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.book-stage {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0 60px;
-}
-
-.tv-screen-terminal.tv-intro {
-  position: relative;
-  width: min(720px, 90vw);
-  background: rgba(250, 248, 240, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 221, 211, 0.85);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
-}
-
-.tv-screen-body {
-  position: relative;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  background-color: #000000;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.tv-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 /* TERMINAL SKILLS SECTION & SMOOTH TRANSITION */
@@ -1093,6 +1130,25 @@ h2.skills-fixed-title {
   align-items: flex-start;
   opacity: 1;
   pointer-events: auto;
+}
+
+/* .terminal-card's own opacity: 1 above has equal specificity to (and
+   comes after, in cascade order) the scroll-reveal system's default
+   opacity: 0, so it would otherwise silently win and the terminal
+   cards would just render fully visible with no fade-in. This extra
+   bit of specificity lets the reveal state actually take effect. */
+.terminal-card.js-reveal {
+  opacity: 0;
+}
+
+/* Needs to out-specificity BOTH the base .terminal-card rule above
+   AND .terminal-card.js-reveal just above it — otherwise, since
+   .js-reveal.is-visible (declared near the top of this file) has the
+   same specificity as .terminal-card.js-reveal but comes earlier in
+   the cascade, the hidden state here would win regardless of whether
+   the card had actually been revealed, leaving it stuck invisible. */
+.terminal-card.js-reveal.is-visible {
+  opacity: 1;
 }
 
 .terminal-window {
@@ -1392,16 +1448,29 @@ h2.skills-fixed-title {
   width: 100%;
 }
 
+/* Experience keeps a vertical stack (it needs a single column for the
+   timeline dots/line to run down beside). Leadership has no timeline,
+   so it lays out as a row of cards instead of a tall single-file stack. */
 .experience-gallery-track,
 .leadership-gallery-track {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 24px;
   width: 100%;
   padding: 0;
   position: relative;
   z-index: 2;
+}
+
+.experience-gallery-track {
+  flex-direction: column;
+  align-items: center;
+}
+
+.leadership-gallery-track {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
 }
 
 /* Was a dashed line connecting cards along the horizontal scroll —
@@ -1418,7 +1487,20 @@ h2.skills-fixed-title {
   align-items: flex-start;
   gap: 20px;
   width: 100%;
-  max-width: 760px;
+  max-width: 860px;
+}
+
+/* Fixed-width column to the left of the dot/line, so the date reads as
+   part of the timeline itself rather than as one more detail buried in
+   the card header. Right-aligned so the text sits snug against the
+   dot, and the top padding lines it up with the dot's vertical center
+   (49px top + half the 14px dot = 56px; nudged up a few px since the
+   pill's own line-height adds a bit above its text). */
+.timeline-date-col {
+  flex-shrink: 0;
+  width: 96px;
+  padding-top: 45px;
+  text-align: right;
 }
 
 .timeline-marker {
@@ -1449,12 +1531,18 @@ h2.skills-fixed-title {
    the next item's dot no matter how the surrounding layout is measured —
    the earlier flex-based version depended on .timeline-marker actually
    being stretched to a definite height at layout time, which is more
-   fragile than anchoring directly to its own top/bottom edges. */
+   fragile than anchoring directly to its own top/bottom edges.
+
+   bottom is pulled past this item's own edge (rather than stopping at 0)
+   so the line keeps going through the 24px track gap and reaches the
+   center of the NEXT item's dot (gap 24px + dot center 56px = 80px) —
+   otherwise it dead-ends at each card and reads as broken segments
+   instead of one continuous timeline. */
 .timeline-marker::after {
   content: '';
   position: absolute;
   top: 56px;
-  bottom: 0;
+  bottom: -80px;
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
@@ -1488,6 +1576,17 @@ h2.skills-fixed-title {
   .timeline-item {
     gap: 12px;
   }
+
+  /* Narrower column and smaller pill so the date doesn't eat too much
+     of an already-tight width at this breakpoint. */
+  .timeline-date-col {
+    width: 64px;
+  }
+
+  .timeline-date-col .timeline-date {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
 }
 
 .experience-card {
@@ -1514,25 +1613,68 @@ h2.skills-fixed-title {
   outline: none;
 }
 
+/* Leadership cards now sit in a row (see .leadership-gallery-track
+   above) rather than a full-width single-file stack, so each one gets
+   a narrower share of the row instead of inheriting Experience's
+   700px max-width. */
+.leadership-card {
+  flex: 1 1 300px;
+  max-width: 340px;
+  width: auto;
+}
+
+/* Text column + certificate thumbnail sit side by side, so the thumb
+   reads as a docked companion image rather than a floating centered
+   block under full-width, left-aligned text (which is what made these
+   cards feel off — the image had no edge to line up with). Stacks back
+   to a column on narrower cards, see breakpoint below. */
 .exp-card-inner {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
   width: 100%;
 }
 
-/* Certificate now sits below the text, sized to its own content rather
-   than a forced crop — capped so it can't dominate the card, and
-   centered rather than flush against the card's left edge. */
 .exp-cert-thumb {
-  max-width: 60%;
-  max-height: 220px;
+  max-width: 140px;
+  max-height: 140px;
   width: auto;
   height: auto;
   border-radius: 10px;
   border: 1px solid #e2ddd3;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   flex-shrink: 0;
+  align-self: center;
+}
+
+@media (max-width: 560px) {
+  .exp-card-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .exp-cert-thumb {
+    max-width: 55%;
+    align-self: center;
+  }
+}
+
+/* Leadership goes back to a stacked, vertical layout (text, then
+   certificate underneath) instead of the side-by-side column Experience
+   uses — it has no timeline pulling the eye horizontally, so a taller,
+   single-column card reads better here. Certificate centered under the
+   text rather than pinned to either edge. */
+.leadership-card .exp-card-inner {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.leadership-card .exp-cert-thumb {
+  max-width: 100%;
+  max-height: 190px;
   align-self: center;
 }
 
@@ -1545,24 +1687,30 @@ h2.skills-fixed-title {
   flex-wrap: wrap;
 }
 
-/* Date pill always drops to its own line under the logo/title/org
-   group. The line-break is forced with a zero-size flex spacer
-   (::after, ordered between the heading text and the pill) rather than
-   by giving the pill itself flex-basis: 100% — that would stretch the
-   pill's own background to the full card width instead of letting it
-   hug just its text. */
-.exp-card-header::after {
+/* Leadership still keeps its date pill inside the card header (it has
+   no timeline to move it out to), where it always drops to its own
+   line under the logo/title/org group. The line-break is forced with a
+   zero-size flex spacer (::after, ordered between the heading text and
+   the pill) rather than by giving the pill itself flex-basis: 100% —
+   that would stretch the pill's own background to the full card width
+   instead of letting it hug just its text. Experience's header no
+   longer has a date pill in it (it now lives in .timeline-date-col
+   beside the timeline), so this only needs to apply to Leadership. */
+.leadership-card .exp-card-header::after {
   content: '';
   flex-basis: 100%;
   width: 0;
   order: 1;
 }
 
+/* Rounded corners directly on the logo image itself — no background
+   chip or border framing it. */
 .exp-card-logo {
   width: 56px;
   height: 56px;
   object-fit: contain;
   flex-shrink: 0;
+  border-radius: 12px;
 }
 
 .exp-card-heading-text {
@@ -1668,6 +1816,8 @@ h2.skills-fixed-title {
   100% { transform: translateX(0%); }
 }
 
+/* Shared pill look, used both in Experience's timeline-date-col and in
+   Leadership's card header. */
 .timeline-date {
   display: inline-block;
   font-family: 'Pixelify Sans', sans-serif;
@@ -1677,12 +1827,19 @@ h2.skills-fixed-title {
   background: rgba(107, 60, 46, 0.08);
   padding: 3px 12px;
   border-radius: 20px;
+  width: fit-content;
+}
+
+/* Only needed where the pill is one of several flex items competing
+   for a line inside the card header (Leadership) — forced onto its own
+   row by .exp-card-header::after above, then given breathing room from
+   what came before it. */
+.exp-card-header .timeline-date {
+  margin-top: 6px;
   margin-bottom: 12px;
   flex: 0 0 auto;
-  width: fit-content;
   order: 2;
   align-self: flex-start;
-  margin-top: 6px;
 }
 
 .timeline-role {
@@ -1779,34 +1936,90 @@ h2.skills-fixed-title {
   gap: 8px;
 }
 
+/* flex-wrap plus the ::after spacer below force the org-link onto its
+   own full-width line beneath BOTH the logo and the title, rather than
+   being squeezed into the text column next to the logo — same pattern
+   used for the date pill in .exp-card-header. */
 .award-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 14px;
   width: 100%;
 }
 
+/* height: 0 matters here — without it this empty pseudo-element still
+   picks up the header's inherited line-height as its own box height
+   (nothing stops an empty inline box from doing that), which was
+   showing up as a large blank gap between the title row and the
+   badge/link row below it. */
+.award-header::after {
+  content: '';
+  flex-basis: 100%;
+  width: 0;
+  height: 0;
+  order: 1;
+}
+
+/* Rounded corners directly on the logo image, no background/border
+   frame around it. */
 .award-logo {
   width: 48px;
   height: 48px;
   object-fit: contain;
   flex-shrink: 0;
+  border-radius: 10px;
 }
 
 .award-header-text {
   display: flex;
   flex-direction: column;
+  flex: 1 1 0;
   min-width: 0;
+  padding-top: 2px;
+}
+
+/* Single flex item (order 2, after the ::after spacer forces the wrap)
+   so it takes the full new line beneath the logo/title row — a column
+   internally so the placement badge stacks directly above the link
+   instead of sitting side by side with it. */
+.award-meta {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Placement badge (Second Place / First Place, etc.) — same small
+   pill shape used for dates elsewhere on the site, but in the site's
+   golden yellow (matching the sticky-note/highlight accents used
+   elsewhere) instead of the brown used for dates, so it stands out as
+   its own kind of tag. Only present on cards that actually placed in
+   a competition. */
+.award-badge {
+  display: inline-block;
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #4a2f1f;
+  background: #eba928;
+  padding: 4px 14px;
+  border-radius: 20px;
+  width: fit-content;
 }
 
 .award-org-link {
+  display: inline-block;
   font-family: 'Roboto Mono', 'Roboto', monospace;
   font-size: 0.75rem;
   color: #a8583b;
   text-decoration: none;
   border-bottom: 1px dashed rgba(168, 88, 59, 0.4);
   width: fit-content;
-  margin-top: 2px;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -1825,6 +2038,7 @@ h2.skills-fixed-title {
   border-radius: 8px;
   border: 1px solid #e2ddd3;
   margin-top: 6px;
+  align-self: center;
 }
 
 .award-card-body h3 {
@@ -2805,56 +3019,35 @@ a.contact-detail-row:hover {
     top: 39px;
   }
 
+  /* The connecting line has to follow the dot to its new center (44px)
+     here too, and its reach into the next item recalculates the same
+     way: 24px track gap + 44px dot center = 68px. Left unset, it would
+     keep using the desktop numbers and visibly drift off the dots at
+     this breakpoint. */
+  .timeline-marker::after {
+    top: 44px;
+    bottom: -68px;
+  }
+
+  /* Date column follows the dot to its new, higher center at this
+     breakpoint too. */
+  .timeline-date-col {
+    width: 56px;
+    padding-top: 34px;
+  }
+
   .timeline-role {
     font-size: 1.15rem;
   }
 }
-/* ---- Sound effects toggle ---- */
-.sound-toggle-btn {
-  position: fixed;
-  /* Vertically centered with the navbar (top:16px, height:60px → center
-     at 46px), not just flush with its top edge. */
-  top: 24px;
-  left: 20px;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: #6b3c2e;
-  cursor: pointer;
-  z-index: 90;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.4s ease;
-}
-
-.sound-toggle-btn:hover {
-  transform: scale(1.08);
-}
-
-.sound-toggle-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
-.sound-icon-off {
-  display: none;
-}
-
-.sound-toggle-btn.muted .sound-icon-on {
-  display: none;
-}
-
-.sound-toggle-btn.muted .sound-icon-off {
-  display: block;
-}
-
 /* ---- Language toggle ---- */
 .lang-toggle-btn {
   position: fixed;
+  /* Vertically centered with the navbar (top:16px, height:60px → center
+     at 46px), not just flush with its top edge. Takes the spot the
+     sound-effects toggle used to occupy, now that it's gone. */
   top: 24px;
-  /* Sits just to the right of the sound button (20px + 44px width + 10px gap). */
-  left: 74px;
+  left: 20px;
   width: 44px;
   height: 44px;
   display: flex;
@@ -2879,22 +3072,10 @@ a.contact-detail-row:hover {
 }
 
 @media (max-width: 900px) {
-  .sound-toggle-btn {
+  .lang-toggle-btn {
     /* Mobile navbar sits at top:10px, height:56px → center at 38px. */
     top: 18px;
     left: 16px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .sound-toggle-btn svg {
-    width: 19px;
-    height: 19px;
-  }
-
-  .lang-toggle-btn {
-    top: 18px;
-    left: 64px;
     width: 40px;
     height: 40px;
   }

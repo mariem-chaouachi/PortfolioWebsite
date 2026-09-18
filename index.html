@@ -79,7 +79,6 @@
        it on mobile no matter what the toggle classes say. -->
   <ul class="nav-links" id="navLinks">
     <li><a href="#home" data-section="home" data-bee-msg="Back to the top!" data-bee-msg-fr="Retour en haut !" data-en="Home" data-fr="Accueil">Home</a></li>
-    <li><a href="#about" data-section="about" data-bee-msg="Open the book!" data-bee-msg-fr="Ouvrir le livre !" data-en="About" data-fr="À propos">About</a></li>
     <li><a href="#skills-terminal" data-section="skills-terminal" data-bee-msg="See what I can do!" data-bee-msg-fr="Découvrez ce que je sais faire !" data-en="Skills" data-fr="Compétences">Skills</a></li>
     <li><a href="#experience" data-section="experience" data-bee-msg="Check out my experience!" data-bee-msg-fr="Découvrez mon expérience !" data-en="Experience" data-fr="Expérience">Experience</a></li>
     <li><a href="#leadership" data-section="leadership" data-bee-msg="See my leadership roles!" data-bee-msg-fr="Voir mes rôles de leadership !" data-en="Leadership" data-fr="Leadership">Leadership</a></li>
@@ -328,27 +327,6 @@
   </div>
 
   <!-- About Me Section -->
-  <section class="about-section" id="about">
-    <h2 class="about-title" data-en="About Me" data-fr="À propos de moi">About Me</h2>
-
-    <div class="book-stage">
-
-      <div class="tv-screen-terminal tv-intro">
-        <div class="terminal-titlebar">
-          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-          <span class="terminal-filename">intro.mp4</span>
-        </div>
-        <div class="tv-screen-body">
-          <video autoplay loop muted playsinline preload="metadata" class="tv-video">
-            <source src="assets/videos/intro.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
   <!-- Terminal Skills Section -->
   <section class="terminal-skills-section" id="skills-terminal">
     <div class="terminal-scroll-stage">
@@ -517,6 +495,9 @@
         <div class="experience-gallery-track">
 
           <div class="timeline-item">
+            <div class="timeline-date-col">
+              <span class="timeline-date" data-en="July 2026" data-fr="Juillet 2026">July 2026</span>
+            </div>
             <div class="timeline-marker"><span class="timeline-dot"></span></div>
             <div class="experience-card" data-card="stiet-internship" data-bee-msg="Discover my internship at STIET!" data-bee-msg-fr="Découvrez mon stage chez STIET !" role="button" tabindex="0">
               <div class="exp-card-inner">
@@ -527,7 +508,6 @@
                       <h3 class="timeline-role" data-en="Observation Internship" data-fr="Stage d'observation">Observation Internship</h3>
                       <a class="timeline-org" href="https://stiet.com.tn/" target="_blank" rel="noopener">STIET (Philips Distributor, Tunisia)</a>
                     </div>
-                    <span class="timeline-date" data-en="July 2026" data-fr="Juillet 2026">July 2026</span>
                   </div>
                   <p class="timeline-desc" data-en="Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine." data-fr="J'ai étudié et documenté des équipements d'imagerie médicale en radiologie conventionnelle & interventionnelle, scanner, échographie, IRM et médecine nucléaire.">
                     Studied and reported on medical imaging equipment across conventional & interventional radiology, CT, ultrasound, MRI, and nuclear medicine.
@@ -539,6 +519,9 @@
           </div>
 
           <div class="timeline-item">
+            <div class="timeline-date-col">
+              <span class="timeline-date" data-en="June 2025" data-fr="Juin 2025">June 2025</span>
+            </div>
             <div class="timeline-marker"><span class="timeline-dot"></span></div>
             <div class="experience-card" data-card="clinical-internship" data-bee-msg="Learn about my clinical internship!" data-bee-msg-fr="En savoir plus sur mon stage clinique !" role="button" tabindex="0">
               <div class="exp-card-inner">
@@ -549,7 +532,6 @@
                       <h3 class="timeline-role" data-en="Clinical Internship" data-fr="Stage clinique">Clinical Internship</h3>
                       <a class="timeline-org" href="http://www.clinique-zaghouan.com/" target="_blank" rel="noopener">Clinique Zaghouan</a>
                     </div>
-                    <span class="timeline-date" data-en="Clinical Practice" data-fr="Pratique clinique">Clinical Practice</span>
                   </div>
                   <p class="timeline-desc" data-en="Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments." data-fr="J'ai observé les flux de travail cliniques et les équipements médicaux en milieu hospitalier, développant une compréhension concrète des environnements de soins.">
                     Observed clinical workflows and medical equipment in a hospital setting, building a practical understanding of patient care environments.
@@ -744,7 +726,10 @@
           <div class="award-header">
             <img class="award-logo" src="assets/logos/national-robotics-week.png" alt="National Robotics Week 8.0 logo" onerror="this.remove()" />
             <div class="award-header-text">
-              <h3 data-en="Second Place – National Robotics Week 8.0 Biomed Day Ideathon" data-fr="Deuxième place – Ideathon Biomed Day, National Robotics Week 8.0">Second Place – National Robotics Week 8.0 Biomed Day Ideathon</h3>
+              <h3 data-en="National Robotics Week 8.0 Biomed Day Ideathon" data-fr="Ideathon Biomed Day, National Robotics Week 8.0">National Robotics Week 8.0 Biomed Day Ideathon</h3>
+            </div>
+            <div class="award-meta">
+              <span class="award-badge" data-en="Second Place" data-fr="Deuxième place">Second Place</span>
               <span class="award-org-link" data-en="National Robotics Week 8.0 · Biomed Day · 2026" data-fr="National Robotics Week 8.0 · Biomed Day · 2026">National Robotics Week 8.0 · Biomed Day · 2026</span>
             </div>
           </div>
@@ -758,6 +743,8 @@
             <img class="award-logo" src="assets/logos/mindhack.png" alt="MindHack 1.0 Hackathon logo" onerror="this.remove()" />
             <div class="award-header-text">
               <h3 data-en="MindHack 1.0 Hackathon" data-fr="Hackathon MindHack 1.0">MindHack 1.0 Hackathon</h3>
+            </div>
+            <div class="award-meta">
               <a class="award-org-link" href="https://ieee.tn/event/mind-hack-1-0/" target="_blank" rel="noopener" data-bee-msg="See the MindHack event!" data-bee-msg-fr="Voir l'événement MindHack !">ieee.tn/event/mind-hack-1-0</a>
             </div>
           </div>
@@ -771,7 +758,10 @@
           <div class="award-header">
             <img class="award-logo" src="assets/logos/hippo-museum.png" alt="Hippo Museum logo" onerror="this.remove()" />
             <div class="award-header-text">
-              <h3 data-en="First Place – &quot;Little Archaeologist&quot; Art Competition" data-fr="1ère place – Concours d'art « Petit Archéologue »">First Place – "Little Archaeologist" Art Competition</h3>
+              <h3 data-en="&quot;Little Archaeologist&quot; Art Competition" data-fr="Concours d'art « Petit Archéologue »">"Little Archaeologist" Art Competition</h3>
+            </div>
+            <div class="award-meta">
+              <span class="award-badge" data-en="First Place" data-fr="1ère place">First Place</span>
               <span class="award-org-link" data-en="Hippo Museum (Musée d'Hippone), Annaba, Algeria · 2017" data-fr="Musée d'Hippone, Annaba, Algérie · 2017">Hippo Museum (Musée d'Hippone), Annaba, Algeria · 2017</span>
             </div>
           </div>
@@ -1153,20 +1143,6 @@
     <p data-en="© 2026 Mariem Chaouachi. All rights reserved." data-fr="© 2026 Mariem Chaouachi. Tous droits réservés.">© 2026 Mariem Chaouachi. All rights reserved.</p>
     <p>Designed &amp; developed by me.</p>
   </footer>
-
-  <!-- Sound effects toggle -->
-  <button class="sound-toggle-btn liquid-glass-container" id="soundToggleBtn" type="button" aria-label="Mute sound effects" aria-pressed="false" data-bee-msg="Toggle sound effects!" data-bee-msg-fr="Activer/désactiver les sons !">
-    <svg class="sound-icon-on" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M4 9.5V14.5C4 15.0523 4.44772 15.5 5 15.5H8L12.5 19V5L8 8.5H5C4.44772 8.5 4 8.94772 4 9.5Z" fill="currentColor"/>
-      <path d="M16 9C16.8047 9.72956 17.3 10.8109 17.3 12C17.3 13.1891 16.8047 14.2704 16 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M18.5 6.5C19.9433 7.90767 20.8 9.87983 20.8 12C20.8 14.1202 19.9433 16.0923 18.5 17.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-    </svg>
-    <svg class="sound-icon-off" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M4 9.5V14.5C4 15.0523 4.44772 15.5 5 15.5H8L12.5 19V5L8 8.5H5C4.44772 8.5 4 8.94772 4 9.5Z" fill="currentColor"/>
-      <path d="M16.5 9.5L21 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M21 9.5L16.5 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-    </svg>
-  </button>
 
   <!-- Language toggle (English / French) -->
   <button class="lang-toggle-btn liquid-glass-container" id="langToggleBtn" type="button" aria-label="Switch to French" data-bee-msg="Switch to French!" data-bee-msg-fr="Passer à l'anglais !">

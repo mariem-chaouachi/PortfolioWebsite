@@ -743,7 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
       role: 'External Relations & Sponsorship Manager',
       org: 'Biomed Innov Club',
       orgUrl: 'https://www.instagram.com/club_biomed_innov/',
-      date: 'Present',
+      date: 'Oct 2025 - Sep 2026',
       description: [
         "As Sponsorship and External Relations Manager at Biomed Innov Club, I contribute to building strategic partnerships and developing external collaborations to support the club's initiatives in biomedical engineering, technology, and innovation.",
         "I take part in organizing and coordinating a wide range of activities, including professional workshops and training sessions led by experts, engineering competitions, hackathons, and outreach programs. Through our initiatives, we promote biomedical engineering awareness among students, introduce young learners to robotics and technology through interactive workshops, and contribute to social actions such as volunteering at many hospitals and visiting isolated elementary schools.",
@@ -756,7 +756,7 @@ document.addEventListener("DOMContentLoaded", () => {
       role: 'Campus Leader',
       org: 'Notion',
       orgUrl: 'https://www.notion.so/',
-      date: 'Present',
+      date: 'Aug 2026 - Present',
       description: "Representing Notion on campus, helping students and organizations adopt it for their workflows.",
       certImage: 'assets/certs/experience/notion-campus-leader.png'
     },
@@ -764,7 +764,7 @@ document.addEventListener("DOMContentLoaded", () => {
       role: 'Ambassador',
       org: 'National Robotics Weekend',
       orgUrl: 'https://nrw.ieee.tn/',
-      date: '2026',
+      date: 'Aug - Sep 2026',
       description: "Promoting robotics engagement and outreach as part of National Robotics Weekend.",
       certImage: 'assets/certs/experience/robotics-week.png'
     }
@@ -794,7 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     'sponsorship': {
       role: 'Responsable relations extérieures & sponsoring',
-      date: 'Actuel',
+      date: 'Oct. 2025 - Sept. 2026',
       description: [
         "En tant que Responsable Sponsoring et Relations Extérieures au Club Biomed Innov, je contribue à construire des partenariats stratégiques et à développer des collaborations externes pour soutenir les initiatives du club en génie biomédical, technologie et innovation.",
         "Je participe à l'organisation et à la coordination d'un large éventail d'activités, notamment des ateliers professionnels et des formations animées par des experts, des compétitions d'ingénierie, des hackathons et des programmes de sensibilisation. À travers nos initiatives, nous promouvons la sensibilisation au génie biomédical auprès des étudiants, initions les jeunes à la robotique et à la technologie via des ateliers interactifs, et contribuons à des actions sociales telles que le bénévolat dans plusieurs hôpitaux et des visites à des écoles primaires isolées.",
@@ -804,12 +804,12 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     'notion-campus-leader': {
       role: 'Ambassadrice de campus',
-      date: 'Actuel',
+      date: 'Août 2026 - Actuel',
       description: "Je représente Notion sur le campus, en aidant étudiants et organisations à l'adopter pour leurs flux de travail."
     },
     'robotics-week': {
       role: 'Ambassadrice',
-      date: '2026',
+      date: 'Août - Sept. 2026',
       description: "Je fais la promotion de la robotique et de son rayonnement dans le cadre du National Robotics Weekend."
     }
   };
@@ -912,6 +912,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const awardDetails = {
     'mindhack': {
       title: 'MindHack 1.0 Hackathon',
+      badge: 'Participant',
+      badgeIcon: 'assets/icons/participant.svg',
       org: 'ieee.tn/event/mind-hack-1-0',
       orgUrl: 'https://ieee.tn/event/mind-hack-1-0/',
       date: '',
@@ -921,7 +923,9 @@ document.addEventListener("DOMContentLoaded", () => {
       relatedProject: 'biofarm'
     },
     'little-archaeologist': {
-      title: 'First Place, "Little Archaeologist" Art Competition',
+      title: '"Little Archaeologist" Art Competition',
+      badge: 'First Place',
+      badgeIcon: 'assets/icons/medal-first.svg',
       org: "Hippo Museum (Musée d'Hippone), Annaba, Algeria",
       orgUrl: null,
       date: '2017',
@@ -935,7 +939,9 @@ document.addEventListener("DOMContentLoaded", () => {
       video: 'assets/videos/award-little-archaeologist.mp4'
     },
     'robotics-week-ideathon': {
-      title: 'Second Place, National Robotics Week 8.0 Biomed Day Ideathon',
+      title: 'National Robotics Week 8.0 Biomed Day Ideathon',
+      badge: 'Second Place',
+      badgeIcon: 'assets/icons/medal-second.svg',
       org: 'National Robotics Week 8.0 · Biomed Day',
       orgUrl: null,
       date: '2026',
@@ -949,18 +955,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const awardDetailsFR = {
     'mindhack': {
       title: 'Hackathon MindHack 1.0',
+      badge: 'Participante',
       org: 'ieee.tn/event/mind-hack-1-0',
       date: '',
       description: "J'ai participé en tant que candidate, développant un projet dans les délais imposés par le hackathon."
     },
     'little-archaeologist': {
-      title: '1ère place, Concours d\'art « Petit Archéologue »',
+      title: 'Concours d\'art « Petit Archéologue »',
+      badge: '1ère place',
       org: "Musée d'Hippone, Annaba, Algérie",
       date: '2017',
       description: "1ère place au concours d'art « Petit Archéologue » organisé par le Musée d'Hippone à Annaba, en Algérie. En tant que jeune participante, j'ai réalisé une œuvre inspirée du patrimoine archéologique d'Annaba, mettant en scène la sculpture de la Gorgone et la basilique de Saint-Augustin. Le prix de la première place incluait un ordinateur personnel."
     },
     'robotics-week-ideathon': {
-      title: 'Deuxième place, Ideathon Biomed Day, National Robotics Week 8.0',
+      title: 'Ideathon Biomed Day, National Robotics Week 8.0',
+      badge: 'Deuxième place',
       org: 'National Robotics Week 8.0 · Biomed Day',
       date: '2026',
       description: "2ème place à l'Ideathon Biomed Day, organisé dans le cadre du National Robotics Week 8.0, sous le thème « open biomedical innovation ». Présentation d'un concept de robotique assistive à travers toute la structure de l'ideathon : besoin de santé, identification du problème, compréhension des utilisateurs, conception de la solution, démonstration et perspective entrepreneuriale."
@@ -970,6 +979,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const awardModalOverlay = document.getElementById('awardModalOverlay');
   const awardModalCloseBtn = document.getElementById('awardModalCloseBtn');
   const awardModalFilename = document.getElementById('awardModalFilename');
+  const awardModalBadge = document.getElementById('awardModalBadge');
+  const awardModalBadgeIcon = document.getElementById('awardModalBadgeIcon');
   const awardModalTitle = document.getElementById('awardModalTitle');
   const awardModalOrg = document.getElementById('awardModalOrg');
   const awardModalDate = document.getElementById('awardModalDate');
@@ -989,6 +1000,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const t = (I18N.get() === 'fr' && fr) ? fr : data;
 
     awardModalFilename.textContent = `${slug}.md`;
+    awardModalBadge.textContent = t.badge || '';
+    awardModalBadgeIcon.style.display = data.badgeIcon ? '' : 'none';
+    if (data.badgeIcon) awardModalBadgeIcon.src = data.badgeIcon;
     awardModalTitle.textContent = t.title;
     awardModalOrg.textContent = t.org;
     if (data.orgUrl) {

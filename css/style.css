@@ -940,8 +940,8 @@ html {
 
 .exp-modal-org:hover,
 .exp-modal-org:focus-visible {
-  color: #a8583b;
-  border-bottom-color: #a8583b;
+  color: #0a66c2;
+  border-bottom-color: #0a66c2;
   outline: none;
 }
 
@@ -1832,11 +1832,14 @@ h2.skills-fixed-title {
 
 /* Only needed where the pill is one of several flex items competing
    for a line inside the card header (Leadership) — forced onto its own
-   row by .exp-card-header::after above, then given breathing room from
-   what came before it. */
+   row by .exp-card-header::after above. Small, deliberate margins
+   here (rather than relying on .timeline-desc's own default paragraph
+   margin below it) since flex items never collapse margins with each
+   other — the two used to stack up into a much bigger gap than either
+   value alone suggests. */
 .exp-card-header .timeline-date {
-  margin-top: 6px;
-  margin-bottom: 12px;
+  margin-top: 2px;
+  margin-bottom: 4px;
   flex: 0 0 auto;
   order: 2;
   align-self: flex-start;
@@ -1862,8 +1865,8 @@ h2.skills-fixed-title {
 
 .timeline-org:hover,
 .timeline-org:focus-visible {
-  color: #6b3c2e;
-  border-bottom-color: #6b3c2e;
+  color: #0a66c2;
+  border-bottom-color: #0a66c2;
   outline: none;
 }
 
@@ -1872,6 +1875,7 @@ h2.skills-fixed-title {
   font-size: 0.95rem;
   line-height: 1.6;
   color: #333333;
+  margin: 0;
 }
 
 /* PROJECTS SECTION */
@@ -1936,29 +1940,16 @@ h2.skills-fixed-title {
   gap: 8px;
 }
 
-/* flex-wrap plus the ::after spacer below force the org-link onto its
-   own full-width line beneath BOTH the logo and the title, rather than
-   being squeezed into the text column next to the logo — same pattern
-   used for the date pill in .exp-card-header. */
+/* Logo and the badge/short-name sit side by side; everything else
+   (event name, link, description, cert, optional project link) is a
+   plain full-width sibling below in .award-card-body's own column
+   flow — no forced-wrap trick needed since only two small items ever
+   share this row. */
 .award-header {
   display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 14px;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-}
-
-/* height: 0 matters here — without it this empty pseudo-element still
-   picks up the header's inherited line-height as its own box height
-   (nothing stops an empty inline box from doing that), which was
-   showing up as a large blank gap between the title row and the
-   badge/link row below it. */
-.award-header::after {
-  content: '';
-  flex-basis: 100%;
-  width: 0;
-  height: 0;
-  order: 1;
 }
 
 /* Rounded corners directly on the logo image, no background/border
@@ -1971,45 +1962,46 @@ h2.skills-fixed-title {
   border-radius: 10px;
 }
 
-.award-header-text {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0;
-  min-width: 0;
-  padding-top: 2px;
-}
-
-/* Single flex item (order 2, after the ::after spacer forces the wrap)
-   so it takes the full new line beneath the logo/title row — a column
-   internally so the placement badge stacks directly above the link
-   instead of sitting side by side with it. */
-.award-meta {
-  order: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  width: 100%;
-  margin-top: 4px;
-}
-
-/* Placement badge (Second Place / First Place, etc.) — same small
-   pill shape used for dates elsewhere on the site, but in the site's
-   golden yellow (matching the sticky-note/highlight accents used
-   elsewhere) instead of the brown used for dates, so it stands out as
-   its own kind of tag. Only present on cards that actually placed in
-   a competition. */
+/* Placement (Second Place / First Place, etc.) when the card has one;
+   otherwise the event's short name (e.g. "MindHack 1.0") stands in its
+   place — same yellow used for the "All" filter button in Projects. */
+/* Placement (Second Place / First Place, etc.) when the card has one;
+   otherwise a plain status word (e.g. "Participant") stands in its
+   place. Plain text, light brown, sized up since it's the headline of
+   the card. The icon lives in a sibling <img> (.award-badge-icon)
+   rather than inside this span, since the language switcher replaces
+   this element's textContent wholesale — an icon nested inside it
+   would get wiped out on every language toggle. */
 .award-badge {
   display: inline-block;
   font-family: 'Pixelify Sans', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #4a2f1f;
-  background: #eba928;
-  padding: 4px 14px;
-  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #a8583b;
   width: fit-content;
+}
+
+.award-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Awaiting real artwork at these paths — falls back to just the text
+   (onerror removes the broken-image icon) until medal-second.png,
+   medal-first.png and participant.png are added under assets/icons/. */
+.award-badge-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* The event's full name — still an <h3>, styled by .award-card-body h3
+   below; this class exists only to hang the top margin off. */
+.award-event-name {
+  margin-top: 2px;
 }
 
 .award-org-link {
@@ -2025,8 +2017,8 @@ h2.skills-fixed-title {
 
 .award-org-link:hover,
 .award-org-link:focus-visible {
-  color: #6b3c2e;
-  border-bottom-color: #6b3c2e;
+  color: #0a66c2;
+  border-bottom-color: #0a66c2;
   outline: none;
 }
 
@@ -2039,6 +2031,30 @@ h2.skills-fixed-title {
   border: 1px solid #e2ddd3;
   margin-top: 6px;
   align-self: center;
+}
+
+/* Optional — only present on cards that have a matching project on the
+   site to point to. */
+.award-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Roboto Mono', 'Roboto', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6b3c2e;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(107, 60, 46, 0.5);
+  width: fit-content;
+  margin-top: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.award-project-link:hover,
+.award-project-link:focus-visible {
+  color: #4a2a1f;
+  border-bottom-color: #4a2a1f;
+  outline: none;
 }
 
 .award-card-body h3 {

@@ -1988,6 +1988,14 @@ h2.skills-fixed-title {
   gap: 8px;
 }
 
+/* Extra breathing room in the popup specifically — in the card, the
+   badge sits right beside the logo with the title on its own line
+   right after; in the modal there's no logo alongside it, so the
+   badge and title otherwise end up sitting flush against each other. */
+.exp-modal-heading .award-badge-row {
+  margin-bottom: 8px;
+}
+
 /* Awaiting real artwork at these paths — falls back to just the text
    (onerror removes the broken-image icon) until medal-second.png,
    medal-first.png and participant.png are added under assets/icons/. */
